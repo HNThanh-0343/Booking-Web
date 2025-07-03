@@ -1,0 +1,202 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.AccountForgotForm
+
+@{
+    ViewData["Title"] = "Quên mật khẩu";
+
+    Layout = "_LayoutTaiKhoan.cshtml";
+}
+
+<!-- end start -->
+<div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-4 col-lg-5">
+                <div class="card">
+
+                    <!-- Logo -->
+                    <div class="card-header py-2 text-center bg-primary">
+                        <h3 class="text-white text-center pb-0 fw-bold">Quên mật khẩu</h3>
+                        @* <a href="index.html">
+                        <span><img src="~/assets/images/logo.png" alt="logo" height="22"></span>
+                        </a> *@
+                    </div>
+
+                    <div class="card-body">
+
+                        @* <div class="text-center w-75 m-auto">
+                        <h4 class="text-dark-50 text-center pb-0 fw-bold">Đăng ký</h4>
+                        <p class="text-muted mb-2">
+                        Enter your email address and password to access admin panel.
+                        </p>
+                        </div> *@
+
+
+                        <div class="tab-content">
+                            <div class="tab-pane show active">
+                                
+                                <!--Tab-->
+                                <div class="tab-content">
+
+                                    <!--Canhan-->
+                                    <div class="tab-pane show active">
+                                        <form asp-action="quenmatkhau" asp-controller="taikhoan" asp-area="null" method="post">
+                                            
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="email" class="form-label">Địa chỉ email</label>
+                                                <input class="form-control" type="email" id="email" name="Email" value="@Model.Email"
+                                                       required="" placeholder="Nhập email của bạn">
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.CodeOTP, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="emailaddress" class="form-label">Mã xác thực</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Mã xác thực từ email" aria-label="Mã xác thực từ email" name="CodeOTP" value="@Model.CodeOTP" required="">
+                                                    <button class="btn btn-primary" type="button" id="btnEmail" onclick="getCode(1)">
+                                                        <i class="mdi mdi-send me-1"></i><span>OTP</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="password" class="form-label">Mật khẩu</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="password" id="Password" name="Password" class="form-control"
+                                                           placeholder="Nhập mật khẩu" required="">
+                                                    <div class="input-group-text" data-password="false">
+                                                        <span class="password-eye"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="password" class="form-label">Nhập lại mật khẩu</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="password" id="Password" name="" class="form-control"
+                                                           placeholder="Nhập mật khẩu" required="">
+                                                    <div class="input-group-text" data-password="false">
+                                                        <span class="password-eye"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                @* <a href="pages-recoverpw.html"
+                                                   class="text-muted float-end">
+                                                    <small>
+                                                        Quên mật khẩu?
+                                                    </small>
+                                                </a> *@
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           id="checkbox-signin" checked>
+                                                    <label class="form-check-label" for="checkbox-signin">
+                                                        Ghi nhớ tài khoản
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="mb-3 mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                            </div> -->
+                                            <div class="d-grid mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit" id="btnRegister">
+                                                    <i class="mdi mdi-login"></i> Xác thực
+                                                </button>
+                                            </div>
+
+                                            <!-- social-->
+                                            <div class="text-center mt-3">
+                                                
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--Canhan-->
+
+                                </div>
+
+                                <!--Tab-->
+
+                            </div> <!-- end preview-->
+                        </div>
+
+
+
+                    </div> <!-- end card-body -->
+
+                    <div class="card-footer">
+                        <footer class="footer footer-alt">
+                            <p class="text-muted mt-3">
+                                Quay lại trang <a href="@Url.Action("dangnhap","taikhoan")"
+                                                          class="text-muted ms-1"><b>Đăng nhập</b></a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- end row -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<script>
+    //1 Đăng ký
+    //2 quên pass
+    function getCode(type) {
+
+        $("#btnEmail").prop("disabled", true);
+
+        var email = $("#email").val().trim();
+        $.ajax({
+            url: "SendEmailOTP",
+            type: "GET",
+            data: { toEmail: email, type: type },
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            success: function (res) {
+                if (res.success) {
+
+                    $("#btnEmail").prop("disabled", false);
+                } else {
+                    $("#btnEmail").prop("disabled", false);
+                }
+            },
+            error: function () {
+                $("#btnEmail").prop("disabled", false);
+
+            }
+        });
+    }
+
+</script>

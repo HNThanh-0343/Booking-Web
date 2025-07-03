@@ -1,0 +1,142 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysBlog>
+@using X.PagedList.Mvc.Core.Common 
+@using X.PagedList.Mvc.Core;
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+@using WEBSITE_TRAVELBOOKING.Helper
+<style >
+    .font-chu {
+    font-weight: bold;
+    }
+
+    .kieu-chu {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+    }
+
+    .line-ellipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+
+    .blog-card {
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    height: 100%;
+    }
+
+    .blog-card:hover {
+    transform: translateY(-5px);
+    }
+
+    .blog-title a {
+    color: #333;
+    text-decoration: none;
+    }
+
+    .blog-title a:hover {
+    color: #8B4513;
+    text-decoration: underline;
+    }
+
+    .blog-meta {
+    font-size: 14px;
+    color: #777;
+    }
+
+    .blog-meta i {
+    margin-right: 5px;
+    }
+</style>
+
+
+<div class="row">
+    @if(!Model.Any() || Model == null)
+    {
+        <div class="col-12">
+            <div class="alert alert-warning border-left border-4" role="alert" style="font-size: 18px; border-color: #ffc107;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <strong class="ml-2">Hiện tại không có bài viết nào.</strong>
+                <p class="mb-0 ml-4">Vui lòng quay lại lần sau.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (Model.Count == 0)
+        {
+            <div class="col-12">
+                <div class="alert alert-warning border-left border-4" role="alert" style="font-size: 18px; border-color: #ffc107;">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <strong class="ml-2">Không tìm thấy bài viết phù hợp với yêu cầu của bạn.</strong>
+                    <p class="mb-0 ml-4">Vui lòng thử lại với từ khóa hoặc bộ lọc khác.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                var firstImage = Common.GetImagePath(item.ListImg?.Split(',').FirstOrDefault()) == "/AppData/no-image.png" ? "/AppData/BaiViet/BaiVietMacDinh.jpg" : item.ListImg?.Split(',').FirstOrDefault();
+
+                <div class="col-md-6 mb-4">
+                    <div class="blog-card p-3">
+                        <a class="d-block mb-3" href="@Url.Action("ChiTiet", "BaiViet", new { area = "", nameblog = @Common.GenerateSlug(item.Name), id = item.Id })">
+                            <img class="img-fluid rounded" style="height: 250px; object-fit: cover; width: 100%;" src="@firstImage" alt="Image">
+                        </a>
+
+                        <div class="mb-2">
+                            <span class="badge bg-primary text-white px-2 py-1" style="font-size: 13px;">@item.IdTypeBlogNavigation.Name</span>
+                        </div>
+
+                        <h5 class="blog-title font-chu ellipsis">
+                            <a href="@Url.Action("ChiTiet", "BaiViet", new { area = "", nameblog = @Common.GenerateSlug(item.Name), id = item.Id })">@item.Name</a>
+                        </h5>
+
+                        <p class="line-ellipsis kieu-chu" style="font-size: 15px;">@item.ContentsShort</p>
+
+                        <div class="blog-meta mt-2 kieu-chu d-flex justify-content-between">
+                            <span><i class="fa-solid fa-users"></i> @item.IdUserNavigation.Name</span>
+                            <span><i class="fa-regular fa-calendar-days"></i> @Common.GetDateTimeConvert(item.DateCreate)</span>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+        <nav aria-label="Page navigation">
+            @Html.PagedListPager(Model, page => Url.Action("loadBaiViet", new { page, area = "" }),
+                     new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = CommonMode.Never,
+            DisplayLinkToLastPage = CommonMode.Never,
+            DisplayLinkToPreviousPage = CommonMode.Always,
+            DisplayLinkToNextPage = CommonMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            UlElementClasses = new[] { "pagination", "justify-content-center", "my-4" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            ActiveLiElementClass = "active",
+            LinkToPreviousPageFormat = "Trước đó",
+            LinkToNextPageFormat = "Tiếp theo",
+        })
+        </nav>
+
+    }
+    </div>
+
+	
+

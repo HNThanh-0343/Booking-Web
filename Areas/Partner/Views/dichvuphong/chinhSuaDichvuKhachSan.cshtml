@@ -1,0 +1,88 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Thêm mới dịch vụ phòng";
+    var getRoomService = ViewBag.getRoomService as List<WEBSITE_TRAVELBOOKING.Models.CatRoomService>;
+    var ListItemRoom = Common.DeserializeServiceList(Model.ListItemServices) as List<WEBSITE_TRAVELBOOKING.Models.RoomServiceItem>;
+}
+
+<style>
+    .spinInput.form-control {
+        text-align: center;
+    }
+    /* Ẩn spinner cho input number trong .bootstrap-touchspin */
+
+    /* Chrome, Safari, Edge, Opera */
+    .bootstrap-touchspin input[type=number]::-webkit-inner-spin-button,
+    .bootstrap-touchspin input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    .bootstrap-touchspin input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    /* Không cho nhập thủ công */
+    .bootstrap-touchspin input[type=number] {
+        pointer-events: none; /* Không cho click */
+        background-color: #f8f9fa; /* Tuỳ chọn: đổi nền để thể hiện disabled input */
+    }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="text" value="@Model.Id" name="Id" hidden>
+        <input type="text" value="@Model.IdCategories" name="IdCategories" hidden>
+        <div class="row">
+            @{
+                for (int i = 0; i < getRoomService.Count; i++)
+                {
+                    var getItemRoom = ListItemRoom.FirstOrDefault(m => m.IdService == getRoomService[i].Id);
+                    var quatity = 0;
+                    if (getItemRoom != null)
+                    {
+                        quatity = getItemRoom.Quantity;
+                    }
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <label class="form-label">@getRoomService[i].Name</label>
+                            <input class="spinInput" type="number" value="@quatity" name="roomServiceItems[@i].Quantity">
+                            <input type="number" value="@getRoomService[i].Id" name="roomServiceItems[@i].IdService" hidden>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaDichvuKhachSan")" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+
+
+
+<script>
+    debugger;
+    var intervalSlickDetailRoom = setInterval(function () {
+        debugger;
+         $('.spinInput').TouchSpin({
+           min: 0,
+           max: 100,
+           step: 1,
+           boostat: 5,
+           maxboostedstep: 10,
+           // postfix: 'điểm'
+       });
+        clearInterval(intervalSlickDetailRoom);
+    }, 300);
+</script>

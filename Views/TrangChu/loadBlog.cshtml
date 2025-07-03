@@ -1,0 +1,109 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models;
+@model List<WEBSITE_TRAVELBOOKING.Models.PostViewHome>
+@using WEBSITE_TRAVELBOOKING.Helper
+
+<style>
+	.js-slide img {
+	transition: transform 0.3s ease;
+	border-radius: 5px;
+	}
+
+	.ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	max-width: 100%;
+	}
+
+	.line-ellipsis {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-height: 3em;
+	}
+
+	.font-chu {
+	font-weight: bold;
+	}
+
+	.card-post {
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	padding: 12px;
+	transition: all 0.3s ease;
+	min-height: 320px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	}
+
+	.card-post:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+	}
+
+	.post-title a:hover {
+	color: #007bff !important;
+	text-decoration: underline;
+	}
+</style>
+@if (!Model.Any() || Model == null)
+{
+
+}
+else
+{
+	<div class="container space-1">
+		<h2 class="section-title text-center mb-5 mt-3" style="font-weight: bold">Bài viết nổi bật hàng ngày</h2>
+
+		<div class="js-slick-carousel u-slick u-slick--gutters-3"
+			 data-slides-show="3"
+			 data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-classic--v2 u-slick__arrow-centered--y rounded-circle"
+			 data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-xl-n8"
+			 data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-xl-n8"
+			 data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
+			 data-responsive='[
+				 { "breakpoint": 1200, "settings": { "slidesToShow": 3 } },
+				 { "breakpoint": 992, "settings": { "slidesToShow": 2 } },
+				 { "breakpoint": 768, "settings": { "slidesToShow": 1 } },
+				 { "breakpoint": 554, "settings": { "slidesToShow": 1 } }
+			]'>
+			@foreach (var itemPost in Model)
+			{
+				var checkanh = Common.GetImagePath(itemPost.Image) == "/AppData/no-image.png"
+				? "/AppData/BaiViet/BaiVietMacDinh.jpg"
+				: Common.GetImagePath(itemPost.Image);
+				<div class="js-slide mb-4">
+					<div class="card-post">
+						<a class="d-block overflow-hidden mb-3"
+						   href="@Url.Action("ChiTiet", "BaiViet", new { area = "", nameblog = Common.GenerateSlug(itemPost.Name), id = itemPost.Id })">
+							<img src="@checkanh" alt="Image-Description"
+								 style="height: 200px; width: 100%; object-fit: cover;">
+						</a>
+						<h3 class="font-size-17 font-chu mb-1 text-dark post-title">
+							<a class="ellipsis text-decoration-none"
+							   href="@Url.Action("ChiTiet", "BaiViet", new { area = "", nameblog = Common.GenerateSlug(itemPost.Name), id = itemPost.Id })">
+								@itemPost.Name
+							</a>
+						</h3>
+						<div class="text-muted small line-ellipsis mb-2">
+							@Html.Raw(itemPost.Content)
+						</div>
+						<p class="text-secondary font-size-14 font-italic mb-0">
+							@Common.GetDateTimeConvert(itemPost.Date)
+						</p>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+}
+
+
+<script>
+	$.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+</script>

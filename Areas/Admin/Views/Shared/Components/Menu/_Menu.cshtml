@@ -1,0 +1,209 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.MenuItem>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    var getAcount = Account.GetAccount();
+}
+@* <li class="side-nav-item">
+    <a href="@Url.Action("Index", "trangChu", new { area = "Admin" })" class="side-nav-link">
+        <i class="uil-home-alt"></i>
+        <span> Trang chủ </span>
+    </a>
+</li> *@
+@{
+    foreach (var item in Model)
+    {
+        if (item.Children.Count == 0)
+        {
+            <li class="side-nav-item">
+                <a href="@Url.Action("Index", @item.NameController, new { area = "Admin"})" class="side-nav-link">
+                    <i class="@item.Icon"></i>
+                    <span> @item.Name </span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebar_@item.Id" aria-expanded="false"
+                   aria-controls="sidebar_@item.Id" class="side-nav-link">
+                    <i class="@item.Icon"></i>
+                    <span> @item.Name </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                @{
+                    <div class="collapse" id="sidebar_@item.Id">
+                        <ul class="side-nav-second-level">
+                            @foreach (var itemChildren in item.Children)
+                            {
+                                var parts = itemChildren.NameController.Split('/');
+                                var controller = parts[0];
+                                var action = parts.Length > 1 ? parts[1] : "Index"; // fallback nếu thiếu
+                                <li>
+                                    <a href="@Url.Action(action,controller, new { area = "Admin" })">@itemChildren.Name</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+
+                }
+            </li>
+        }
+    }
+}
+
+
+@* <li class="side-nav-item">
+    <a href="@Url.Action("Index", "quanLyTaiKhoan", new { area = "Admin" })" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Quản lý người dùng </span>
+    </a>
+</li>
+<li class="side-nav-item">
+    <a href="@Url.Action("Index", "QuanLyKhachSan", new { area = "Admin" })" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Quản lý khách sạn </span>
+    </a>
+</li>
+<li class="side-nav-item">
+    <a href="@Url.Action("Index", "QuanLyTour", new { area = "Admin" })" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Quản lý Tour </span>
+    </a>
+</li>
+<li class="side-nav-item">
+    <a href="apps-calendar.html" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Payment History </span>
+    </a>
+</li>
+<li class="side-nav-item">
+    <a href="apps-calendar.html" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Location Map </span>
+    </a>
+</li>
+<li class="side-nav-title">ADMIN PANEL</li>
+<li class="side-nav-item">
+    <a href="apps-calendar.html" class="side-nav-link">
+        <i class="uil-calender"></i>
+        <span> Dashboard </span>
+    </a>
+</li>
+<li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarHotels" aria-expanded="false"
+       aria-controls="sidebarHotels" class="side-nav-link">
+        <i class="uil-store"></i>
+        <span> Manage Hotels </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarHotels">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="apps-ecommerce-products.html">List</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-products-details.html">Detail</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders.html">Add</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders-details.html">Edit</a>
+            </li>
+        </ul>
+    </div>
+</li>
+<li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarRoom" aria-expanded="false"
+       aria-controls="sidebarRoom" class="side-nav-link">
+        <i class="uil-store"></i>
+        <span> Manage Room </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarRoom">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="apps-ecommerce-products.html">List</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-products-details.html">Detail</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders.html">Add</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders-details.html">Edit</a>
+            </li>
+        </ul>
+    </div>
+</li>
+<li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarGuest" aria-expanded="false"
+       aria-controls="sidebarGuest" class="side-nav-link">
+        <i class="uil-store"></i>
+        <span> Guest Management </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarGuest">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="apps-ecommerce-products.html">List</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders.html">Add</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders-details.html">Edit</a>
+            </li>
+        </ul>
+    </div>
+</li>
+<li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarBooking" aria-expanded="false"
+       aria-controls="sidebarBooking" class="side-nav-link">
+        <i class="uil-store"></i>
+        <span> Manage Booking </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarBooking">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="apps-ecommerce-products.html">List</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-products-details.html">Detail</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders.html">Add</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders-details.html">Edit</a>
+            </li>
+        </ul>
+    </div>
+</li>
+<li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarPayment" aria-expanded="false"
+       aria-controls="sidebarPayment" class="side-nav-link">
+        <i class="uil-store"></i>
+        <span> Payment </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarPayment">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="apps-ecommerce-products.html">List</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-products-details.html">Detail</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders.html">Add</a>
+            </li>
+            <li>
+                <a href="apps-ecommerce-orders-details.html">Edit</a>
+            </li>
+        </ul>
+    </div>
+</li> *@

@@ -1,0 +1,102 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysPromotion;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Thêm mới khuyến mãi";
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var getAccount = Account.GetAccount();
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tiêu đề <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Ngày bắt đầu <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="StartDate" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Ngày kết thúc <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="EndDate" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Mô tả <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Describe" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tình trạng <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Condition" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Giảm giá<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="SaleOff" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label class="form-label">Đơn vị <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Type">
+                        <option value="true">%</option>
+                        <option value="false">VNĐ</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        <option value="true">Kích hoạt</option>
+                        <option value="false">Chưa kịch hoạt</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label for="example-fileinput" class="form-label">Hình ảnh</label>
+                    <input type="file" name="postedFile" class="form-control" accept="image/*">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("themMoiKhuyenMai", new { area = "Admin" })" class="btn bg-success-subtle create text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>

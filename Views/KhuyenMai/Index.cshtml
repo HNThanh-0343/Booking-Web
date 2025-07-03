@@ -1,0 +1,124 @@
+﻿@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Khuyến mãi";
+	ViewData["Detail"] = true;
+
+}
+
+<div class="bg-img-hero text-center mb-5 mb-lg-8" style="background-image: url(../../AppData/khuyenmaibanner.png);">
+	<div class="container">
+		<div class="row justify-content-center py-xl-4">
+			<!-- Info -->
+			<div class="py-xl-10 py-5">
+				<h1 class="font-size-40 font-size-xs-30 text-white mb-0 kieu-chu font-chu">Khuyến mãi</h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb breadcrumb-no-gutter mb-0">
+						<li class="breadcrumb-item font-size-14 kieu-chu"><a class="text-white" href="@Url.Action("Index","TrangChu",new{area = ""})">Trang chủ</a></li>
+						<li class="breadcrumb-item custom-breadcrumb-item font-size-14 text-white active kieu-chu" aria-current="page">Khuyến mãi</li>
+					</ol>
+				</nav>
+			</div>
+			<!-- End Info -->
+		</div>
+	</div>
+</div>
+<div class="loadUsingPage" id="loadKhuyenMai"></div>
+
+
+@* <div class="Itemstyled__Item-sc-12uga7p-0 bEALqn">
+	<div class="Box-sc-kv6pi1-0 kbJApB">
+		<div class="Box-sc-kv6pi1-0 fOMcJS">
+			<div spacing="XL" class="Gridstyled__GridStyled-sc-dfh2k0-0 gdavcW container-agoda content_center" style="max-width:1100px;width:100%;margin: 0 auto;">
+				<div class="Itemstyled__Item-sc-12uga7p-0 dAzOrK">
+					<div class="Box-sc-kv6pi1-0 jVXFUx">
+						<h3 class="Headingstyled__HeadingStyled-sc-v3bqq6-0 gninFw kite-js-Heading ">Cách Áp Dụng Phiếu Giảm Giá</h3>
+					</div>
+				</div><div class="Itemstyled__Item-sc-12uga7p-0 dAzOrK">
+					<div class="Box-sc-kv6pi1-0 jVXFUx">
+						<img src="/AppData/KhuyenMai/KhuyenMai.png" style="width: 100%">
+					</div>
+				</div>
+				<div class="Itemstyled__Item-sc-12uga7p-0 cZFYMG">
+					<div class="Box-sc-kv6pi1-0 crGwQT">
+						<span class="Spanstyled__SpanStyled-sc-16tp9kb-0 kkSkZk kite-js-Span ">Tìm và thu thập phiếu giảm giá. Nếu có mã khuyến mại thì đừng quên sao chép nó!</span>
+					</div>
+				</div><div class="Itemstyled__Item-sc-12uga7p-0 cZFYMG">
+					<div class="Box-sc-kv6pi1-0 cxwLoM">
+						<span class="Spanstyled__SpanStyled-sc-16tp9kb-0 kkSkZk kite-js-Span ">Tìm chỗ nghỉ có nhãn "Được áp dụng phiếu giảm giá" để sử dụng phiếu giảm giá</span>
+					</div>
+				</div><div class="Itemstyled__Item-sc-12uga7p-0 cZFYMG">
+					<div class="Box-sc-kv6pi1-0 bAXAAy">
+						<span class="Spanstyled__SpanStyled-sc-16tp9kb-0 kkSkZk kite-js-Span ">Đảm bảo áp dụng phiếu giảm giá / mã khuyến mại của quý khách trước khi hoàn tất thanh toán.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ *@
+
+@section Scripts {
+	<script>
+		$("#loadKhuyenMai").load("/KhuyenMai/loadKhuyenMai");
+			$(document).on("click", ".pagination a", function (e) {
+			e.preventDefault();
+			const url = $(this).attr("href");
+
+			if (url) {
+				$("#loadKhuyenMai").load(url);
+			}
+		});
+	
+			function showPromoName(viewType, id) {
+			const btn = document.getElementById(`btn_${viewType}_${id}`);
+			const name = document.getElementById(`name_${viewType}_${id}`);
+
+			if (!btn || !name) return;
+
+			// Hiện mã khuyến mãi
+			btn.style.display = "none";
+			name.style.display = "flex";
+			name.style.opacity = "0";
+			name.style.transform = "translateY(-10px)";
+
+			setTimeout(() => {
+				name.style.opacity = "1";
+				name.style.transform = "translateY(0)";
+			}, 10);
+
+			// Ẩn lại sau 5 giây
+			setTimeout(() => {
+				name.style.opacity = "0";
+				name.style.transform = "translateY(-10px)";
+				setTimeout(() => {
+					name.style.display = "none";
+					btn.style.display = "block";
+				}, 300);
+			}, 5000);
+
+			// Tự động copy khi vừa hiện mã
+			const code = name.textContent.trim();
+			navigator.clipboard.writeText(code)
+				.then(() => {
+					Swal.fire({
+						icon: 'success',
+						title: 'Đã sao chép!',
+						text: `Mã "${code}" đã được sao chép vào clipboard.`,
+						showConfirmButton: false,
+						timer: 2000
+					});
+				})
+				.catch(err => {
+					console.error("Không thể sao chép", err);
+					Swal.fire({
+						icon: 'error',
+						title: 'Lỗi',
+						text: 'Không thể sao chép mã.',
+					});
+				});
+		}
+
+	</script>
+}
+
+

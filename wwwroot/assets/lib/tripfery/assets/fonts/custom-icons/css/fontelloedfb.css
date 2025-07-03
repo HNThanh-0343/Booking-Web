@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../font/fontellob016.eot?21759529');
+  src: url('../font/fontellob016.eot?21759529#iefix') format('embedded-opentype'),
+       url('../font/fontellob016.woff2?21759529') format('woff2'),
+       url('../font/fontellob016.woff?21759529') format('woff'),
+       url('../font/fontellob016.ttf?21759529') format('truetype'),
+       url('../font/fontellob016.svg?21759529#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?21759529#fontello') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-tripfery-search:before { content: '\e800'; } /* '' */
+.icon-tripfery-profile:before { content: '\e801'; } /* '' */
+.icon-tripfery-heart:before { content: '\e802'; } /* '' */
+.icon-tripfery-bag:before { content: '\e803'; } /* '' */
+.icon-tripfery-truck:before { content: '\e804'; } /* '' */
+.icon-tripfery-cube:before { content: '\e805'; } /* '' */
+.icon-tripfery-dollar-circle:before { content: '\e806'; } /* '' */
+.icon-tripfery-headphone:before { content: '\e807'; } /* '' */
+.icon-tripfery-wallet:before { content: '\e808'; } /* '' */
+.icon-tripfery-refresh:before { content: '\e809'; } /* '' */
+.icon-tripfery-badge-check:before { content: '\e80a'; } /* '' */
+.icon-tripfery-truck-2:before { content: '\e80b'; } /* '' */
+.icon-tripfery-tag:before { content: '\e80c'; } /* '' */
+.icon-tripfery-quote-left:before { content: '\e80d'; } /* '' */
+.icon-tripfery-emoji-happy:before { content: '\e80e'; } /* '' */
+.icon-tripfery-cup:before { content: '\e80f'; } /* '' */
+.icon-tripfery-experience:before { content: '\e810'; } /* '' */
+.icon-tripfery-check-in:before { content: '\e811'; } /* '' */
+.icon-tripfery-hostel:before { content: '\e812'; } /* '' */
+.icon-tripfery-hotel:before { content: '\e813'; } /* '' */
+.icon-tripfery-map-iocn:before { content: '\e814'; } /* '' */
+.icon-tripfery-medal-star:before { content: '\e815'; } /* '' */
+.icon-tripfery-lifebuoy:before { content: '\e816'; } /* '' */
+.icon-tripfery-tours:before { content: '\e817'; } /* '' */
+.icon-tripfery-activity:before { content: '\e819'; } /* '' */
+.icon-tripfery-car:before { content: '\e81a'; } /* '' */
+.icon-tripfery-user:before { content: '\e81b'; } /* '' */
+.icon-tripfery-cart:before { content: '\e81c'; } /* '' */
+.icon-tripfery-restaurant:before { content: '\e81d'; } /* '' */
+.icon-tripfery-search:before { content: '\e81e'; } /* '' */

@@ -1,0 +1,54 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysGuest;
+@using WEBSITE_TRAVELBOOKING.Models;
+@{
+    // Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Chi tiết người dùng";
+    var getRole = ViewBag.getRole as WEBSITE_TRAVELBOOKING.Models.SysRole;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="dataForm" method="post" action="themMoiTaiKhoan" novalidate>
+        <input type="number" name="Id" value="@Model.Id" hidden />
+
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên đối tác</label>
+                    <input type="text" class="form-control" name="Name" value="@Model.Name" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom02">Email</label>
+                    <input type="email" class="form-control" name="Email" value="@Model.Email" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Địa chỉ</label>
+                    <input type="text" class="form-control" name="Local" value="@Model.Local" readonly>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Mật khẩu</label>
+                    <input type="password" class="form-control" name="Password" placeholder="Mật khẩu" value="@Model.Password" readonly>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaGuest", new { id = Model.Id, area = "Admin" })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa tài khoản
+        </button>
+    }
+</div>

@@ -1,0 +1,247 @@
+@model IEnumerable<WEBSITE_TRAVELBOOKING.Models.SysContact>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Liên Hệ";
+
+    ViewData["Detail"] = true;
+}
+<style>
+    .font-chu {
+    font-weight: bold;
+    }
+
+    .kieu-chu {
+    font-family: Arial;
+    }
+
+    .follow-label {
+        font-weight: 600;
+        font-size: 16px;
+    }
+   .elementor-social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    }
+
+    .info-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        color: #333;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    p:hover .info-icon,
+    a:hover .info-icon {
+        background-color: #007bff; /* màu nền khi hover */
+        color: white; /* màu icon khi hover */
+    }
+
+    .divider {
+        border-bottom: 1px solid #dee2e6;
+        margin: 10px 0;
+    }
+
+    .elementor-social-icon-facebook {
+        background-color: #1877F2;
+    }
+
+    .elementor-social-icon-twitter {
+        background-color: black;
+    }
+
+    .elementor-social-icon-linkedin{
+        background-color: #0077B5;
+    }
+
+    .elementor-social-icon-instagram {
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    }
+
+    .elementor-social-icon:hover {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+</style>
+
+<div id="notification" class="alert text-center center-alert" role="alert"
+     style="display:none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; width: 50%;">
+</div>
+<!-- Page Banner -->
+<div class="bg-img-hero text-center mb-5 mb-lg-8" style="background-image: url('/assets/img/1920x500/img1.jpg');">
+    <div class="container">
+        <div class="row justify-content-center py-xl-4">
+            <!-- Info -->
+            <div class="py-xl-10 py-5">
+                <h1 class="font-size-40 font-size-xs-30 text-white mb-0 kieu-chu font-chu">Liên hệ với chúng tôi</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-no-gutter mb-0 justify-content-center">
+                        <li class="breadcrumb-item font-size-14 kieu-chu"><a class="text-white" href="@Url.Action("Index","TrangChu",new{area = ""})">Trang chủ</a></li>
+                        <li class="breadcrumb-item custom-breadcrumb-item font-size-14 text-white active kieu-chu" aria-current="page">Liên hệ</li>
+                    </ol>
+                </nav>
+            </div>
+            <!-- End Info -->
+        </div>
+    </div>
+</div>
+
+<!-- Form liên hệ và thông tin -->
+<div id="phanHoi" class="container space-bottom-2 space-bottom-lg-3">
+    <div class="row">
+        <!-- Bên trái: Thông tin địa chỉ -->
+        <div class="col-lg-5 col-xl-4 mb-9 mb-lg-0 order-lg-1">
+            @foreach (var local in Model)
+            {
+                <div class="mb-5">
+                    <div class="shadow-soft bg-white rounded-sm p-5 h-100">
+                        <h6 class="font-weight-bold text-gray-3 mb-3 d-flex align-items-center">
+                            <span class="info-icon bg-primary text-white">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span style="font-size: 29px;">@local.Name</span>
+                        </h6>
+
+                        <div class="divider"></div>
+
+                        <p class="text-gray-1 mb-2 d-flex align-items-center">
+                            <span class="info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            @local.Address
+                        </p>
+
+                        <div class="divider"></div>
+
+                        <p class="text-gray-1 mb-2 d-flex align-items-center">
+                            <span class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </span>
+                            @local.Phone
+                        </p>
+
+                        <div class="divider"></div>
+
+                        <p class="text-gray-1 mb-2 d-flex align-items-center">
+                            <span class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            @local.Email
+                        </p>
+
+                        <div class="divider"></div>
+
+                        <a href="https://www.google.com/maps/search/?api=1&query=@(Uri.EscapeDataString(local.Address))"
+                           target="_blank"
+                           class="text-blue-1 d-flex align-items-center mb-3 text-decoration-none">
+                            <span class="info-icon">
+                                <i class="fas fa-map"></i>
+                            </span>
+                            <span class="text-decoration-underline">Xem Trên Bản Đồ</span>
+                        </a>
+
+                        <div class="elementor-widget-container mt-3">
+                            <div class="elementor-social-icons-wrapper d-flex align-items-center gap-3">
+                                <div class="follow-label">Theo dõi chúng tôi:</div>
+                                <span>&nbsp;</span>
+                                <span class="elementor-grid-item">
+                                    <a href="@local.Urlfb"
+                                       class="elementor-icon elementor-social-icon elementor-social-icon-facebook"
+                                       target="_blank">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </span>
+
+                                <span class="elementor-grid-item">
+                                    <a href="@local.Urlinta"
+                                       class="elementor-icon elementor-social-icon elementor-social-icon-instagram"
+                                       target="_blank">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </span>
+
+                                <span class="elementor-grid-item">
+                                    <a href="@local.Urltwi"
+                                       class="elementor-icon elementor-social-icon elementor-social-icon-twitter"
+                                       target="_blank">
+                                        <i class="fab fa-x-twitter"></i>
+                                    </a>
+                                </span>
+
+                                <span class="elementor-grid-item">
+                                    <a href="@local.Urlin"
+                                       class="elementor-icon elementor-social-icon elementor-social-icon-linkedin"
+                                       target="_blank">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Bên phải: Form gửi tin nhắn -->
+        <div class="col-lg-7 col-xl-8 order-lg-2">
+            <div class="pr-lg-6 pr-xl-0">
+                <div class="mb-5">
+                    <h2 class="h3 text-gray-3 mb-1">Gửi Tin Nhắn Cho Chúng Tôi</h2>
+                </div>
+                <form asp-action="LienHeUser" asp-controller="LienHe" method="post" class="js-validate">
+                    <div class="row">
+                        <!-- Họ tên -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">Họ tên</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ tên của bạn" required>
+                            </div>
+                        </div>
+                        <!-- Email -->
+                        <div class="col-sm-6 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="name@email.com" required>
+                            </div>
+                        </div>
+                        <!-- Chủ đề -->
+                        <div class="col-sm-12 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">Chủ đề</label>
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Nhập chủ đề của bạn" required>
+                            </div>
+                        </div>
+                        <!-- Tin nhắn -->
+                        <div class="col-sm-12 mb-4">
+                            <div class="js-form-message">
+                                <label class="form-label">Tin nhắn</label>
+                                <textarea class="form-control" rows="5" id="message" name="message" placeholder="Nhập tin nhắn của bạn" required></textarea>
+                            </div>
+                        </div>
+                        <!-- Nút gửi -->
+                        <div class="col d-flex justify-content-lg-start">
+                            <button type="submit" class="btn btn-primary btn-wide rounded-xs transition-3d-hover">Gửi Tin Nhắn</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

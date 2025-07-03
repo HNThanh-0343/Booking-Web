@@ -1,0 +1,199 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Thông tin đặt phòng của " + Model?.FullNameGuest;
+    ViewBag.RunScript = true;
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var GetAminities = ViewBag.GetAminities as List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom>;
+    var getRoom = ViewBag.getRoom as List<WEBSITE_TRAVELBOOKING.Models.SysRoom>;
+    var ListService = ViewBag.ListService as List<WEBSITE_TRAVELBOOKING.Models.CatRoomService>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+<style>
+    .fake-link {
+        color: #0d6efd;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+        .fake-link:hover {
+            opacity: 0.8;
+        }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div id="NotiBookSuccses"></div>
+        <div class="border p-1 mt-2 mt-lg-0 rounded">
+            <h4 class="header-title m-1 mb-2 text-center">Hóa đơn tạm tính</h4>
+            <div class="table-responsive">
+                <table class="table table-sm table-nowrap table-centered mb-0">
+                    <tbody>
+                        @{
+                            decimal subtotal = 0;
+                            decimal totalAll = 0;
+                            foreach (var itemRoom in getRoom)
+                            {
+                                int nights = (Model.EndDate - Model.StartDate).Days;
+                                decimal tutorialRoom = nights * Convert.ToDecimal(itemRoom.Price ?? 0);
+                                subtotal += tutorialRoom;
+                                <tr>
+                                    <td>
+                                        <p class="m-0 d-inline-block align-middle">
+                                            <span class="text-body fw-semibold">@itemRoom.Name</span>
+                                            <br>
+                                            <small>@nights đêm x @itemRoom.Price?.ToString("N0") VNĐ</small>
+                                        </p>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="text-body fw-semibold">@tutorialRoom.ToString("N0") VNĐ</span>
+                                        <span class="text-body fw-semibold moneyroom" hidden>@tutorialRoom</span>
+                                    </td>
+                                    <td hidden class="money">@tutorialRoom</td>
+                                </tr>
+                            }
+                            if (!string.IsNullOrEmpty(Model.ListItemServices))
+                            {
+                                foreach (var itemService in Common.DeserializeServiceList(Model.ListItemServices) as List<RoomServiceItem>)
+                                {
+                                    var getItem = ListService.FirstOrDefault(m => m.Id == itemService.IdService);
+                                    if (getItem != null)
+                                    {
+                                        decimal tutorialRoom = itemService.Quantity * Convert.ToDecimal(getItem.Price ?? 0);
+                                        subtotal += tutorialRoom;
+                                        <tr>
+                                            <td>
+                                                <p class="m-0 d-inline-block align-middle">
+                                                    <span class="text-body fw-semibold">@getItem.Name</span>
+                                                    <br>
+                                                    <small>@itemService.Quantity x @getItem.Price?.ToString("N0") VNĐ</small>
+                                                </p>
+                                            </td>
+                                            <td class="text-end">
+                                                @tutorialRoom.ToString("N0") VNĐ
+                                            </td>
+                                            <td hidden class="money">@tutorialRoom</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="text-center" id="urlQRCode">
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-nowrap table-centered mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-end">
+                                        <h6 class="m-0">Tạm tính:</h6>
+                                    </td>
+                                    <td class="text-end" id="SubTotalAllBill">
+                                        @subtotal.ToString("N0") VNĐ
+                                    </td>
+                                </tr>
+                                <tr class="text-end">
+                                    <td>
+                                        <h5 class="m-0">Tổng:</h5>
+                                    </td>
+                                    <td class="text-end fw-semibold" id="TotalAllBill">
+                                        @totalAll.ToString("N0") VNĐ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-evenly my-2">
+                        <div class="form-check">
+                            <input type="radio" id="PayOk" name="ConfirmPay" value="1" class="form-check-input">
+                            <label class="form-check-label" for="PayOk">Đã thanh toán</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="NoPay" name="ConfirmPay" value="2" class="form-check-input">
+                            <label class="form-check-label" for="NoPay">Chưa thanh toán</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-url="@Url.Action("ComfirmPay")" onclick="ComfirmPay(this,'@Model.Id')" class="btn bg-success text-white waves-effect text-start prevent-double-click">
+        Xác nhận
+    </button>
+</div>
+<script>
+     getTotalBill();
+     function getTotalBill(){
+         var totalAll = 0;
+         document.querySelectorAll('.money').forEach(el => {
+             var value = parseInt(el.textContent.trim(), 10);
+             if (!isNaN(value)) {
+                 totalAll += value;
+             }
+         });
+          $('#TotalAllBill').text(totalAll.toLocaleString() + ' VNĐ');
+          getIMGQRCode(totalAll);
+     }
+     function getIMGQRCode(totalBill){
+        var qrc= JSON.parse(@Html.Raw(Json.Serialize(ViewBag.ConnentQRCode)));
+
+    var urlIMGQRCode = `https://qr.sepay.vn/img?acc=${qrc.acc}&bank=${qrc.bank}&amount=${totalBill}&des=${qrc.des}`;
+     $('#urlQRCode').empty().append(`<img src='${urlIMGQRCode}'  width="150" />`);
+     }
+     $('#selectVouver').on('click',function(){
+         $('#infoVouver').toggle();
+     })
+     function ApplyVoucher(){
+         var valueVoucher = $('input[name="voucherinput"]').val().trim();
+         if(valueVoucher==""){
+             alert("Bạn chưa nhập mã, vui lòng nhập mã");
+         }
+            $.get('/partner/datphong/getVouver', { voucher: valueVoucher })
+            .done(function (res) {
+                if (!res.success) {
+                    $('.text-danger').text(`${res.message}`);
+                }
+            })
+            .fail(function () {
+                $('.text-danger').text(`Lỗi trong quá trình thực hiện, vui lòng thực hiện lại`);
+            });
+     }
+     function ComfirmPay(btn,IdBooking){
+         var selectedValue = $('input[name="ConfirmPay"]:checked').val();
+         if(typeof selectedValue == 'undefined'){
+             alert("Vui lòng chọn trạng thái thanh toán");
+             return;
+         }
+         $.get($(btn).data('url'), {IdBooking:IdBooking, PaymentMethod: selectedValue },function(res){
+            if(res.success){
+                  $('#NotiBookSuccses').empty().append(`<div class="alert alert-success" role="alert">
+                        <strong> ${res.message} </strong>
+                    </div>`);
+            }else{
+                  $('#NotiBookSuccses').empty().append(`<div class="alert alert-danger" role="alert">
+                        <strong> ${res.message} </strong>
+                    </div>`);
+            }
+               var closeModal = setTimeout(function () {
+                        initFormModal.CloseModalDN('#myModal');
+                        clearTimeout(closeModal);
+                    }, 10000);
+         });
+     }
+</script>

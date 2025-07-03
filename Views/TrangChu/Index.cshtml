@@ -1,0 +1,286 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.CatContry>
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Trang chủ";
+	var categories = ViewBag.Categories as List<WEBSITE_TRAVELBOOKING.Models.CatCategory>;
+	var isFirst = true;
+	var LocalStorages = ViewBag.LocalStorages as List<LocalStorage>;
+	var GetAminitise = ViewBag.GetAminitise as List<CatAminitieseRoom>;// toàn bộ tiện ích
+}
+<style>
+	.imgHotel {
+		width: 100%;
+		height: 220px;
+		object-fit: cover; /* hoặc contain */
+	}
+
+	.ellipsis {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+	}
+
+</style>
+
+<!-- ========== HERO ========== -->
+<div class="hero-block hero-v1 bg-img-hero-bottom text-center z-index-2" style="background-image: url(../../assets/img/1920x800/img2.jpg);">
+	<div class="container space-2 space-top-xl-9">
+		<div class="row justify-content-md-center pb-xl-8">
+			<!-- Info -->
+			<div class="py-8 py-xl-10 pb-5">
+				<h1 class="font-size-60 font-size-xs-30 text-white font-weight-bold">
+					Hãy cùng nhau khám phá thế giới!
+				</h1>
+				<p class="font-size-20 font-weight-normal text-white">Tìm khách sạn, tour du lịch, xe hơi và hoạt động tuyệt vời ở thành phố Huế</p>
+			</div>
+			<!-- End Info -->
+		</div>
+		<div class="mb-lg-n16">
+			<!-- Nav Classic -->
+			@* Load Category Head *@
+			<div id="CateHead"></div>
+
+		</div>
+	</div>
+</div>
+
+<!-- ========== Hiển thị phần xem ks nào được lên đầu ========== -->
+@if (LocalStorages != null && LocalStorages.Any())
+{
+	<div class="destinantion-block destinantion-v1 border-bottom border-color-8">
+		<div class="container space-bottom-1 space-top-lg-3">
+			<div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mt-4">
+				<h2 class="section-title text-black font-size-30  mb-0" style="font-weight: bold">Bạn còn quan tâm đến những chỗ nghỉ này?</h2>
+			</div>
+			<div class="tab-content cardHome">
+				<div class="tab-pane active  fade show">
+					@{
+						<div class="row">
+
+							@foreach (var itemPost in LocalStorages)
+							{
+								var image = Common.GetImagePath(itemPost.Images) == "/AppData/no-image.png" ? "/AppData/BaiViet/BaiVietMacDinh.jpg" : itemPost.Images;
+								<div class="col-6 col-md-6 col-lg-4 col-xl-3 mb-3 mb-md-4 pb-1">
+									<div class="card mb-1 transition-3d-hover shadow-hover-2 tab-card h-100">
+										<div class="position-relative mb-1">
+											<a href="@itemPost.Url" class="d-block">
+												<img class="card-img-top imgHotel" src="@image" alt="img">
+											</a>
+										</div>
+										<div class="card-body pl-2 pr-2 py-0">
+											<div class="starts">
+												<div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+													<div class="green-lighter mr-2">
+														@for (int i = 0; i < 5; i++)
+														{
+															if (i < @itemPost.NumberStar)
+															{
+																<small class="fas fa-star"></small>
+															}
+															else
+															{
+																<small class="far fa-star"></small>
+															}
+														}
+													</div>
+												</div>
+											</div>
+											@{
+												if (itemPost.Name.Length > 40)
+												{
+													<a href="@itemPost.Url" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus text-one_line" data-tooltip="@itemPost.Name">
+														<div class="NameCustom">
+															@itemPost.Name
+														</div>
+													</a>
+												}
+												else
+												{
+													<a href="@itemPost.Url" class="card-title NameHotel text-dark fw-bold titleCard_cus text-one_line  mb-0">
+														@itemPost.Name
+													</a>
+												}
+											}
+											<div class="priceCard">
+												<small class="color_card__Price">Từ:</small>
+												<span class="ViewPrice">
+													@itemPost.Price.ToString("N0") VNĐ
+													@*@(string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", itemPost.Price))*@
+												</span>
+											</div>
+											<div class="d-flex bd-highlight font-size-14 text-gray-1 color_card__Price">
+												<div class="bd-highlight">
+													<i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+												</div>
+
+												@{
+													if (itemPost.Local.Length > 40)
+													{
+														<div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@itemPost.Local">
+															<div class="localCustom text-one_line">
+																@itemPost.Local
+															</div>
+														</div>
+													}
+													else
+													{
+														<div class="localCustom text-one_line">
+															@itemPost.Local
+														</div>
+													}
+												}
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
+<!-- Destinantion v1 -->
+<div class="destinantion-block destinantion-v1 border-bottom border-color-8 ">
+	<div class="container space-bottom-1 @(LocalStorages.Any() ? "space-top-lg-1":"space-top-lg-3" ) diemdenhangdau">
+		<div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mt-4">
+			<h2 class="section-title text-black font-size-30  mb-0" style="font-weight: bold">Điểm đến hàng đầu</h2>
+		</div>
+
+		<!-- Hàng 1: 2 ảnh -->
+		<div class="row mb-1">
+			@foreach (var tp in Model.Take(2))
+			{
+				var anh = Common.GetImagePath(tp.Image);
+				<div class="col-md-6 mb-3 mb-md-4">
+					<a href="@Url.Action("Index","KhachSan",new { area = "", location = tp.Name })" class="d-block text-decoration-none">
+						<div class="min-height-300 bg-img-hero rounded-border p-5 gradient-overlay-half-bg-gradient transition-3d-hover shadow-hover-2 border-0"
+							 style="border-radius: 10px; overflow: hidden; background-image: url(@anh); ">
+							<div class="w-100 d-flex justify-content-between mb-2">
+								<div class="position-relative">
+									<span class="destination text-white font-weight-bold font-size-21 pb-3 mb-3 text-lh-1 d-block">
+										@tp.Name
+										@* <img src="/AppData/Contry/AnhLaCo.jpg" style="block-size:20px;" alt="img" /> *@
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			}
+
+		</div>
+
+		<!-- Hàng 2: 3 ảnh -->
+		<div class="row mb-1">
+			@foreach (var tp in Model.Skip(2).Take(3))
+			{
+				<div class="col-md-4 mb-3 mb-md-4">
+					<a href="@Url.Action("Index","KhachSan",new { area = "", location = tp.Name })" class="d-block text-decoration-none">
+						<div class="min-height-300 bg-img-hero rounded-border p-5 gradient-overlay-half-bg-gradient transition-3d-hover shadow-hover-2 border-0"
+							 style="border-radius: 10px; overflow: hidden; background-image: url(@tp.Image);">
+							<div class="w-100 d-flex justify-content-between mb-2">
+								<div class="position-relative">
+									<span class="destination text-white font-weight-bold font-size-21 pb-3 mb-3 text-lh-1 d-block">
+										@tp.Name
+										@* <img src="/AppData/Contry/AnhLaCo.jpg" style="block-size:20px;" alt="img"></img> *@
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			}
+
+		</div>
+
+	</div>
+</div>
+
+<div class="deals-carousel-block deals-carousel-v1 border-bottom border-color-8" id="loadKM">
+</div>
+
+<!-- End Destinantion v1 -->
+<!-- Tabs v1 -->
+<div class="tabs-block tab-v1" id="loadTrending">
+</div>
+@* <!-- End Tabs v1 -->
+<!-- Banner v1-->
+<div class="banner-block banner-v1 bg-img-hero space-3" style="background-image: url(../../assets/img/1920x500/img1.jpg);">
+	<div class="max-width-650 mx-auto text-center mt-xl-5 mb-xl-2 px-3 px-md-0">
+		<h6 class="text-white font-size-40 mb-1" style="font-weight: bold">Châm ngôn</h6>
+		<p class="text-white font-size-18 font-weight-normal mb-4 pb-1 px-md-3 px-lg-0">
+			Chúng tôi không chỉ đưa bạn đến những vùng đất mới,
+			mà còn giúp bạn tìm thấy những trải nghiệm đáng nhớ,
+			nơi mỗi chuyến đi là một hành trình thay đổi cuộc đời.
+		</p>
+		<a class="btn btn-outline-white border-width-2 rounded-xs min-width-200 font-weight-normal transition-3d-hover" href="@Url.Action("Index","BaiViet",new{area = ""})">Lấy cảm hứng</a>
+	</div>
+</div>
+<!-- End Banner v1-->
+<!-- Icon Block v1 -->
+<div class="icon-block-center icon-center-v1 border-bottom border-color-8">
+	<div class="container text-center space-1">
+		<!-- Title -->
+		<div class="w-md-80 w-lg-50 text-center mx-md-auto pb-1 mt-3">
+			<h2 class="section-title text-black font-size-30" style="font-weight: bold">Tại sao nên chọn chúng tôi</h2>
+		</div>
+		<!-- End Title -->
+		<!-- Features -->
+		<div class="mb-2">
+			<div class="row">
+				<!-- Icon Block -->
+				<div class="col-md-4">
+					<i class="flaticon-price text-primary font-size-80 mb-3"></i>
+					<h5 class="font-size-17 text-dark font-weight-bold mb-2"><a href="#">Giá cả cạnh tranh</a></h5>
+					<p class="text-gray-1 px-xl-2 px-uw-7">Với hơn 500 nhà cung cấp và sức mua của 300 triệu thành viên, mytravel.com có ​​thể giúp bạn tiết kiệm nhiều hơn!</p>
+				</div>
+				<!-- End Icon Block -->
+				<!-- Icon Block -->
+				<div class="col-md-4">
+					<i class="flaticon-medal text-primary font-size-80 mb-3"></i>
+					<h5 class="font-size-17 text-dark font-weight-bold mb-2">
+						<a href="#">
+							Dịch vụ đạt giải thưởng
+						</a>
+					</h5>
+					<p class="text-gray-1 px-xl-2 px-uw-7">Du lịch không phải lo lắng khi biết rằng chúng tôi luôn ở đây khi bạn cần, 24 giờ một ngày</p>
+				</div>
+				<!-- End Icon Block -->
+				<!-- Icon Block -->
+				<div class="col-md-4">
+					<i class="flaticon-global-1 text-primary font-size-80 mb-3"></i>
+					<h5 class="font-size-17 text-dark font-weight-bold mb-2"><a href="#">Phủ sóng toàn cầu</a></h5>
+					<p class="text-gray-1 px-xl-2 px-uw-7">Hơn 1.200.000 khách sạn tại hơn 200 quốc gia và khu vực & các chuyến bay đến hơn 5.000 thành phố</p>
+				</div>
+				<!-- End Icon Block -->
+			</div>
+		</div>
+		<!-- End Features -->
+	</div>
+</div>
+<!-- End Icon Block v1 -->
+<!-- Deal Carousel v1 --> *@
+
+@* <div class="deals-carousel-block deals-carousel-v1 border-bottom border-color-8" >
+    <div id ="loadBlog"></div>
+</div> *@
+<!-- End Deal Carousel v1 -->
+<div class="deals-carousel-block deals-carousel-v1 border-bottom border-color-8" id="loadBlog">
+</div>
+@section scriptsAdd {
+	<script>
+		$("#CateHead").load("/TrangChu/loadCategoryHead");
+		$("#loadKM").load("/TrangChu/loadKM");
+		$("#loadTrending").load("/TrangChu/loadTrending");
+		$("#loadBlog").load("/TrangChu/loadBlog");
+	</script>
+
+}
+
+

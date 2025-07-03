@@ -1,0 +1,1423 @@
+@model WEBSITE_TRAVELBOOKING.Models.SysTour;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using Microsoft.AspNetCore.Http;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Chi tiết Tour";
+    ViewData["Detail"] = true;
+
+    
+    // Xử lý đánh giá có bình luận để hiển thị
+    var reviewsWithComments = new List<dynamic>();
+    if (ViewBag.TourReviews != null)
+    {
+        foreach (var r in ViewBag.TourReviews)
+        {
+            if (!string.IsNullOrEmpty(r.Comment))
+            {
+                reviewsWithComments.Add(r);
+            }
+        }
+    }
+    
+    // Chuyển sang IPagedList để phân trang
+    var pageNumber = ViewBag.ReviewsPage != null ? (int)ViewBag.ReviewsPage : 1;
+    var pageSize = 3; // Số lượng đánh giá mỗi trang
+    var pagedReviews = reviewsWithComments.ToPagedList(pageNumber, pageSize);
+}
+
+<style>
+    body {
+        overflow-x: hidden;
+    }
+    
+    /* Rating star styles */
+    .rating-star {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        opacity: 0.5;
+        margin-right: 5px;
+        font-size: 20px;
+        letter-spacing: 3px;
+    }
+
+    .rating-container {
+        display: inline-block;
+        color: #297cbb;
+    }
+
+    /* Individual stars won't get these styles until JS applies classes */
+    .rating-star.active {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .rating-star.selected {
+        opacity: 1;
+        transform: scale(1.1);
+        font-weight: 900;
+    }
+
+    .flex-center-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    /* FAQ Icon Styles */
+    .faq-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    #basicsAccordion .collapse-link {
+        transition: all 0.3s ease;
+    }
+    
+    #basicsAccordion .card {
+        transition: all 0.3s ease;
+    }
+
+    /* Itinerary Styles */
+    #basicsAccordion1 .card {
+        transition: all 0.3s ease;
+    }
+    
+    #basicsAccordion1 .card-header {
+        border-radius: 0;
+    }
+    
+    #basicsAccordion1 .collapse-link {
+        transition: all 0.3s ease;
+    }
+    
+    #basicsAccordion1 .collapse-link:hover {
+        color: #297cbb;
+    }
+    
+    #basicsAccordion1 .card-body {
+        padding-left: 70px;
+    }
+    
+    #basicsAccordion1 .far.fa-dot-circle {
+        color: #297cbb;
+    }
+    
+    /* Day number badge */
+    .day-badge {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #297cbb;
+        color: white;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    
+    /* Guest Counter Styles */
+    .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-icon__inner {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .max-width-6 {
+        max-width: 3.5rem;
+    }
+    
+    .btn-pulse {
+        animation: pulse-effect 0.3s;
+    }
+    
+    @@keyframes pulse-effect {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>
+
+<div class="mb-4 mb-lg-8">
+    @{
+        var anh = Model.ListImg ?? "/assets/img/no-image.png";
+    }
+    <div class="container-fluid px-0">
+        <div class="main-image-container">
+            <img class="main-tour-image img-fluid d-block mx-auto" src="@anh" alt="@Model.Name">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="position-relative">
+            <div class="position-absolute right-0 mt-md-n11 mt-n9">
+                <div class="flex-horizontal-center">
+
+                    <!-- Gallery Button -->
+                    <a class="js-fancybox btn btn-white transition-3d-hover ml-2 py-2 px-md-5 px-3 shadow-6" href="javascript:;" 
+                       data-src="@(string.IsNullOrEmpty(Model.ListImg) ? "/assets/img/no-image.png" : Model.ListImg.Split(',')[0])" 
+                       data-fancybox="fancyboxGallery6" 
+                       data-caption="@Model.Name - image #01" data-speed="700">
+                        <i class="flaticon-gallery mr-md-2 font-size-18 text-primary"></i><span class="d-none d-md-inline">Gallery</span>
+                    </a>
+
+                    <!-- Hidden Gallery Images -->
+                    @if (!string.IsNullOrEmpty(Model.ListImg))
+                    {
+                        var imagesList = Model.ListImg.Split(',');
+                        for (int i = 1; i < imagesList.Length; i++)
+                        {
+                            <img class="js-fancybox d-none" alt="@Model.Name" 
+                                 data-fancybox="fancyboxGallery6" 
+                                 data-src="@imagesList[i]" 
+                                 data-caption="@Model.Name - image #@(i+1)" data-speed="700">
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container"> 
+    <div class="row">
+        <div class="col-lg-8 col-xl-8">
+            <div class="d-block d-md-flex flex-center-between align-items-start mb-3">
+                <div class="mb-1">
+                    <div class="mb-2 mb-md-0">
+                        <h4 class="font-size-23 font-weight-bold mb-1 mr-3">
+                            @Model.Name 
+                        </h4>
+                    </div>
+                    <div class="d-block d-xl-flex flex-horizontal-center">
+                        <div class="d-block d-md-flex flex-horizontal-center font-size-14 text-gray-1 mb-2 mb-xl-0">
+                            <i class="icon flaticon-placeholder mr-2 font-size-20"></i> @Model.LocalText
+                            <a href="javascript:void(0);" onclick="openMapModal()" class="ml-1 d-block d-md-inline"> - Hiển thị trên bản đồ</a>
+                        </div>
+                        <div class="mr-4 mb-2 mb-md-0 flex-horizontal-center">
+                            <div class="ml-xl-3 font-size-10 letter-spacing-2">
+                                <span class="d-block green-lighter ml-1">
+                                     @for (int i = 0; i < Model.NumStar; i++)
+                                    {
+                                        <small class="fas fa-star"></small>
+                                    }
+                                </span>
+                            </div>
+                            <span class="font-size-14 text-gray-1 ml-2">
+                                <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal mr-1">@Model.Score/5</span>
+                                (@Model.Reviews Reviews)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group list-group-borderless list-group-horizontal custom-social-share">
+                    <li class="list-group-item px-1 py-0">
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" class="height-35 width-35 border rounded border-width-2 flex-content-center dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="flaticon-share font-size-15 text-dark"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right py-2">
+                                <a href="javascript:void(0);" onclick="copyCurrentUrl()" class="dropdown-item">
+                                    <i class="fas fa-copy mr-2"></i> Sao chép đường dẫn
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)" target="_blank" class="dropdown-item">
+                                    <i class="fab fa-facebook-f mr-2"></i> Facebook
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)&text=@Model.Name" target="_blank" class="dropdown-item">
+                                    <i class="fab fa-twitter mr-2"></i> X (Twitter)
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile-only booking button -->
+            <div class="d-lg-none mb-4">
+                <a href="d" class="btn btn-primary btn-block height-60 transition-3d-hover" data-toggle="modal" data-target="#bookingModal">
+                    <i class="flaticon-magnifying-glass mr-2"></i>Đặt ngay
+                </a>
+            </div>
+
+            <div class="py-4 border-top border-bottom mb-4">
+                <ul class="list-group list-group-borderless list-group-horizontal row">
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-alarm text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.Time</div>
+                    </li>
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-social text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.MaxPeople</div>
+                    </li>
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-wifi-signal text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.Wifi</div>
+                    </li>
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-month text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.TimeLine</div>
+                    </li>
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-user-2 text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.MinAge</div>
+                    </li>
+                    <li class="col-md-4 flex-horizontal-center list-group-item text-lh-sm mb-2">
+                        <i class="flaticon-pin text-primary font-size-22 mr-2 d-block"></i>
+                        <div class="ml-1 text-gray-1">@Model.Pickup</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="border-bottom position-relative">
+                <h5 class="font-size-21 font-weight-bold text-dark mb-3">
+                    Tổng quát
+                </h5>
+                @{
+                    var description = Model.Description;
+                    var maxLength = 150; // Hiển thị tối đa 150 ký tự ban đầu
+                    var hasMoreText = description.Length > maxLength;
+                    var shortDescription = hasMoreText ?
+                    description.Substring(0, maxLength) + "..." :
+                    description;
+                }
+                <div class="description-preview text-justify">
+                    @Html.Raw(shortDescription)
+                </div>
+                @if (hasMoreText)
+                {
+                    <div class="description-full text-justify" style="display: none;">
+                        @Html.Raw(description)
+                    </div>
+                    <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
+                       onclick="toggleDescriptionView()">
+                        <span id="description-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                        <span id="description-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                    </a>
+                    <script>
+                        function toggleDescriptionView() {
+                            var preview = document.querySelector('.description-preview');
+                            var full = document.querySelector('.description-full');
+                            var moreBtn = document.getElementById('description-more');
+                            var lessBtn = document.getElementById('description-less');
+
+                            if (full.style.display === 'none' || full.style.display === '') {
+                                preview.style.display = 'none';
+                                full.style.display = 'block';
+                                moreBtn.style.display = 'none';
+                                lessBtn.style.display = 'inline-block';
+                            } else {
+                                preview.style.display = 'block';
+                                full.style.display = 'none';
+                                moreBtn.style.display = 'inline-block';
+                                lessBtn.style.display = 'none';
+                            }
+                        }
+                    </script>
+                }
+                
+            </div>
+            <div class="border-bottom py-4">
+                <h5 class="font-size-21 font-weight-bold text-dark mb-4">
+                    Những gì mong đợi
+                </h5>
+                @{
+                    var expectation = Model.WhattoExpect;
+                    var expectMaxLength = 150; // Hiển thị tối đa 150 ký tự ban đầu
+                    var expectHasMoreText = expectation.Length > expectMaxLength;
+                    var shortExpectation = expectHasMoreText ?
+                    expectation.Substring(0, expectMaxLength) + "..." :
+                    expectation;
+                }
+                <div class="expectation-preview text-justify">
+                    @Html.Raw(shortExpectation)
+                </div>
+                @if (expectHasMoreText)
+                {
+                    <div class="expectation-full text-justify" style="display: none;">
+                        @Html.Raw(expectation)
+                    </div>
+                    <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
+                       onclick="toggleExpectationView()">
+                        <span id="expectation-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                        <span id="expectation-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                    </a>
+                    <script>
+                        function toggleExpectationView() {
+                            var preview = document.querySelector('.expectation-preview');
+                            var full = document.querySelector('.expectation-full');
+                            var moreBtn = document.getElementById('expectation-more');
+                            var lessBtn = document.getElementById('expectation-less');
+
+                            if (full.style.display === 'none' || full.style.display === '') {
+                                preview.style.display = 'none';
+                                full.style.display = 'block';
+                                moreBtn.style.display = 'none';
+                                lessBtn.style.display = 'inline-block';
+                            } else {
+                                preview.style.display = 'block';
+                                full.style.display = 'none';
+                                moreBtn.style.display = 'inline-block';
+                                lessBtn.style.display = 'none';
+                            }
+                        }
+                    </script>
+                }
+            </div>
+            <div class="border-bottom py-4">
+                <h5 class="font-size-21 font-weight-bold text-dark mb-4">
+                    Hành trình
+                </h5>
+                <div id="basicsAccordion1">
+                    @if (ViewBag.TourItinerary != null && ((List<WEBSITE_TRAVELBOOKING.Models.CatItinerary>)ViewBag.TourItinerary).Any())
+                    {
+                        var isFirst = true;
+                        foreach (var day in (List<WEBSITE_TRAVELBOOKING.Models.CatItinerary>)ViewBag.TourItinerary)
+                        {
+                            <!-- Card -->
+                            <div class="card border-0 mb-3">
+                                <div class="card-header border-bottom-0 p-0" id="basicsHeading_@day.Id">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="collapse-link btn btn-link btn-block d-flex align-items-md-center font-weight-bold p-0" 
+                                                data-toggle="collapse" 
+                                                data-target="#basicsCollapse_@day.Id" 
+                                                aria-expanded="@(isFirst ? "true" : "false")" 
+                                                aria-controls="basicsCollapse_@day.Id">
+                                            <div class="text-primary font-size-22 mb-3 mb-md-0 mr-3">
+                                                <i class="far fa-circle"></i>
+                                            </div>
+
+                                            <div class="text-primary flex-shrink-0">Ngày @day.Day <span class="px-2">-</span> </div>
+                                            <h6 class="font-weight-bold text-gray-3 text-left mb-0">@day.Title</h6>
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="basicsCollapse_@day.Id" 
+                                     class="collapse @(isFirst ? "show" : "")" 
+                                     aria-labelledby="basicsHeading_@day.Id" 
+                                     data-parent="#basicsAccordion1">
+                                    <div class="card-body pl-6 pb-0 pt-0">
+                                        <p class="mb-0">@Html.Raw(day.Description)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Card -->
+                            
+                            isFirst = false;
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            Chưa có thông tin hành trình cho tour này.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Map section -->
+            <div class="border-bottom py-4">
+                <h5 id="location-section" class="font-size-21 font-weight-bold text-dark mb-4">
+                    Vị trí trên bản đồ
+                </h5>
+                    <div class="px-2 pt-2">
+                        @if (!string.IsNullOrEmpty(Model.LocalIframe))
+                        {
+                            <div id="mapContainer" class="border rounded mb-4" style="height: 270px; overflow: hidden;">
+                                @if (Model.LocalIframe.Contains("iframe"))
+                                {
+                                    <div class="map-wrapper" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                        @Html.Raw(Model.LocalIframe.Replace("width=\"600\"", "width=\"100%\"").Replace("height=\"450\"", "height=\"100%\"").Replace("style=\"border:0;\"", "style=\"border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;\""))
+            </div>
+                                }
+                                else if (Model.LocalIframe.Contains("/embed?"))
+                                {
+                                    <iframe id="mapIframe" src="@Model.LocalIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                                }
+                                else
+                                {
+                                    <div class="text-center p-3">
+                                        <p class="text-danger">Liên kết bản đồ không hợp lệ. Vui lòng sử dụng liên kết "Chia sẻ" > "Nhúng bản đồ" từ Google Maps.</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="border rounded mb-4 text-center py-4">
+                                <p class="text-muted">Không có thông tin bản đồ</p>
+                                <img class="img-fluid" src="~/assets/images/map.jpg" alt="Map Placeholder" style="max-height: 200px;">
+                            </div>
+                        }
+                    </div>
+            </div>
+            <!-- End Map section -->            
+
+            <!--Faq-->
+            <div class="border-bottom py-4">
+                <h5 class="font-size-21 font-weight-bold text-dark mb-4">
+                    Faq
+                </h5> 
+                <div id="basicsAccordion">
+                    @if (ViewBag.TourFaqs != null && ((List<WEBSITE_TRAVELBOOKING.Models.CatFaq>)ViewBag.TourFaqs).Any())
+                    {
+                        var isFirst = true;
+                        foreach (var faq in (List<WEBSITE_TRAVELBOOKING.Models.CatFaq>)ViewBag.TourFaqs)
+                        {
+                            if (faq.Status == true)
+                            {
+                                <div class="card border-0 mb-4 pb-1">
+                                    <div class="card-header border-bottom-0 p-0" id="faqHeading_@faq.Id">
+                                        <h5 class="mb-0">
+                                            <button type="button" class="collapse-link btn btn-link btn-block d-flex align-items-md-center p-0" 
+                                                    data-toggle="collapse" 
+                                                    data-target="#faqCollapse_@faq.Id" 
+                                                    aria-expanded="@(isFirst ? "true" : "false")" 
+                                                    aria-controls="faqCollapse_@faq.Id">
+                                                <div class="border border-color-8 rounded-xs border-width-2 p-2 mb-3 mb-md-0 mr-4">
+                                                    <i class="fas @(isFirst ? "fa-minus" : "fa-plus") faq-icon" style="width: 16px; text-align: center;"></i>
+                                                </div>
+                                                <h6 class="font-weight-bold text-gray-3 mb-0">@faq.Name</h6>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="faqCollapse_@faq.Id" 
+                                         class="collapse @(isFirst ? "show" : "")" 
+                                         aria-labelledby="faqHeading_@faq.Id" 
+                                         data-parent="#basicsAccordion">
+                                        <div class="card-body pl-10 pl-md-10 pr-md-12 pt-0">
+                                            <p class="mb-0 text-gray-1 text-lh-lg">@Html.Raw(faq.Description)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                isFirst = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            Chưa có thông tin câu hỏi thường gặp.
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- End Faq-->
+
+            <!-- Review System Start -->
+            <div class="container mb-5">
+            <div class="row">
+                <div class="col-12">
+                    <div id="scroll-reviews" class="border-bottom py-4">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-4">
+                            Đánh giá trung bình
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-4 mb-md-0">
+                                <div class="border rounded flex-content-center py-5 border-width-2">
+                                    <div class="text-center">
+                                        <h2 class="font-size-50 font-weight-bold text-primary mb-0 text-lh-sm">
+                                            @Model.Score<span class="font-size-20">/5</span>
+                                        </h2>
+                                        <div class="font-size-25 text-dark mb-3">Xuất sắc</div>
+                                        <div class="text-gray-1">Từ @Model.Reviews đánh giá</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    @{
+                                        string[] categories = { "cleanliness", "facilities", "valueForMoney", "service", "location" };
+                                        string[] categoryLabels = { "Vệ sinh", "Tiện nghi", "Giá trị", "Dịch vụ", "Vị trí" };
+
+                                        for (int i = 0; i < categories.Length; i++)
+                                        {
+                                            var score = ViewBag.CategoryRatings != null ? ViewBag.CategoryRatings[categories[i]] : 0;
+                                            var percent = score * 20; // Convert 5-point scale to percentage
+
+                                            <div class="col-md-6 mb-4">
+                                                <h6 class="font-weight-normal text-gray-1 mb-1">
+                                                    @categoryLabels[i]
+                                                </h6>
+                                                <div class="flex-horizontal-center mr-6">
+                                                    <div class="progress bg-gray-33 rounded-pill w-100" style="height: 7px;">
+                                                        <div class="progress-bar rounded-pill" role="progressbar" style="width: @percent%;" aria-valuenow="@score" aria-valuemin="0" aria-valuemax="5"></div>
+                                                    </div>
+                                                    <div class="ml-3 text-primary font-weight-bold">
+                                                        @score
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="stickyBlockEndPoint"></div>
+
+                    <!--Đánh giá của khách hàng -->
+                    <div id="verified-reviews" class="border-bottom py-4">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-4">
+                            Hiển thị đánh giá của khách đã xác minh
+                        </h5>
+
+                        <div id="reviewsContainer">
+                            @if (pagedReviews.Count > 0)
+                            {
+                                    foreach (var review in pagedReviews)
+                                    {
+                                        <div class="media flex-column flex-md-row align-items-center align-items-md-start mb-4">
+                                            <div class="mr-md-5">
+                                                @{
+                                                    var originalPath = Common.GetImagePath(review.Avatar);
+                                                    var avatarSrc = originalPath == "/AppData/no-image.png"
+                                                    ? "/assets/img/user.png"
+                                                    : originalPath;
+                                                }
+                                                <a class="d-block" href="#">
+                                                    <img class="img-fluid mb-3 mb-md-0 rounded-circle"
+                                                         src="@avatarSrc"
+                                                         alt="@review.Name"
+                                                         style="width: 75px; height: 75px; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='/assets/img/user.png';" />
+                                                </a>
+                                            </div>
+                                            <div class="media-body text-center text-md-left">
+                                                <div class="mb-4">
+                                                    <h6 class="font-weight-bold text-gray-3">
+                                                        <a href="#" class="text-dark">@review.Name</a>
+                                                    </h6>
+                                                    <div class="font-weight-normal font-size-14 text-gray-9 mb-2">@review.Date.ToString("MMMM dd, yyyy 'at' hh:mm tt")</div>
+                                                    <div class="d-flex align-items-center flex-column flex-md-row mb-2">
+                                                        <button type="button" class="btn btn-xs btn-primary rounded-xs font-size-14 py-1 px-2 mr-2 mb-2 mb-md-0">@review.AverageScore /5 </button>
+                                                    </div>
+                                                    <div class="review-comment-container">
+                                                        @{
+                                                            var commentLines = review.Comment.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                                                            var firstLine = commentLines.Length > 0 ? commentLines[0] : review.Comment;
+                                                            var hasMoreLines = commentLines.Length > 1 || (review.Comment.Length > 150);
+
+                                                            // Prepare the first line (limit to 150 chars if it's too long)
+                                                            if (firstLine.Length > 150 && !firstLine.Contains("\n"))
+                                                            {
+                                                                firstLine = firstLine.Substring(0, 150) + "...";
+                                                            }
+                                                        }
+
+                                                        <div class="comment-preview font-weight-bold font-italic text-gray-3 text-justify">
+                                                            @firstLine
+                                                            @if (hasMoreLines)
+                                                            {
+                                                                <span>...</span>
+                                                            }
+                                                        </div>
+                                                        @if (hasMoreLines)
+                                                        {
+                                                            <div class="comment-full font-weight-bold font-italic text-gray-3 text-justify" style="display: none;">
+                                                                @review.Comment
+                                                            </div>
+                                                            <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
+                                                               onclick="toggleComment(this)">
+                                                                <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                                                                <span class="show-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #ddd; margin: 0.1rem 0 1.5rem;"></div>
+                                    }
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Review Form Section -->
+                    <div class="py-4">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-6">
+                            Viết đánh giá
+                        </h5>
+                        <div class="row">
+                            @{
+                                string[] ratingCategories = { "cleanliness", "facilities", "value", "service", "location" };
+                                string[] ratingLabels = { "Vệ sinh", "Tiện nghi", "Giá trị", "Dịch vụ", "Vị trí" };
+
+                                for (int i = 0; i < ratingCategories.Length; i++)
+                                {
+                                    <div class="col-md-4 mb-6">
+                                        <h6 class="font-weight-bold text-dark mb-1">
+                                            @ratingLabels[i]
+                                        </h6>
+                                        <div class="rating-container" data-category="@ratingCategories[i]">
+                                            @for (int j = 1; j <= 5; j++)
+                                            {
+                                                <i class="rating-star far fa-smile" data-value="@j"></i>
+                                            }
+                                            <input type="hidden" name="@(ratingCategories[i])_rating" value="0">
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div id="review-form-container">
+                            <form id="reviewForm" class="js-validate" method="post" novalidate>
+                                <div class="row mb-5 mb-lg-0">
+                                    <!-- Hidden Tour ID -->
+                                    <input type="hidden" name="tourId" value="@Model.Id" />
+
+                                    <!-- Input -->
+                                    <div class="col-sm-6 mb-5">
+                                        <div class="js-form-message">
+                                            <input type="text" class="form-control" name="name" placeholder="Họ tên" data-error-class="u-has-error" data-msg="Vui lòng nhập họ tên." data-success-class="u-has-success">
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <!-- Input -->
+                                    <div class="col-sm-6 mb-5">
+                                        <div class="js-form-message">
+                                            <input type="email" class="form-control" name="email" placeholder="Email" data-msg="Vui lòng nhập email hợp lệ." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <div class="col-sm-12 mb-5">
+                                        <div class="js-form-message">
+                                            <div class="input-group">
+                                                <textarea class="form-control" rows="6" cols="77" name="comment" placeholder="Nội dung đánh giá" aria-label="Nhập nội dung đánh giá của bạn..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <div class="col d-flex justify-content-center justify-content-lg-start">
+                                        <button type="submit" id="submitReview" class="btn rounded-xs bg-blue-dark-1 text-white p-2 height-51 width-190 transition-3d-hover">Gửi đánh giá</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="review-message" class="alert" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Right Column form booking -->
+        <div class="col-lg-4 col-xl-3">
+            <div class="mb-4 d-none d-lg-block">
+                <div class="border border-color-7 rounded mb-5">
+                    <div class="border-bottom">
+                        <div class="p-4">
+                            <span class="font-size-14">Giá từ</span>
+                            <span class="font-size-24 text-gray-6 font-weight-bold ml-1">
+                                @if (Model.Price > 0)
+                                {
+                                    @(((decimal)Model.Price).ToString("N0")) <span>VNĐ</span>
+                                }
+                                else
+                                {
+                                    <span>Liên hệ</span>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <!-- Booking form content -->
+                        <span class="d-block text-gray-1 font-weight-normal mb-0 text-left">Ngày</span>
+                        <div class="mb-4">
+                            <div class="border-bottom border-width-2 border-color-1">
+                                <div id="datepickerWrapperPick" class="u-datepicker input-group">
+                                    <input class="js-flatpickr w-auto height-40 font-size-16 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0" type="text" placeholder="Chọn ngày" data-date-format="m/d/Y">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-transparent border-0 font-size-16">
+                                            <i class="flaticon-calendar text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guests Counter Section - Adults -->
+                        <span class="d-block text-gray-1 font-weight-normal mb-2 text-left">Người lớn</span>
+                        <div class="mb-4">
+                            <div class="border-bottom border-width-2 border-color-1 pb-1">
+                                <div class="js-quantity flex-center-between mb-1 text-dark font-weight-bold">
+                                    <span class="d-block">Tuổi 18+</span>
+                                    <div class="d-flex align-items-center">
+                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, false, 'adultCount')">
+                                            <small class="fas fa-minus btn-icon__inner"></small>
+                                        </a>
+                                        <input id="adultCount" name="adults" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center mx-2" type="text" value="2">
+                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, true, 'adultCount')">
+                                            <small class="fas fa-plus btn-icon__inner"></small>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guests Counter Section - Children -->
+                        <span class="d-block text-gray-1 font-weight-normal mb-2 text-left">Trẻ em</span>
+                        <div class="mb-4">
+                            <div class="border-bottom border-width-2 border-color-1 pb-1">
+                                <div class="js-quantity flex-center-between mb-1 text-dark font-weight-bold">
+                                    <span class="d-block">Tuổi 6-17</span>
+                                    <div class="d-flex align-items-center">
+                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, false, 'childCount')">
+                                            <small class="fas fa-minus btn-icon__inner"></small>
+                                        </a>
+                                        <input id="childCount" name="children" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center mx-2" type="text" value="1">
+                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, true, 'childCount')">
+                                            <small class="fas fa-plus btn-icon__inner"></small>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guests Counter Section - Infants -->
+                        <span class="d-block text-gray-1 font-weight-normal mb-2 text-left">Trẻ nhỏ</span>
+                        <div class="mb-4">
+                            <div class="border-bottom border-width-2 border-color-1 pb-1">
+                                <div class="js-quantity flex-center-between mb-1 text-dark font-weight-bold">
+                                    <span class="d-block">Tuổi 0-5</span>
+                                    <div class="d-flex align-items-center">
+                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, false, 'infantCount')">
+                                            <small class="fas fa-minus btn-icon__inner"></small>
+                                        </a>
+                                        <input id="infantCount" name="infants" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center mx-2" type="text" value="0">
+                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, true, 'infantCount')">
+                                            <small class="fas fa-plus btn-icon__inner"></small>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="../tour/tour-booking.html" class="btn btn-primary d-flex align-items-center justify-content-center height-60 w-100 mb-xl-0 mb-lg-1 transition-3d-hover font-weight-bold">Đặt ngay</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-color-7 rounded p-4 mb-5">
+                    <h6 class="font-size-17 font-weight-bold text-gray-3 mx-1 mb-3 pb-1">Tại Sao Nên Book Với Chúng Tôi?</h6>
+                    @if (ViewBag.WhyBookWithUs != null && ((List<WEBSITE_TRAVELBOOKING.Models.CatWhyBookWithU>)ViewBag.WhyBookWithUs).Any())
+                    {
+                        foreach (var item in (List<WEBSITE_TRAVELBOOKING.Models.CatWhyBookWithU>)ViewBag.WhyBookWithUs)
+                        {
+                            if (item.Status == true)
+                            {
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="@item.Icon font-size-25 text-primary mr-3 pr-1"></i>
+                                    <h6 class="mb-0 font-size-14 text-gray-1">
+                                        <a>@item.Name</a>
+                                    </h6>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!--End Right column-->
+    </div>
+    
+</div>
+
+<!--Booking form Modal-->
+<div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Đặt Tour</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Chứa form booking của bạn ở đây -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Vị trí khách sạn @Model.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div id="mapModalContainer" style="height: 75vh; width: 100%;">
+                    @if (!string.IsNullOrEmpty(Model.LocalIframe))
+                    {
+                        @if (Model.LocalIframe.Contains("iframe"))
+                        {
+                            <div class="map-wrapper" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                @Html.Raw(Model.LocalIframe.Replace("width=\"600\"", "width=\"100%\"").Replace("height=\"450\"", "height=\"100%\"").Replace("style=\"border:0;\"", "style=\"border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;\""))
+                            </div>
+                        }
+                        else if (Model.LocalIframe.Contains("/embed?"))
+                        {
+                            <iframe id="mapModalIframe" src="@Model.LocalIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                        }
+                        else
+                        {
+                            <div class="text-center p-3">
+                                <p class="text-danger">Liên kết bản đồ không hợp lệ. Vui lòng sử dụng liên kết "Chia sẻ" > "Nhúng bản đồ" từ Google Maps.</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">Không có thông tin bản đồ</p>
+                            <img class="img-fluid" src="~/assets/images/map.jpg" alt="Map Placeholder" style="max-height: 200px;">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Map Modal -->
+
+
+<!-- Review System End -->
+
+<!--Tour liên quan-->
+<div class="product-card-block product-card-v3">
+    <div class="space-1">
+        <div class="w-md-80 w-lg-50 text-center mx-md-auto pb-4">
+            <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Tour liên quan</h2>
+        </div>
+
+        <div class="js-slick-carousel u-slick u-slick--equal-height u-slick--gutters-3"
+             data-slides-show="4" data-slides-scroll="1"
+             data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic v1 u-slick__arrow-classic--v1 u-slick__arrow-centered--y rounded-circle"
+             data-arrow-left-classes="fas fa-chevron-left u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left"
+             data-arrow-right-classes="fas fa-chevron-right u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right"
+             data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
+             data-responsive='[{
+                "breakpoint": 1200,
+                "settings": {
+                    "slidesToShow": 3
+                }
+            }, {
+                "breakpoint": 992,
+                "settings": {
+                    "slidesToShow": 2
+                }
+            }, {
+                "breakpoint": 768,
+                "settings": {
+                    "slidesToShow": 1
+                }
+            }]'>
+            
+            @if (ViewBag.RelatedTours != null && ((List<WEBSITE_TRAVELBOOKING.Models.SysTour>)ViewBag.RelatedTours).Any())
+            {
+                foreach (var tour in (List<WEBSITE_TRAVELBOOKING.Models.SysTour>)ViewBag.RelatedTours)
+                {
+                    <div class="js-slide py-3">
+                        <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2">
+                            <div class="position-relative">
+
+                                <a href="@Url.Action("dsTour", "Tour", new { nametour = @Common.GenerateSlug(tour.Name), t = tour.Id })" class="d-block gradient-overlay-half-bg-gradient-v5">
+                                    <img class="card-img-top" src="@(!string.IsNullOrEmpty(tour.ListImg) ? tour.ListImg.Split(",")[0] : "/assets/img/no-image.png")" alt="@tour.Name" style="height: 180px; object-fit: cover;">
+                                </a>
+
+                                <div class="position-absolute bottom-0 left-0 right-0">
+                                    <div class="px-4 pb-3">
+                                        <a href="@Url.Action("dsTour", "Tour", new { nametour = @Common.GenerateSlug(tour.Name), t = tour.Id })" class="d-block">
+                                            <div class="d-flex align-items-center font-size-14 text-white">
+                                                <i class="icon flaticon-placeholder mr-2 font-size-20"></i> @tour.LocalText
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body px-4 pt-2 pb-3">
+                                <div class="mb-2">
+                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
+                                        <div class="green-lighter">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (i < tour.NumStar)
+                                                {
+                                                    <small class="fas fa-star"></small>
+                                                }
+                                                else
+                                                {
+                                                    <small class="far fa-star"></small>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="@Url.Action("dsTour", "Tour", new { nametour = @Common.GenerateSlug(tour.Name), t = tour.Id })" class="card-title font-size-17 font-weight-medium text-dark">@tour.Name</a>
+                                
+                                <div class="mt-2 mb-3">
+                                    <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal">@tour.Score/5</span>
+                                    <span class="font-size-14 text-gray-1 ml-2">(@tour.Reviews Đánh giá)</span>
+                                </div>
+
+                                <div class="mb-0">
+                                    <span class="mr-1 font-size-14 text-gray-1">Chỉ từ</span>
+                                    @if (tour.Price.HasValue && tour.Price.Value > 0)
+                                    {
+                                        <span class="font-weight-bold">@tour.Price.Value.ToString("N0")</span>
+                                        <span class="font-size-14 text-gray-1"> VNĐ</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="font-weight-bold">Liên hệ</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Không có tour liên quan nào.</p>
+            }
+        </div>
+    </div>
+</div>
+<!-- End tour lien quan -->
+
+<script>
+    function openMapModal() {
+        $('#mapModal').modal('show');
+    }
+</script>
+
+<script>
+    // Tour Review System JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Khởi tạo hệ thống đánh giá sao
+        initRatingSystem();
+        // Khởi tạo form đánh giá
+        initReviewForm();
+    });
+
+    // Hàm mở rộng/thu gọn nội dung trong đánh giá
+    function toggleComment(element) {
+        var container = element.closest('.review-comment-container');
+        var preview = container.querySelector('.comment-preview');
+        var full = container.querySelector('.comment-full');
+        var showMore = element.querySelector('.show-more');
+        var showLess = element.querySelector('.show-less');
+        
+        if (full.style.display === 'none' || full.style.display === '') {
+            // Expand comment
+            preview.style.display = 'none';
+            full.style.display = 'block';
+            showMore.style.display = 'none';
+            showLess.style.display = 'inline-block';
+        } else {
+            // Collapse comment
+            preview.style.display = 'block';
+            full.style.display = 'none';
+            showMore.style.display = 'inline-block';
+            showLess.style.display = 'none';
+        }
+    }
+
+    // Khởi tạo hệ thống đánh giá sao
+    function initRatingSystem() {
+        document.querySelectorAll('.rating-container').forEach(function(container) {
+            const stars = container.querySelectorAll('.rating-star');
+            const input = container.querySelector('input');
+
+            // Add hover events for all stars
+            stars.forEach(function(star) {
+                star.addEventListener('mouseenter', function() {
+                    highlightStars(container, parseInt(this.dataset.value), 'active');
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    stars.forEach(s => s.classList.remove('active'));
+                    const selectedValue = parseInt(input.value) || 0;
+                    if (selectedValue > 0) {
+                        highlightStars(container, selectedValue, 'selected');
+                    }
+                });
+
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    stars.forEach(s => s.classList.remove('selected'));
+                    highlightStars(container, value, 'selected');
+                    input.value = value;
+                    console.log(`${container.dataset.category} rating: ${value}`);
+                });
+            });
+
+            // Initialize with saved value if exists
+            const savedValue = parseInt(input.value) || 0;
+            if (savedValue > 0) {
+                highlightStars(container, savedValue, 'selected');
+            }
+        });
+    }
+
+    // Hàm hỗ trợ tô sáng các sao
+    function highlightStars(container, value, className) {
+        const stars = container.querySelectorAll('.rating-star');
+        stars.forEach(function(star) {
+            if (parseInt(star.dataset.value) <= value) {
+                star.classList.add(className);
+            } else {
+                star.classList.remove(className);
+            }
+        });
+    }
+
+    // Khởi tạo xử lý gửi form đánh giá
+    function initReviewForm() {
+        const form = document.getElementById('reviewForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkLoginStatus(submitReviewForm);
+            });
+        }
+    }
+
+    // Kiểm tra trạng thái đăng nhập
+    function checkLoginStatus(callback) {
+        $.ajax({
+            url: '/Tour/CheckLogin',
+            type: 'POST',
+            success: function(response) {
+                if (response.isLoggedIn) {
+                    callback();
+                } else {
+                    showMessage('Vui lòng đăng nhập để đánh giá', 'danger');
+                }
+            },
+            error: function() {
+                showMessage('Không thể kiểm tra trạng thái đăng nhập', 'danger');
+            }
+        });
+    }
+
+    // Gửi form đánh giá sau khi đã kiểm tra hợp lệ
+    function submitReviewForm() {
+        // Lấy tất cả đánh giá và kiểm tra
+        const ratingCategories = ['cleanliness', 'facilities', 'value', 'service', 'location'];
+        const ratings = {};
+        let allRatingsProvided = true;
+
+        ratingCategories.forEach(category => {
+            const value = parseInt(document.querySelector(`[name="${category}_rating"]`).value);
+            ratings[category] = value;
+            if (value === 0) allRatingsProvided = false;
+        });
+
+        if (!allRatingsProvided) {
+            showMessage('Vui lòng đánh giá đầy đủ các tiêu chí', 'danger');
+            return;
+        }
+
+        // Lấy dữ liệu form
+        const form = document.getElementById('reviewForm');
+        const formData = {
+            tourId: document.querySelector('[name="tourId"]').value,
+            name: document.querySelector('[name="name"]').value,
+            email: document.querySelector('[name="email"]').value,
+            comment: document.querySelector('[name="comment"]').value,
+            cleanliness: ratings.cleanliness,
+            facilities: ratings.facilities,
+            valueForMoney: ratings.value,
+            service: ratings.service,
+            location: ratings.location
+        };
+
+        // Kiểm tra các trường bắt buộc
+        if (!formData.name || !formData.email) {
+            showMessage('Vui lòng điền đầy đủ tên và email', 'danger');
+            return;
+        }
+
+        // Gửi đánh giá qua AJAX
+        $.ajax({
+            url: '/Tour/SubmitReview',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    showMessage(response.message, 'success');
+                    resetForm(form);
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showMessage(response.message, 'danger');
+                }
+            },
+            error: function() {
+                showMessage('Đã xảy ra lỗi khi gửi đánh giá. Vui lòng thử lại sau.', 'danger');
+            }
+        });
+    }
+
+    // Reset form và đánh giá sau khi gửi thành công
+    function resetForm(form) {
+        form.reset();
+        document.querySelectorAll('.rating-container').forEach(container => {
+            container.querySelectorAll('.rating-star').forEach(star => {
+                star.classList.remove('selected', 'active');
+            });
+            container.querySelector('input').value = 0;
+        });
+    }
+
+    // Hiển thị thông báo cho người dùng
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('review-message');
+        messageDiv.className = 'alert alert-' + type + ' mt-3';
+        messageDiv.textContent = message;
+        messageDiv.style.display = 'block';
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+</script>
+
+<script>
+    // Initialize flatpickr datepicker
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if flatpickr is loaded
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr('.js-flatpickr', {
+                dateFormat: 'm/d/Y',
+                minDate: 'today',
+                disableMobile: true,
+                static: true
+            });
+        } else {
+            console.error('Flatpickr library not loaded. Please make sure it is included in your layout.');
+            
+            // Fallback to load flatpickr if not already loaded
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+            document.head.appendChild(link);
+            
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
+            script.onload = function() {
+                flatpickr('.js-flatpickr', {
+                    dateFormat: 'm/d/Y',
+                    minDate: 'today',
+                    disableMobile: true,
+                    static: true
+                });
+            };
+            document.body.appendChild(script);
+        }
+        
+        // Initialize the guest counter buttons
+        initGuestCounters();
+    });
+    
+    // Function to update guest counters
+    function updateCounter(element, isIncrement, counterId) {
+        var input = document.getElementById(counterId);
+        var currentValue = parseInt(input.value) || 0;
+        
+        if (isIncrement) {
+            input.value = currentValue + 1;
+        } else if (currentValue > 0) { // Allow going down to 0 for infants
+            input.value = currentValue - 1;
+        }
+        
+        // Add animation effect for better user feedback
+        element.classList.add('btn-pulse');
+        setTimeout(function() {
+            element.classList.remove('btn-pulse');
+        }, 300);
+    }
+    
+    // Initialize all guest counters
+    function initGuestCounters() {
+        // Add click events to all plus/minus buttons if not using the updateCounter onclick method
+        document.querySelectorAll('.js-minus, .js-plus').forEach(function(button) {
+            if (!button.hasAttribute('onclick')) {
+                button.addEventListener('click', function() {
+                    var isPlus = this.classList.contains('js-plus');
+                    var input = this.parentNode.querySelector('.js-result');
+                    var currentValue = parseInt(input.value) || 0;
+                    
+                    if (isPlus) {
+                        input.value = currentValue + 1;
+                    } else if (currentValue > 0) {
+                        input.value = currentValue - 1;
+                    }
+                });
+            }
+        });
+    }
+
+    // Smooth scrolling for anchor links
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Calculate the position to scroll to
+                    const headerOffset = 120; // Increased offset to account for fixed header and provide better visibility
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    // Scroll to the target position
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add event listeners for FAQ accordions
+        initFaqAccordion();
+    });
+    
+    // Initialize FAQ accordion functionality
+    function initFaqAccordion() {
+        // Get all FAQ accordion buttons
+        const faqButtons = document.querySelectorAll('#basicsAccordion .collapse-link');
+        
+        faqButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Toggle the plus/minus icons when a button is clicked
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                const icon = this.querySelector('.faq-icon');
+                
+                if (isExpanded) {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                } else {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                }
+                
+                // Reset all other buttons to collapsed state
+                faqButtons.forEach(otherButton => {
+                    if (otherButton !== button && otherButton.getAttribute('aria-expanded') === 'true') {
+                        otherButton.setAttribute('aria-expanded', 'false');
+                        const otherIcon = otherButton.querySelector('.faq-icon');
+                        otherIcon.classList.remove('fa-minus');
+                        otherIcon.classList.add('fa-plus');
+                    }
+                });
+            });
+        });
+    }
+
+    // Initialize the itinerary accordion functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add event listeners for itinerary accordions
+        initItineraryAccordion();
+    });
+    
+    // Initialize itinerary accordion functionality
+    function initItineraryAccordion() {
+        // Get all itinerary accordion buttons
+        const itineraryButtons = document.querySelectorAll('#basicsAccordion1 .collapse-link');
+        
+        itineraryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Toggle the icon when a button is clicked
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                const icon = this.querySelector('.far.fa-circle');
+                
+                if (isExpanded) {
+                    icon.classList.remove('fa-dot-circle');
+                    icon.classList.add('fa-circle');
+                } else {
+                    icon.classList.remove('fa-circle');
+                    icon.classList.add('fa-dot-circle');
+                }
+                
+                // Reset all other buttons to collapsed state
+                itineraryButtons.forEach(otherButton => {
+                    if (otherButton !== button && otherButton.getAttribute('aria-expanded') === 'true') {
+                        otherButton.setAttribute('aria-expanded', 'false');
+                        const otherIcon = otherButton.querySelector('.far');
+                        otherIcon.classList.remove('fa-dot-circle');
+                        otherIcon.classList.add('fa-circle');
+                    }
+                });
+            });
+        });
+        
+        // Set the first itinerary day as active on page load
+        const firstButton = itineraryButtons[0];
+        if (firstButton) {
+            const firstIcon = firstButton.querySelector('.far.fa-circle');
+            if (firstIcon) {
+                firstIcon.classList.remove('fa-circle');
+                firstIcon.classList.add('fa-dot-circle');
+            }
+        }
+    }
+</script>
+
+<!-- Xử lý sao chép đường dẫn -->
+<script>
+    function copyCurrentUrl() {
+        var currentUrl = window.location.href;
+        var tempInput = document.createElement('input');
+        tempInput.value = currentUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+    
+        // Optional: Show a temporary tooltip or message
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success position-fixed';
+        alertDiv.style.bottom = '20px';
+        alertDiv.style.right = '20px';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.padding = '10px 15px';
+        alertDiv.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        alertDiv.textContent = 'Đã sao chép đường dẫn!';
+        document.body.appendChild(alertDiv);
+    
+        setTimeout(function() {
+            alertDiv.style.opacity = '0';
+            alertDiv.style.transition = 'opacity 0.5s';
+            setTimeout(function() {
+                document.body.removeChild(alertDiv);
+            }, 500);
+        }, 2000);
+    }
+</script>

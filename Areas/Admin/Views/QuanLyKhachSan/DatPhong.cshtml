@@ -1,0 +1,79 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Danh sách đặt phòng";
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewData["TitleAdmin"]</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div>
+                        <div class="row formsearch">
+                            <div class="col-2">
+                                <div class="dataTables_filter">
+                                    <input type="search" class="form-control" id="" name="searchValue" placeholder="Tìm kiếm..." aria-controls="products-datatable">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="dataTables_filter">
+                                    <input id="checkout" name="searchDate" class="form-control" placeholder="dd/MM/yyyy" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button data-url="@Url.Action("childIndexDatPhong", "QuanLyKhachSan", new { area = "Admin" })" type="button" class="btn btn-info searchform">
+                                    <i class="mdi mdi-magnify me-1"></i> <span>Tìm kiếm</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="alertJs"></div>
+                        <div class="row py-2">
+                            <div class="col-sm-12" id="DataTable">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#DataTable').load('/Admin/QuanLyKhachSan/childIndexDatPhong');
+    });
+</script>
+<script>
+    flatpickr("#checkin", {
+        enableTime: false,
+        time_24hr: false,
+        dateFormat: "d/m/Y",
+        minDate: "today",
+        locale: "vn",
+        onChange: function (selectedDates, dateStr, instance) {
+            if (selectedDates.length > 0) {
+                checkout.set('minDate', selectedDates[0]);
+            }
+        }
+    });
+
+    const checkout = flatpickr("#checkout", {
+        enableTime: false,
+        time_24hr: false,
+        dateFormat: "d/m/Y",
+        minDate: "today",
+        locale: "vn"
+    });
+</script>

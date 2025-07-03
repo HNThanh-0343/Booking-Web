@@ -1,0 +1,242 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysBlog>
+@using X.PagedList.Mvc.Core.Common 
+@using X.PagedList.Mvc.Core;
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Bài viết";
+	ViewData["Detail"] = true;
+	var blogCounts = ViewBag.blogCounts as List<WEBSITE_TRAVELBOOKING.Models.CountryHotelCountViewModel>;
+}
+<style>
+	.font-chu {
+	font-weight: bold;
+	}
+
+	.kieu-chu {
+	font-family: Arial;
+	}
+
+	.btn-active {
+	background-color: aqua !important;
+	}
+
+</style>
+<div class="bg-img-hero text-center mb-5 mb-lg-8" style="background-image: url(../../AppData/AnhBia.jpg);">
+	<div class="container">
+		<div class="row justify-content-center py-xl-4">
+			<!-- Info -->
+			<div class="py-xl-10 py-5">
+				<h1 class="font-size-40 font-size-xs-30 text-white mb-0 kieu-chu font-chu">Bài viết</h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb breadcrumb-no-gutter mb-0">
+						<li class="breadcrumb-item font-size-14 kieu-chu"><a class="text-white" href="@Url.Action("Index","TrangChu",new{area = ""})">Trang chủ</a></li>
+						<li class="breadcrumb-item custom-breadcrumb-item font-size-14 text-white active kieu-chu" aria-current="page">Bài viết</li>
+					</ol>
+				</nav>
+			</div>
+			<!-- End Info -->
+		</div>
+	</div>
+</div>
+<!-- End Hero Section -->
+<div class="container">
+	<div class="row">
+		<div id="loadBaiViet" class="col-lg-8 col-xl-9">
+			@Html.Partial("loadBaiViet", Model)
+		</div>
+		<div class="col-lg-4 col-xl-3">
+			<form class="mb-5" onsubmit="event.preventDefault(); getSearch();">
+				<div class="input-group border border-secondary rounded" style="max-width: 500px;">
+					<input type="text" name="searchString" class="form-control"
+					placeholder="Tìm kiếm bài viết..." value="@ViewBag.CurrentFilter"
+					style="font-size: 15px; padding: 10px 15px;" />
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary" style="padding: 10px 15px;">
+							<i class="fas fa-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+			<!-- List -->@if (!blogCounts.Any() || blogCounts == null)
+			{
+
+			}
+			else
+			{
+				<ul id="sidebarNav" class="list-unstyled border rounded shadow-sm mb-5 bg-white">
+					<div id="cityCategoryAccordion" class="accordion rounded-0 border-top">
+						<div class="border-0">
+							<div class="card-collapse" id="cityCategoryHeadingOne">
+								<h3 class="mb-0">
+									<button type="button" class="btn btn-link btn-block card-btn py-3 px-4 text-lh-1" data-toggle="collapse" data-target="#cityCategoryOne" aria-expanded="true" aria-controls="cityCategoryOne">
+										<span class="row align-items-center">
+											<span class="col-9 kieu-chu font-chu">
+												<span style="font-weight: bold; font-size: 20px; color: #000;">
+													Loại bài viết
+												</span>
+											</span>
+											<span class="col-3 text-right">
+												<span class="card-btn-arrow">
+													<i class="fas fa-chevron-down small"></i>
+												</span>
+											</span>
+										</span>
+									</button>
+								</h3>
+							</div>
+							<div id="cityCategoryOne" class="collapse show" aria-labelledby="cityCategoryHeadingOne" data-parent="#cityCategoryAccordion">
+								<div class="card-body pt-0 mt-2 px-4 pb-3">
+									<ul class="list-unstyled kieu-chu">
+										@{
+											// <li class="list-item mb-2">
+											// 	<a class="font-weight-medium font-size-17 text-dark hover-effect d-block px-3 py-2 rounded"
+											// 	   href="javascript:void(0);"
+											// 	   onclick="filterByCategory(null)">
+											// 		Tất cả (@ViewBag.blogTotal)
+											// 	</a>
+											// </li>
+											foreach (var types in blogCounts)
+											{
+												<li class="list-item mb-2">
+													<a class="font-weight-medium font-size-17 text-dark hover-effect d-block px-3 py-2 rounded"
+													href="javascript:void(0);"
+													data-id="@types.Id"
+													onclick="filterByCategory(@types.Id)">
+														@types.Name (@types.Count)
+													</a>
+
+												</li>
+											}
+										}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ul>
+			}
+
+			<!-- End List -->
+			@{
+				var tags = ViewBag.AllTags as List<string>;
+			
+			if (!tags.Any() || tags == null)
+			{
+
+			}
+			else
+			{
+				<div class="border border-color-7 rounded">
+					<div id="tagMenu" class="accordion rounded-0 border-top">
+						<div class="border-0">
+							<div class="card-collapse" id="tagHeading">
+								<h3 class="mb-0">
+									<button type="button" class="btn btn-link btn-block card-btn py-3 px-4 text-lh-1" data-toggle="collapse" data-target="#tagOn" aria-expanded="true" aria-controls="tagOn">
+										<span class="row align-items-center">
+											<span class="col-9 kieu-chu font-chu">
+												<span style="font-weight: bold; font-size: 20px; color: #000;">
+													Thẻ bài viết
+												</span>
+											</span>
+											<span class="col-3 text-right">
+												<span class="card-btn-arrow">
+													<i class="fas fa-chevron-down small"></i>
+												</span>
+											</span>
+										</span>
+									</button>
+								</h3>
+							</div>
+							<div id="tagOn" class="collapse show" aria-labelledby="tagHeading" data-parent="#tagMenu">
+								<div class="card-body pt-0 mt-2 px-4 pb-3">
+									<div class="d-flex flex-wrap">
+										@if (tags != null)
+										{
+											foreach (var tag in tags)
+											{
+												<a class=" d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-xs transition-3d-hover font-size-14 text-gray-1 height-35 px-3 mr-2 mb-2 kieu-chu"
+												   href="javascript:void(0);" onclick="filterByTag('@tag')">
+													@tag
+												</a>
+											}
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+			}
+			</div>
+		</div>
+	</div>
+	<div class="border border-color-8"></div>
+@section scriptsAdd {
+	<script>
+		$("#loadBaiViet").load("/BaiViet/loadBaiViet");
+			$(document).on("click", ".pagination a", function (e) {
+				e.preventDefault();
+				const url = $(this).attr("href");
+
+				if (url) {
+						$("#loadBaiViet").load(url);
+				}
+			});
+		let currentCategory = null;
+		let currentTag = null;
+
+		$("input[name='searchString']").on("keydown", function (e) {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				getSearch();
+			}
+		});
+
+		function filterByCategory(categoryId) {
+		if (currentCategory === categoryId) {
+			currentCategory = null;
+						$("#cityCategoryOne .list-item a").removeClass("btn btn-secondary");
+		} else {
+			currentCategory = categoryId;
+			currentTag = null;
+						$("#cityCategoryOne .list-item a").removeClass("btn btn-secondary");
+						$(`#cityCategoryOne .list-item a[data-id='${categoryId}']`).addClass("btn btn-secondary");
+		}
+
+		getSearch();
+	}
+
+		function filterByTag(tag) {
+		if (currentTag === tag) {
+			currentTag = null;
+						$("#tagOn .btn").removeClass("btn-secondary");
+		} else {
+			currentTag = tag;
+			currentCategory = null;
+
+						$("#tagOn .btn").removeClass("btn-secondary");
+
+			$("#tagOn .btn").filter(function () {
+				return $(this).text().trim() === tag.trim();
+						}).addClass("btn-secondary");
+		}
+
+		getSearch();
+	}
+
+		function getSearch() {
+				var searchValue = $("[name='searchString']").val();
+				var getCate = currentCategory;
+				var getTag = currentTag;
+
+			$("#loadBaiViet").load("/BaiViet/loadBaiViet",{
+				searchString: searchValue,
+				idLoaiBaiViet:getCate,
+				tag:getTag,
+			}); // chỉ load lại vùng nội dung blog
+		}
+	</script>
+}
+

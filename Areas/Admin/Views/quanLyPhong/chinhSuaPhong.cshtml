@@ -1,0 +1,443 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysRoom;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models;
+@{
+    ViewData["TitleAdmin"] = "Chỉnh sửa phòng";
+    var getAccount = Account.GetAccount();
+    var typeRoom = ViewBag.CatTypeRoom as List<WEBSITE_TRAVELBOOKING.Models.CatTypeRoom>;
+    var TienNghi = ViewBag.TienNghi as List<CatAminitieseRoom>;
+    var typeBed = ViewBag.CatTypeBed as List<CatBedRoom>;
+}
+@*Thư viện soạn thảo*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet" />
+<style>
+    .ts-dropdown {
+        background-color: white !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 9999;
+    }
+
+    #bedDropdown {
+        border: var(--ct-border-width) solid var(--ct-border-color);
+        background: #ffffff;
+    }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="number" id="idRoom" name="Id" value="@Model.Id" hidden />
+        <div class="row">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên phòng <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="Tên phòng" value="@Model.Name" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Tầng</label>
+                    <input type="number" class="form-control" name="Floor" placeholder="" value="@Model.Floor">
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Số phòng</label>
+                    <input type="number" class="form-control" name="NumRoom" value="@Model.NumRoom" placeholder="">
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Tổng số phòng <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="TotalRoom" value="@Model.TotalRoom" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom03">Loại chỗ nghỉ <span class="text-danger">*</span></label>
+                    <select class="form-select select2" data-toggle="select2" id="" name="TypeRoom">
+                        @{
+                            foreach (var item in typeRoom)
+                            {
+                                if (item.Id == Model.TypeRoom)
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom03">Loại giường <span class="text-danger">*</span></label>
+                    <select class="form-select select2" data-toggle="select2" id="" name="IdTypeBed">
+                        @{
+                            foreach (var item in typeBed)
+                            {
+                                if (item.Id == Convert.ToInt32(Model.IdTypeBed))
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mb-2">
+                    <label class="form-label">Thông tin giường</label>
+                    <div class="dropdown">
+                        <a class="btn btn-light dropdown-toggle d-flex align-items-center" href="#" role="button" id="bedDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bed-fill me-2"></i>
+                            @{
+                                var contentBed = new Dictionary<int, int>();
+
+                                if (!string.IsNullOrEmpty(Model.ContentBed))
+                                {
+                                    try
+                                    {
+                                        contentBed = System.Text.Json.JsonSerializer.Deserialize<Dictionary<int, int>>(Model.ContentBed);
+                                    }
+                                    catch
+                                    {
+                                        // Trường hợp lỗi format JSON, để rỗng
+                                        contentBed = new Dictionary<int, int>();
+                                    }
+                                }
+
+                                var danhSachGiuong = new List<string>();
+                                var textGiuong = "";
+
+                                foreach (var itembeds in contentBed)
+                                {
+                                    var getNameBed = typeBed.FirstOrDefault(m => m.Id == itembeds.Key);
+                                    if (getNameBed != null && itembeds.Value > 0)
+                                    {
+                                        danhSachGiuong.Add($"{itembeds.Value} {getNameBed.Name}");
+                                    }
+                                }
+
+                                textGiuong = danhSachGiuong.Count > 0 ? string.Join(", ", danhSachGiuong) : "Chưa chọn giường";
+                            }
+                            <span id="bedSummary">@textGiuong</span>
+                        </a>
+                        <ul class="dropdown-menu p-1" aria-labelledby="bedDropdown">
+                            @{
+                                foreach (var itemBed in typeBed)
+                                {
+                                    var bedValue = contentBed.ContainsKey(itemBed.Id) ? contentBed[itemBed.Id] : 0;
+                                    <li class="mb-2 d-flex justify-content-between align-items-center">
+                                        <span class="me-2">@itemBed.Name</span>
+                                        <div class="input-group input-group-sm w-auto">
+                                            <button class="btn btn-outline-secondary minus-btn" data-target="bed-@itemBed.Id">−</button>
+                                            <input type="text" class="form-control text-center count-input input-width-50"
+                                                   id="bed-@itemBed.Id" value="@bedValue" readonly>
+                                            <button class="btn btn-outline-secondary plus-btn" data-target="bed-@itemBed.Id">+</button>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" name="ContentBed" id="bedMapInput" value="@Model.ContentBed" />
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Người lớn <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="AdultsMax" placeholder="" value="@Model.AdultsMax" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Trẻ em <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="ChildrenMax" placeholder="" value="@Model.ChildrenMax" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom02">Giá (VNĐ)<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control money-input" name="PriceFormatted" id="PriceFormatted" placeholder="Nhập giá" value="@Model.Price?.ToString("N0")">
+                    <input type="hidden" name="Price" id="Price" value="@Model.Price" />
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label">Phòng nỗi bật <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Feature">
+                        @if (Model.Status == true)
+                        {
+                            <option value="true" selected>Có</option>
+                            <option value="false">Không</option>
+                        }
+                        else
+                        {
+                            <option value="true">Có</option>
+                            <option value="false" selected>Không</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        @if (Model.Status == true)
+                        {
+                            <option value="true" selected>Kích hoạt</option>
+                            <option value="false">Chưa kịch hoạt</option>
+                        }
+                        else
+                        {
+                            <option value="true">Kích hoạt</option>
+                            <option value="false" selected>Chưa kịch hoạt</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-3">
+                    @{
+                        var selectedAmenities = (Model.ListAminities ?? "").Split(',').ToList();
+                    }
+                    <label class="form-label" for="validationCustom02">Tiện nghi <span class="text-danger">*</span></label>
+                    <select class="form-select" id="Amenities" name="Amenities" multiple required>
+                        @foreach (var item in TienNghi)
+                        {
+                            var isSelected = selectedAmenities.Contains(item.Id.ToString());
+                            <option value="@item.Id" @(isSelected ? "selected" : "")>@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <textarea class="form-control" id="summernote" name="Description" rows="6">@Html.Raw(Model.Description)</textarea>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label for="example-fileinput" class="form-label">Hình ảnh</label>
+                    <input type="file" name="postedFile" class="form-control" accept="image/*" multiple>
+                </div>
+                <!-- Hiển thị ảnh đã lưu -->
+                <div id="imageList" class="row">
+                    @foreach (var imgPath in Model.ListImg?.Split(',') ?? new string[] { })
+                    {
+                        if (!string.IsNullOrWhiteSpace(imgPath))
+                        {
+                            var fileName = System.IO.Path.GetFileName(imgPath);
+                            <div class="col-2">
+                                <div class="card mb-1 shadow-none border image-container" data-path="@imgPath">
+                                    <div class="p-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <img src="@Common.GetImagePath(Url.Content(imgPath))" class="avatar-sm rounded" alt="file-image" />
+                                            </div>
+                                            <div class="col ps-0">
+                                                <a href="javascript:void(0);" class="text-muted fw-bold">@fileName</a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <!-- Button -->
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-3 btn-delete-image" onclick="DeleteIMG()" title="Xóa ảnh">
+                                                    ✖
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaPhong", new { area = "Admin" })" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var select = document.getElementById('Amenities');
+        if (select) {
+            new TomSelect(select, {
+                plugins: ['remove_button'],
+                placeholder: 'Chọn tiện nghi'
+            });
+        }
+        $('#summernote').summernote({
+            height: 200 // chiều cao tính bằng pixel
+        });
+    });
+    function DeleteIMG() {
+        if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
+
+        var imgContainer = $(this).closest(".image-container");
+        var imgPath = imgContainer.data("path");
+        var idRoom = $("#idRoom").val();
+
+        $.ajax({
+            url: '/Admin/quanLyPhong/XoaAnh',
+            type: 'POST',
+            data: { imagePath: imgPath, idRoom: idRoom },
+            success: function (res) {
+                if (res.result) {
+                    imgContainer.remove(); // Xóa ảnh khỏi giao diện
+                } else {
+                    alert(res.message || "Lỗi khi xóa ảnh.");
+                }
+            },
+            error: function () {
+                alert("Có lỗi xảy ra.");
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        var summary = document.getElementById('bedSummary');
+
+        function updateSummary() {
+            var inputs = document.querySelectorAll('input[id^="bed-"]');
+            let summaryText = [];
+
+            inputs.forEach(input => {
+                var count = parseInt(input.value, 10);
+                if (count > 0) {
+                    var label = input.closest('li').querySelector('span').textContent.trim();
+                    summaryText.push(`${count} ${label}`);
+                }
+            });
+
+            summary.textContent = summaryText.length > 0 ? summaryText.join(', ') : 'Chưa chọn giường';
+        }
+        function updateBedMapInput() {
+            debugger;
+            var inputs = document.querySelectorAll('input[id^="bed-"]');
+            var bedMap = {};
+
+            inputs.forEach(input => {
+                var id = input.id.replace('bed-', '');
+                var count = parseInt(input.value, 10);
+                if (count > 0) {
+                    bedMap[id] = count;
+                }
+        });
+
+        document.getElementById('bedMapInput').value = JSON.stringify(bedMap);
+    }
+        document.querySelectorAll('.plus-btn, .minus-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var targetId = btn.getAttribute('data-target');
+                var input = document.getElementById(targetId);
+                let value = parseInt(input.value, 10);
+
+                if (btn.classList.contains('plus-btn')) {
+                    value++;
+                } else if (btn.classList.contains('minus-btn') && value > 0) {
+                    value--;
+                }
+
+                input.value = value;
+                updateSummary();
+                updateBedMapInput();
+            });
+        });
+
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+
+        updateSummary();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        const inputFormatted = document.getElementById('PriceFormatted');
+        const inputRaw = document.getElementById('Price');
+
+        function formatMoney(value) {
+            value = value.replace(/\D/g, '');
+            inputRaw.value = value;
+
+            if (value === '') return '';
+            return Number(value).toLocaleString('en-US');
+        }
+
+        inputFormatted.addEventListener('input', function (e) {
+            const cursorPos = inputFormatted.selectionStart;
+            const oldLength = inputFormatted.value.length;
+
+            inputFormatted.value = formatMoney(inputFormatted.value);
+
+            const newLength = inputFormatted.value.length;
+            inputFormatted.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
+        });
+
+        inputFormatted.addEventListener('paste', function (e) {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData('text');
+            inputFormatted.value = formatMoney(text);
+        });
+
+        // 👉 Định dạng lại nếu có giá trị ban đầu (phòng khi backend render chưa format)
+        if (inputFormatted.value !== '') {
+            inputFormatted.value = formatMoney(inputFormatted.value);
+        }
+    });
+</script>

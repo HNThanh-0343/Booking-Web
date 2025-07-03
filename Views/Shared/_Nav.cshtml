@@ -1,0 +1,24 @@
+﻿@using WEBSITE_TRAVELBOOKING.Infrastructure;
+@using WEBSITE_TRAVELBOOKING.Services
+@{
+    UnitOfWork _unitOfWorkCommon = new UnitOfWork(new WebsiteCmsBookingContext());
+    var menus = _unitOfWorkCommon.Repository<SysMenu>().GetAll(filter: (m => m.Status == true));
+    var categories = _unitOfWorkCommon.Repository<CatCategory>().GetAll();
+}
+<div id="navBar" class="navbar-collapse u-header__navbar-collapse collapse order-2 order-xl-0 pt-4 p-xl-0 position-relative mx-n3 mx-xl-0">
+    <ul class="navbar-nav u-header__navbar-nav">
+        <!-- Home -->
+        @if (menus != null && menus.Any())
+        {
+            foreach (var menu in menus)
+            {
+                <li class="nav-item u-header__nav-item">
+                    <a class="nav-link u-header__nav-link u-header__nav-link-border" style="font-size: 20px; font-weight: 600; font-family: Helvetica Neue, Helvetica, Arial, sans-serif"
+                       href="@Url.Action("Index", menu.Controller, new { area = "" })">
+                        @menu.Name
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>

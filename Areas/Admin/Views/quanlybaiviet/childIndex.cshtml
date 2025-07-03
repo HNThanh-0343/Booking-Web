@@ -1,0 +1,74 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysBlog>
+@using WEBSITE_TRAVELBOOKING.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listCate = ViewBag.CatCategory as List<CatCategory>;
+    var listUser = ViewBag.listUser as List<SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-sm table-centered w-100 dt-responsive nowrap">
+        <thead class="table-light">
+            <tr>
+                <th>Bài viết</th>
+                <th>Loại bài viết</th>
+                <th width="450px">Tóm tắt nội dung</th>
+                <th>Người tạo</th>
+                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
+                @if (ruleAction != null && (ruleAction.IsEdit == true || ruleAction.IsDelete == true))
+                {
+                    <th class="text-center" width="120px">Hàng động</th>
+                }
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var getcate = listCate.FirstOrDefault(h => h.Id == item.IdTypeBlog);
+                var getUser = listUser.FirstOrDefault(h => h.Id == item.IdUser);
+                <tr>
+                    <td><a data-toggle='modal' data-sizeModal="modal-xl" class="text-dark" href="@Url.Action("chiTietBlog", new {id = item.Id, area = "Admin"})">@item.Name</a></td>
+                    <td>@getcate?.Name</td>
+                    <td>@item.ContentsShort</td>
+                    <td>@getUser?.Name</td>
+                    <td>@item.DateCreate.ToString("dd/MM/yyyy")</td>
+                    <td>@(item.Status == true ? "Kích hoạt" : "Chưa kích hoạt")</td>
+                    <td class="text-center">
+                        <div class="table-action">
+                            @{
+                                if (ruleAction != null && ruleAction.IsEdit == true)
+                                {
+                                    <a data-toggle='modal' data-sizeModal="modal-xl" class="btn btn-warning btn-sm"
+                                       href="@Url.Action("chinhSuaBlog", new {id = item.Id, area = "Admin"})" title="Chỉnh sửa">
+                                        <i class="mdi mdi-square-edit-outline"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsDelete == true)
+                                {
+                                    <a data-toggle='modal' data-sizeModal="modal-xl" class="btn btn-danger btn-sm"
+                                       href="@Url.Action("chiTietBlog", new {id = item.Id, area = "Admin"})" title="Xóa">
+                                        <i class="mdi mdi-delete"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{
+        if (Model.Count > 0)
+        {
+            <div class="d-flex align-items-center justify-content-end py-1">
+                @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page, searchValue = ViewBag.searchValue, idCategories = ViewBag.idCategories, area = "Admin" }),
+                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+            </div>
+        }
+    }
+</div>

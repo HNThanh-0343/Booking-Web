@@ -1,0 +1,223 @@
+﻿/* ==========================================
+   📟 Điện thoại mini (rất nhỏ) < 360px
+   VD: Android đời cũ, máy siêu nhỏ, điện thoại ảo
+   → Ít gặp, nhưng nên đảm bảo không vỡ layout
+========================================== */
+@media (max-width: 359.98px) {
+    /* CSS cho điện thoại rất nhỏ */
+    .cardFilter[class^="col-"] {
+        padding: 0.25rem !important;
+    }
+
+    .cardFilter .row, .cardHome .row {
+        margin-left: -12px !important;
+        margin-right: -12px !important;
+    }
+
+        .cardFilter .row [class^="col-"], .cardHome .row [class^="col-"] {
+            padding: 0.25rem !important;
+        }
+
+    .card {
+        border: 1px solid #e7eaf3cc !important;
+    }
+
+    .cardFilter .card .starts, .cardHome .card .starts {
+        text-align: center !important;
+    }
+
+        .cardFilter .card .starts .green-lighter {
+            font-size: 10px !important;
+        }
+
+    .card .card-img-top {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        height: 100% !important;
+        max-height: 8rem !important;
+        min-height: 8rem !important;
+    }
+
+    .card .AminiMore {
+        display: none;
+        border: unset;
+    }
+
+    .custom-tooltip::after,
+    .custom-tooltip::before {
+        display: none !important;
+    }
+
+    .tooltip-container::after,
+    .tooltip-container::before {
+        display: none !important;
+    }
+
+    .card .giagiam {
+        display: none;
+    }
+
+    .cardFilter .priceCard .ViewPrice, .cardHome .priceCard .ViewPrice {
+        font-size: 15px !important;
+        font-weight: 600;
+    }
+
+    .cardFilter .khuyenmai {
+        padding: 0.3rem !important;
+        font-size: 10px !important;
+    }
+}
+
+/* ==========================================
+   📱 Điện thoại phổ biến (nhỏ) ≥360px và <576px
+   VD: iPhone SE, iPhone 6/7/8, Android tầm thấp
+   → Chiếm phần lớn người dùng mobile phổ thông
+========================================== */
+@media (min-width: 360px) and (max-width: 575.98px) {
+    .cardFilter[class^="col-"] {
+        padding: 0.25rem !important;
+    }
+
+    .cardFilter .row, .cardHome .row {
+        margin-left: -12px !important;
+        margin-right: -12px !important;
+    }
+
+        .cardFilter .row [class^="col-"], .cardHome .row [class^="col-"] {
+            padding: 0.25rem !important;
+        }
+
+    .card {
+        border: 1px solid #e7eaf3cc !important;
+    }
+
+    .cardFilter .card .starts, .cardHome .card .starts {
+        text-align: center !important;
+    }
+
+    .card .card-img-top {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        height: 100% !important;
+        max-height: 8rem !important;
+        min-height: 8rem !important;
+    }
+
+    .card .AminiMore {
+        display: none;
+        border: unset;
+    }
+
+    .custom-tooltip::after,
+    .custom-tooltip::before {
+        display: none !important;
+    }
+
+    .tooltip-container::after,
+    .tooltip-container::before {
+        display: none !important;
+    }
+
+    .card .giagiam {
+        display: none;
+    }
+
+    .cardFilter .priceCard .ViewPrice, .cardHome .priceCard .ViewPrice {
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+
+    .cardFilter .khuyenmai {
+        padding: 0.3rem !important;
+    }
+}
+
+/* ==========================================
+   📱 Điện thoại lớn ≥576px và <768px
+   VD: iPhone Plus/Pro Max, Android màn to
+   → Phổ biến với các máy hiện đại, cao cấp
+========================================== */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    /* CSS cho điện thoại lớn */
+}
+
+/* ==========================================
+   💊 Máy tính bảng (tablet) ≥768px và <992px
+   VD: iPad, Samsung Tab, Kindle Fire
+   → Thiết bị trung gian giữa điện thoại và laptop
+========================================== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* CSS cho tablet */
+    .custom-tooltip::after,
+    .custom-tooltip::before {
+        display: none !important;
+    }
+
+    .tooltip-container::after,
+    .tooltip-container::before {
+        display: none !important;
+    }
+}
+
+/* ==========================================
+   💻 Laptop nhỏ (notebook) ≥992px và <1200px
+   VD: MacBook Air, laptop học sinh – sinh viên
+   → Thường là breakpoint cho layout 2 cột
+========================================== */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    /* CSS cho laptop nhỏ */
+}
+
+/* ==========================================
+   🖥️ Desktop chuẩn ≥1200px và <1400px
+   VD: Desktop văn phòng, màn hình 1080p
+   → Breakpoint phổ biến cho layout rộng
+========================================== */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    /* CSS cho desktop thông thường */
+    
+}
+
+/* ==========================================
+   🖥️⚡ Desktop lớn ≥1400px và <1600px
+   VD: Màn hình 2K, ultrawide nhỏ
+   → Thường dùng cho người thiết kế, chơi game
+========================================== */
+@media (min-width: 1400px) and (max-width: 1599.98px) {
+    /* CSS cho desktop lớn */
+    #content .container-fluid {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+        #content .container-fluid .row {
+            margin-left: -12px !important;
+            margin-right: -12px !important;
+        }
+            #content .container-fluid .row [class^="col-"] {
+                padding: 0.25rem !important;
+            }
+}
+
+/* ==========================================
+   🖥️🔲 Màn hình siêu lớn ≥1600px
+   VD: Màn hình 4K, ultrawide lớn, đa màn hình
+   → Ít gặp nhưng cần scale tốt, không quá trống
+========================================== */
+@media (min-width: 1600px) {
+    /* CSS cho màn hình siêu lớn */
+    #content .container-fluid {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+        #content .container-fluid .row {
+            margin-left: -5px !important;
+            margin-right: -5px !important;
+        }
+
+            #content .container-fluid .row [class^="col-"] {
+                padding: 0.6rem !important
+            }
+}

@@ -1,0 +1,63 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Gia hạn thời gian đặt phòng";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="text" value="@Model.Id" name="IdBooking" hidden>
+        <input type="text" value="@Model.BookingItemId" name="IdRoom" hidden>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Trả phòng <span class="text-danger">*</span></label>
+                    <input id="dpcheckout" name="EndDate" class="form-control" placeholder="Trả phòng" value="" onchange="toISOFormatDateTime(['EndDate'])" required>
+                    <div class="invalid-feedback"></div>
+                    <input type="hidden" name="EndDate_ISO" id="EndDate_ISO" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("giahanphong")" class="btn bg-success-subtle edit text-success waves-effect text-start  prevent-double-click">
+        Cập nhật
+    </button>
+</div>
+
+
+
+<script>
+     var  dpcheckin = flatpickr("#dpcheckout", {
+         enableTime: true,
+         time_24hr: true,
+         dateFormat: "d/m/Y H:i",
+         minDate: "today",
+         locale: "vn",
+     });
+    function toISOFormatDateTime(inputNames) {
+         if (!inputNames || inputNames.length === 0) return;
+
+         var ArrinputNames = inputNames[0].split(',');
+
+         ArrinputNames.forEach(name => {
+             const input = $(`[name="${name}"]`);
+             const val = input.val();
+             if (!val) return;
+
+             const parsed = flatpickr.parseDate(val, "d/m/Y H:i");
+             if (!parsed) return;
+
+             const iso = flatpickr.formatDate(parsed, "Y-m-d\\TH:i");
+
+             // Gán ISO format vào input hidden tương ứng
+             $(`[name="${name}_ISO"]`).val(iso);
+         });
+     }
+</script>

@@ -1,0 +1,44 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.CatCategory;
+@using WEBSITE_TRAVELBOOKING.Models
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Chi tiết dịch vụ";
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên dịch vụ</label>
+                    <input type="text" class="form-control" name="Name" placeholder="" value="@Model.Name" readonly>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Icon</label>
+                    <input type="text" class="form-control" name="Icon" placeholder="" value="@Model.Icon">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái</label>
+                    <input type="text" class="form-control" name="Status" value="@(Model.Status == true ? "Kích hoạt" : "Chưa kích hoạt")" readonly>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaDichVu", new { id = Model.Id, area = "Admin" })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa
+        </button>
+    }
+</div>

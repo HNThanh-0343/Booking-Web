@@ -1,0 +1,60 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Quản lý thuê xe";
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewData["TitleAdmin"]</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div>
+                        <div class="row formsearch">
+                            @if (ruleAction != null && ruleAction.IsCreate == true)
+                            {
+                                <div class="col-12 col-lg-2 d-lg-block d-grid">
+                                    <a href="@Url.Action("themMoiThueXe", "quanLyThueXe", new {area = "Admin" })" class="btn btn-success mb-2" data-toggle='modal' data-sizeModal="modal-xl">
+                                        <i class="mdi mdi-plus-circle me-2"></i>Thêm mới
+                                    </a>
+                                </div>
+                            }
+                            <div class="col-12 col-lg-2 d-lg-block d-grid">
+                                <div class="dataTables_filter">
+                                    <input type="search" class="form-control mb-2" id="" name="searchValue" placeholder="Tìm kiếm..." aria-controls="products-datatable">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-2 d-lg-block d-grid">
+                                <button data-url="@Url.Action("childIndex", "quanLyThueXe", new { area = "Admin" })" type="button" class="btn btn-info searchform">
+                                    <i class="mdi mdi-magnify me-1"></i> <span>Tìm kiếm</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="alertJs"></div>
+                        <div class="row py-2">
+                            <div class="col-sm-12" id="DataTable">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#DataTable').load('/Admin/quanLyThueXe/childIndex');
+    });
+</script>

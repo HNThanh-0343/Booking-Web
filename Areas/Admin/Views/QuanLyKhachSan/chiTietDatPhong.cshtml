@@ -1,0 +1,164 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Chi tiết đặt phòng";
+    var getUser = ViewBag.getUser as SysUser;
+    var getRoom = ViewBag.getRoom as SysRoom;
+    var getHotel = ViewBag.getHotel as SysHotel;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div class="row">
+            @if (getHotel != null && !string.IsNullOrWhiteSpace(getHotel.ListImg))
+            {
+                <div class="col-md-12 mb-2">
+                    <div class="mainslider w-10">
+                        <div class="slider">
+                            @{
+                                var listHinhAnh = "";
+                                if (string.IsNullOrEmpty(getHotel.ListImg))
+                                {
+                                    listHinhAnh = "/AppData/no-image.png";
+                                    <div>
+                                        <img src="@listHinhAnh" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    var listIMG = getHotel.ListImg.Split(',');
+                                    foreach (var item in listIMG)
+                                    {
+                                        listHinhAnh = Common.GetImagePath(item);
+                                        <div>
+                                            <img src="@listHinhAnh" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            <h4>Thông tin khách hàng</h4>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Tên khách hàng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@(getUser != null ? getUser.Name : Model.FullNameGuest)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Số điện thoại:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@(getUser != null && getUser.Phone != null ? getUser.Phone : Model.PhoneGuest)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Email:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@(getUser != null && getUser.Email != null ? getUser.Email : Model.EmailGuest)</p>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mt-2">Thông tin đặt phòng</h4>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Tên khách sạn:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getHotel.Name</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Địa chỉ:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getHotel.Local</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Tên phòng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getRoom.Name</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Loại phòng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getRoom.TypeRoomNavigation?.Name</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Ngày nhận phòng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.StartDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Ngày trả phòng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.EndDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Số lượng khách:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.GuestsNumber</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Tổng hóa đơn:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.Price.ToString("0.##") VND</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Trạng thái:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@(Model.Status == 0 ? "Hủy đơn" : Model.Status == 1 ? "Hoàn thành" : "Chờ thanh toán")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+</div>
+<script>
+    $('.slider').slick({
+        dots: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        centerMode: true,
+        autoplay: true,        // tự động chuyển
+        autoplaySpeed: 2000,   // thời gian chuyển (ms)
+        arrows: false // 👈 Tắt cả hai nút
+    });
+</script>

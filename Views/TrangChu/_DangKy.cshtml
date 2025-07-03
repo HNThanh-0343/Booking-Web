@@ -1,0 +1,260 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.AccountForm
+<div class="modal-header bg-primary text-white d-flex justify-content-center position-relative">
+	<h5 class="modal-title fw-bold mb-0" id="exampleModalLabel">Đăng ký</h5>
+	<button type="button" class="close position-absolute" style="right: 20px; top: 45px; transform: translateY(-50%);" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true" class="text-white">&times;</span>
+	</button>
+</div>
+
+@{
+	if (ViewBag.Idrole == 2)
+	{
+		<div class="modal-body p-4">
+			<!-- Form cá nhân -->
+			<form asp-action="dangky" asp-controller="taikhoan" asp-area="" method="post">
+				<input class="form-control" type="hidden" id="IdRole" name="IdRole" value="2" required="" placeholder="abcxyz">
+
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>
+							@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+						</small>
+					</a>
+					<label for="yourname" class="form-label">Họ và tên</label>
+					@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập họ tên của bạn" } })
+				</div>
+
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>
+							@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+						</small>
+					</a>
+					<label for="phonenumber" class="form-label">Số điện thoại</label>
+					@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập số điện thoại" } })
+				</div>
+
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>
+							@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+						</small>
+					</a>
+					<label for="emailaddress" class="form-label">Địa chỉ email</label>
+					<input class="form-control" type="email" id="email" name="Email" value="@Model.Email" required="" placeholder="Nhập email của bạn">
+				</div>
+
+
+				<!-- Mật khẩu -->
+				<div class="mb-3">
+					<!-- Validation message -->
+					<small class="text-danger float-right">
+						@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+					</small>
+
+					<!-- Label -->
+					<label for="Password" class="form-label">Mật khẩu</label>
+
+					<!-- Input Group -->
+					<div class="input-group custom-password-group">
+						<input type="password" id="Password" name="Password" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+						<div class="input-group-append">
+							<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password">
+								<i class="mdi mdi-eye-off" id="password-icon"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="mb-5">
+					<a href="#" class="text-danger float-end">
+						<small>
+							@Html.ValidationMessageFor(model => model.CodeOTP, "", new { @class = "text-danger" })
+						</small>
+					</a>
+					<label for="emailaddress" class="form-label">Mã xác thực</label>
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Mã xác thực từ email" aria-label="Mã xác thực từ email" name="CodeOTP" value="@Model.CodeOTP">
+						<button class="btn btn-primary" type="button" id="btnEmail" onclick="getCode(2)">
+							<i class="mdi mdi-send me-1"></i><span>OTP</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="d-grid mb-3" id="btnSubmitSection">
+					<button class="btn btn-primary btn-block" type="submit" id="btnRegister">
+						<i class="mdi mdi-login"></i> Đăng ký
+					</button>
+				</div>
+
+				<div class="text-center mt-3">
+					<p class="text-muted font-16">Đăng ký bằng</p>
+					<ul class="social-list list-inline m-1">
+						<li class="list-inline-item">
+							<a href="@Url.Action("loginwithzalo","taikhoan")" class="social-list-item border-primary text-primary">
+								<i class="mdi mdi-facebook"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="@Url.Action("RegisterGoogle","taikhoan", new {roleID = 2})" class="social-list-item border-danger text-danger">
+								<i class="mdi mdi-gmail"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer justify-content-center">
+			<p class="text-muted">
+				Bạn đã có tài khoản? <a data-toggle="modal" data-sizeModal="modal-md" href="@Url.Action("DangNhap","TrangChu",new {area="", role=2})"
+									  class="ms-1 fw-bold">Đăng nhập</a>
+			</p>
+		</div>
+	}
+	else if (ViewBag.Idrole == 3)
+	{
+		<div class="modal-body p-4">
+			<form asp-action="dangky" asp-controller="taikhoan" asp-area="" method="post">
+				<!-- Hidden Role ID -->
+				<input class="form-control" type="hidden" id="IdRole" name="IdRole" value="3" required placeholder="abcxyz">
+
+				<!-- Họ và tên -->
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })</small>
+					</a>
+					<label for="yourname" class="form-label">Họ và tên</label>
+					@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập họ tên của bạn" } })
+				</div>
+
+				<!-- Số điện thoại -->
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })</small>
+					</a>
+					<label for="phonenumber" class="form-label">Số điện thoại</label>
+					@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập số điện thoại" } })
+				</div>
+
+				<!-- Email -->
+				<div class="mb-2">
+					<a href="#" class="text-danger float-end">
+						<small>@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })</small>
+					</a>
+					<label for="emailaddress" class="form-label">Địa chỉ email</label>
+					<input class="form-control" type="email" id="email" name="Email" value="@Model.Email" required placeholder="Nhập email của bạn">
+				</div>
+
+				<!-- Mật khẩu -->
+				<div class="mb-3">
+					<!-- Validation message -->
+					<small class="text-danger float-right">
+						@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+					</small>
+
+					<!-- Label -->
+					<label for="Password" class="form-label">Mật khẩu</label>
+
+					<!-- Input Group -->
+					<div class="input-group custom-password-group">
+						<input type="password" id="Password" name="Password" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+						<div class="input-group-append">
+							<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password">
+								<i class="mdi mdi-eye-off" id="password-icon"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Mã OTP -->
+				<div class="mb-5">
+					<a href="#" class="text-danger float-end">
+						<small>@Html.ValidationMessageFor(model => model.CodeOTP, "", new { @class = "text-danger" })</small>
+					</a>
+					<label for="emailaddress" class="form-label">Mã xác thực</label>
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Mã xác thực từ email" aria-label="Mã xác thực từ email" name="CodeOTP" value="@Model.CodeOTP">
+						<button class="btn btn-primary" type="button" id="btnEmail" onclick="getCode(2)">
+							<i class="mdi mdi-send me-1"></i><span>OTP</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- Nút đăng ký -->
+				<div class="d-grid mb-3" id="btnSubmitSection">
+					<button class="btn btn-primary btn-block" type="submit" id="btnRegister">
+						<i class="mdi mdi-login"></i> Đăng ký đối tác
+					</button>
+				</div>
+
+				<!-- Đăng ký bằng MXH -->
+				<div class="text-center mt-3">
+					<p class="text-muted font-16">Đăng ký bằng</p>
+					<ul class="social-list list-inline m-1">
+						<li class="list-inline-item">
+							<a href="@Url.Action("loginwithzalo","taikhoan")" class="social-list-item border-primary text-primary">
+								<i class="mdi mdi-facebook"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="@Url.Action("RegisterGoogle","taikhoan", new {roleID = 3})" class="social-list-item border-danger text-danger">
+								<i class="mdi mdi-gmail"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer justify-content-center">
+			<p class="text-muted">
+				Bạn đã có tài khoản?
+				<a data-toggle="modal" data-sizeModal="modal-md" href="@Url.Action("DangNhap","TrangChu",new {area="", role=3})" class="ms-1 fw-bold">Đăng nhập</a>
+			</p>
+		</div>
+	}
+}
+
+
+	<script>
+			//1 Đăng ký
+			//2 quên pass
+			function getCode(type) {
+
+				$("#btnEmail").prop("disabled", true);
+
+				var email = $("#email").val().trim();
+				$.ajax({
+					url: "/TaiKhoan/SendEmailOTP",
+					type: "GET",
+					data: { toEmail: email, type: type },
+					headers: {
+						"X-Requested-With": "XMLHttpRequest"
+					},
+					success: function (res) {
+						if (res.success) {
+
+							$("#btnEmail").prop("disabled", false);
+						} else {
+							$("#btnEmail").prop("disabled", false);
+						}
+					},
+					error: function () {
+						$("#emailaddress").prop("disabled", false);
+
+					}
+				});
+			}
+
+				$(document).ready(function () {
+			$('#toggle-password').on('click', function () {
+				const passwordInput = $('#Password');
+				const icon = $('#password-icon');
+				const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+
+				passwordInput.attr('type', type);
+				icon.toggleClass('mdi-eye mdi-eye-off');
+			});
+		});
+</script>

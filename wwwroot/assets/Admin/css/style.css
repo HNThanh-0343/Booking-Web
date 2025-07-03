@@ -1,0 +1,33 @@
+﻿.pagination-container .pagination li a,
+.pagination-container .pagination li span {
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    margin: 0 3px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination-container .pagination li.active span {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.pagination-container .pagination li span:hover {
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
+}
+.tableCartPartner .card .card-img-top {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 14rem !important;
+    max-height: 14rem !important;
+    min-height: 14rem !important;
+}
+.tableCartPartner table {
+    font-weight: 300 !important;
+}

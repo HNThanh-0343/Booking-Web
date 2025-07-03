@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\WEBSITE_TRAVELBOOKING.props" />
+</Project>

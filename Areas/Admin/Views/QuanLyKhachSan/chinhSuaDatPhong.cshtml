@@ -1,0 +1,63 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@{
+    ViewData["TitleAdmin"] = "Chỉnh sửa đặt phòng";
+    var listContry = ViewBag.CatContry as List<WEBSITE_TRAVELBOOKING.Models.CatContry>;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="number" name="Id" value="@Model.Id" hidden />
+        <div class="row">
+            @* <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Ngày nhận phòng <span class="text-danger">*</span></label>
+                    <input type="datetime-local" id="checkin" name="StartDate" class="form-control" placeholder="dd/MM/yyyy" value="@Model.StartDate" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Ngày trả phòng <span class="text-danger">*</span></label>
+                    <input type="datetime-local" id="checkout" name="EndDate" class="form-control" placeholder="dd/MM/yyyy" value="@Model.EndDate" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div> *@
+            
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select m-input" name="Status">
+                        @{
+                            foreach (var itemTrangThai in ViewBag.DSTrangThai as List<SelectListItem>)
+                            {
+                                if (itemTrangThai.Value.ToLower() == Model.Status.ToString().ToLower())
+                                {
+                                    <option value="@itemTrangThai.Value" selected>@itemTrangThai.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@itemTrangThai.Value">@itemTrangThai.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaDatPhong", new { area = "Admin" })" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>

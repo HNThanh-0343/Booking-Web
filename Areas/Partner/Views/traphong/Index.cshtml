@@ -1,0 +1,125 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Quản lý trả phòng";
+    var ListHotel = ViewBag.ListHotel as List<SysHotel>;
+    var getTypeRoom = ViewBag.getTypeRoom as List<CatTypeRoom>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+
+}
+<style>
+    .btnTraPhongAddBill {
+        display: none !important;
+    }
+
+        .btnTraPhongAddBill.active {
+            display: grid !important
+        }
+</style>
+<link href="~/assets/partner/css/cssbill.css" rel="stylesheet" />
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                @* <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                <li class="breadcrumb-item active">Data Tables</li>
+                </ol>
+                </div> *@
+                <h4 class="page-title">@ViewData["TitleAdmin"]</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <div class="row formsearch">
+                            <div class="col-12 col-lg-2 d-grid">
+                                <div class="dataTables_filter mb-2">
+                                    <input type="search" class="form-control" id="" name="searchValue" placeholder="Tìm kiếm số phòng..." aria-controls="products-datatable">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-2 d-grid">
+                                <button data-url="@Url.Action("childIndex", "traphong")" type="button" class="btn btn-info searchformDateTime mb-2">
+                                    <i class="mdi mdi-magnify me-1"></i> <span>Tìm kiếm</span>
+                                </button>
+                            </div>
+                            <div class="col-12 col-lg-2 d-grid">
+                                <button type="button" class="btn btn-info mb-2" id="btnToggleBill" onclick="ShowCheckboxAddBill()">
+                                    <i class="mdi mdi-cart-plus me-1"></i> <span>Gộp hóa đơn</span>
+                                </button>
+                            </div>
+                            <div class="col-12 col-lg-2 d-grid btnTraPhongAddBill">
+                                <button type="button" class="btn btn-info mb-2" onclick="CheckoutMulti()">
+                                    <span>Trả phòng</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="alertJs" class="mt-2"></div>
+                        <div class="row py-2">
+                            <div class="col-sm-12" id="DataTable">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#DataTable').load('/partner/traphong/childIndex');
+    });
+</script>
+
+<script>
+    var BookingMutil=[];
+    var checkboxAddBill = false;
+    function ShowCheckboxAddBill() {
+      checkboxAddBill = !checkboxAddBill;
+      $('.checkboxRoom').toggleClass('active', checkboxAddBill);// ẩn hiện checkbox
+      // $('.btnCheckoutOne').toggleClass('active', checkboxAddBill);// ẩn hiện các btn checkout từng phòng
+      $('.btnCheckoutOne').css('visibility', checkboxAddBill ? 'hidden' : 'visible');
+      if(checkboxAddBill==false){
+          BookingMutil=[];// xóa các phòng được chọn, trả về trống
+          $('.checkboxRoom input[type="checkbox"]').prop('checked', false);
+          $('.btnTraPhongAddBill').toggleClass('active', BookingMutil.length > 0);
+      }
+      var  $btn = $('#btnToggleBill'),
+            $icon = $btn.find('i'),
+            $text = $btn.find('span');
+
+      $icon
+        .toggleClass('mdi-cart-plus', !checkboxAddBill)
+        .toggleClass('mdi-cart-remove', checkboxAddBill);
+
+      $text.text(checkboxAddBill ? 'Hủy gộp' : 'Gộp hóa đơn');
+
+      $btn
+        .toggleClass('btn-info', !checkboxAddBill)
+        .toggleClass('btn-danger', checkboxAddBill);
+    }
+    function CheckoutMulti(){
+        if(BookingMutil.length==0){
+            alert("Vui lòng chọn lại phòng, vì danh sách gộp bill trống");
+            return;
+        }
+        var queryString = BookingMutil.map(id => `IdBooking=${id}`).join('&');
+
+        // Tạo thẻ <a> giả và gọi lại modal logic có sẵn
+        $('<a>', {
+            href: `/partner/traphong/traphong?${queryString}`,
+            'data-toggle': 'modal',
+            'data-sizeModal': 'modal-lg'
+        }).appendTo('body').trigger('click').remove();
+    }
+
+</script>

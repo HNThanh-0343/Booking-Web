@@ -1,0 +1,67 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.ModelsAndRole>
+@{
+    var context = (RoleTreeContext)ViewData["Context"];
+    int level = context.Level;
+}
+
+@{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        var node = Model[i];
+        var index = context.Index;
+
+        <tr>
+            <td style="padding-left:@(level * 20)px">@node.Name</td>
+            <td class="d-none d-md-table-cell">@node.NameController</td>
+
+            <td class="text-center">
+                <input type="hidden" name="Rules[@index].Id" value="@node.Id" />
+                <input type="hidden" name="Rules[@index].IdModule" value="@node.IdModule" />
+                <input type="hidden" name="Rules[@index].IdRole" value="@node.IdRole" />
+                <input type="hidden" name="Rules[@index].Name" value="@node.Name" />
+                <input type="hidden" name="Rules[@index].NameController" value="@node.NameController" />
+                <input type="checkbox" name="Rules[@index].IsView" value="true" @(node.IsView == true ? "checked" : "") />
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" name="Rules[@index].IsCreate" value="true" @(node.IsCreate == true ? "checked" : "") />
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" name="Rules[@index].IsEdit" value="true" @(node.IsEdit == true ? "checked" : "") />
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" name="Rules[@index].IsDelete" value="true" @(node.IsDelete == true ? "checked" : "") />
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" name="Rules[@index].IsPermission" value="true" @(node.IsPermission == true ? "checked" : "") />
+            </td>
+
+            <td class="text-center">
+                @{
+                    if (node.IsView == true && node.IsCreate == true && node.IsEdit == true && node.IsDelete == true)
+                    {
+                        <input type="checkbox" name="IsActive" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="IsActive" />
+                    }
+                }
+            </td>
+        </tr>
+
+        context.Index++;
+        @if (node.Children?.Any() == true)
+        {
+            var childViewData = new ViewDataDictionary(ViewData);
+            var newContext = context;
+            newContext.Level = level + 1;
+            childViewData["Context"] = newContext;
+            // childViewData["Level"] = level + 1;
+            @Html.Partial("_RoleTreePartial", node.Children, childViewData)
+        }
+    }
+}

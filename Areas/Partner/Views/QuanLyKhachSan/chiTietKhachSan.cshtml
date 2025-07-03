@@ -1,0 +1,120 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysHotel;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Chi tiết khách sạn";
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div class="row">
+            @* <div class="col-md-12">
+                <div class="mainslider  w-10">
+                    <div class="slider">
+                        @{
+                            var Avatar = "";
+                            if (string.IsNullOrEmpty(Model.ListImg))
+                            {
+                                Avatar = "/assets/images/users/avatar-2.jpg";
+                                <div>
+                                    <img src="@Avatar" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                </div>
+                            } else
+                            {
+                                var listIMG = Model.ListImg.Split(',');
+                                foreach(var item in listIMG){
+                                    Avatar = Common.GetImagePath(item);
+                                    <div>
+                                        <img src="@Avatar" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div> *@
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label" for="validationCustom02">Tên khách sạn:</label>
+                    <input type="text" class="form-control" name="Email" value="@Model.Name" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label" for="validationCustom02">Chủ sở hữu:</label>
+                    <input type="text" class="form-control" value="@getUser?.Name" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label" for="validationCustom02">Địa chỉ:</label>
+                    <input type="text" class="form-control" value="@Model.Local" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label" for="validationCustom02">Điện thoại:</label>
+                    <input type="text" class="form-control" value="@Model.Phone" readonly>
+                    <div class="invalid-feedback"></div>
+                </div>
+            </div>           
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label text-end"><b></b></label>
+                    <div class="form-group">
+                        <label class="form-label" for="validationCustom02">Trạng thái:</label>
+                        <input type="text" class="form-control" value="@(Model.Status == true ? "Kích hoạt" : "Chưa kích hoạt")" readonly>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label" for="validationCustom02">Tiện nghi:</label>
+                    <div class="">
+                        <p class="form-control-static">@Html.Raw(Model.Amenities)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="form-group">
+                    <label class="form-label text-end"><b>Nội dung:</b></label>
+                    <div class="">
+                        <p class="form-control-static">@Html.Raw(Model.Description)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaKhachSan", new { id = Model.Id })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa
+        </button>
+    }
+</div>
+<script>
+    $('.slider').slick({
+        dots: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        centerMode: true,
+        autoplay: true,        // tự động chuyển
+        autoplaySpeed: 2000,   // thời gian chuyển (ms)
+        arrows: false // 👈 Tắt cả hai nút
+    });
+
+</script>

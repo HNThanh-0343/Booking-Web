@@ -1,0 +1,236 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBlog
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Chi tiết bài viết";
+	var allBinhluan = ViewBag.alllBinhLuan as List<WEBSITE_TRAVELBOOKING.Models.BinhLuanBaiViet>;
+	var blogInDay = ViewBag.blogInDay as List<WEBSITE_TRAVELBOOKING.Models.SysBlog>;
+}
+<style>
+	.line-ellipsis {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+</style>
+
+<div class="bg-img-hero text-center mb-5 mb-lg-8" style="background-image: url(../../AppData/BaiViet/AnhBia.jpg);">
+	<div class="container space-top-xl-3 py-6 py-xl-0">
+		<div class="row justify-content-center py-xl-4">
+			<!-- Info -->
+			<div class="py-xl-10 py-5">
+				<h1 class="font-size-40 font-size-xs-30 text-white font-weight-bold mb-0">Chi tiết bài viết</h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb breadcrumb-no-gutter justify-content-center mb-0">
+						<li class="breadcrumb-item font-size-14"><a class="text-white" href="@Url.Action("Index","TrangChu",new{area = ""})">Trang chủ</a></li>
+						<li class="breadcrumb-item font-size-14"><a class="text-white" href="@Url.Action("Index","BaiViet",new{area = ""})">Bài viết</a></li>
+						<li class="breadcrumb-item custom-breadcrumb-item font-size-14 text-white active" aria-current="page">Chi tiết bài viết</li>
+					</ol>
+				</nav>
+			</div>
+			<!-- End Info -->
+		</div>
+	</div>
+</div>
+<!-- End Hero Section -->
+<div class="mb-6 mb-lg-8 pb-lg-1 pt-1">
+	<div class="container mb-5 mb-lg-9">
+		<div class="row">
+			<div class="col-lg-8 col-xl-9" style="">
+				<div class="js-slick-carousel u-slick mb-4" data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-centered--y rounded-circle" data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-lg-3 ml-xl-5" data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-lg-3 mr-xl-5">
+					@{
+						var anhmang = !string.IsNullOrEmpty(Model.ListImg) ? Model.ListImg.Split(',') : new string[0];
+
+
+						for (int i = 0; i <= 4; i++)
+						{
+							string anhThucTe;
+							if (i < anhmang.Length)
+							{
+								anhThucTe = Common.GetImagePath(anhmang[i]) == "/AppData/no-image.png"
+								? "/AppData/BaiViet/BaiVietMacDinh.jpg"
+								: anhmang[i];
+							}
+							else
+							{
+								anhThucTe = "/AppData/BaiViet/BaiVietMacDinh.jpg"; // Nếu không có ảnh, dùng ảnh mặc định
+							}
+							<div class="js-slide bg-img-hero-center min-height-450 rounded-xs"
+								 style="background-image: url('@anhThucTe') ; border-radius: 10px;"></div>
+
+						}
+					}
+
+				</div>
+
+				<h5 class="font-weight-bold font-size-21 text-gray-3">
+					<a href="blog-single.html">@Model.Name</a>
+				</h5>
+				<div class="mb-3">
+					<a class="mr-3 pr-1" href="#">
+						<span class="font-weight-normal text-gray-3">@Common.GetDateTimeConvert(Model.DateCreate)</span>
+					</a>
+					<a href="#">
+						<span class="text-primary font-weight-normal">@ViewBag.NameType</span>
+					</a>
+				</div>
+				<p class="text-lh-lg text-gray-1 mb-5" style="text-align: justify;">
+					@Html.Raw(Model.Contents)
+				</p>
+				<div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+					<div class="d-flex align-items-center">
+						<span class="fw-bold text-dark font-size-20">Chủ đề:&nbsp;</span>
+					</div>
+
+					@{
+						var tags = Model.Tag?.Split(",");
+						if (tags != null)
+						{
+							foreach (var tag in tags)
+							{
+								<span class="mx-2 bg-primary text-white rounded-pill px-3 py-2 font-size-14 transition-3d-hover">
+									@tag.Trim()
+								</span>
+							}
+						}
+					}
+				</div>
+				<div class="mb-5 pb-1">
+					<div class="d-md-flex justify-content-between align-items-center">
+						@* Bài viết trước *@
+						<div class="text-md-left">
+							@if (ViewBag.PreviousPost != null)
+							{
+								var prev = (WEBSITE_TRAVELBOOKING.Models.SysBlog)ViewBag.PreviousPost;
+								<a class="d-block text-color-1" href="@Url.Action("ChiTiet", "BaiViet", new {area = "", nameblog = @Common.GenerateSlug(prev.Name), id = prev.Id })">
+									<div class="d-flex justify-content-center justify-content-md-start">
+										<i class="flaticon-left-arrow font-size-15 mr-2"></i>
+										<span class="font-weight-normal font-size-15">Bài viết trước</span>
+									</div>
+									<div class="font-weight-normal ml-md-4 mb-0 pt-md-1 text-center text-md-left">
+										@prev.Name
+									</div>
+								</a>
+							}
+						</div>
+
+						@* Bài viết sau *@
+						<div class="text-md-right">
+							@if (ViewBag.NextPost != null)
+							{
+								var next = (WEBSITE_TRAVELBOOKING.Models.SysBlog)ViewBag.NextPost;
+								<a class="d-block text-color-1" href="@Url.Action("ChiTiet", "BaiViet", new {area = "", nameblog = @Common.GenerateSlug(next.Name), id = next.Id })">
+									<div class="d-flex justify-content-center justify-content-md-end">
+										<span class="font-weight-normal font-size-15">Bài viết sau</span>
+										<i class="flaticon-right-arrow font-size-15 ml-2"></i>
+									</div>
+									<div class="font-weight-normal mr-md-4 mb-0 pt-md-1 text-center text-md-left">
+										@next.Name
+									</div>
+								</a>
+							}
+						</div>
+					</div>
+				</div>
+				@{
+					if (allBinhluan == null || !allBinhluan.Any())
+					{
+
+					}
+					else
+					{
+						<div id="binhluan-container">
+							@await Html.PartialAsync("BinhLuan", ViewBag.alllBinhLuan as List<BinhLuanBaiViet>)
+						</div>
+					}
+				}
+				@if (ViewBag.User != null && ViewBag.UserType == "Guest")
+				{
+					<div class="border border-color-8 mb-4"></div>
+
+					<h5 class="font-size-21 text-dark font-weight-bold mb-4">
+						Viết bình luận mới
+					</h5>
+
+					<form class="js-validate" id="form-binhluan" asp-controller="BaiViet" asp-area="" asp-action="BinhLuan">
+						<input type="hidden" name="idBaiViet" value="@Model.Id" />
+
+						<div class="form-group mb-4">
+							<textarea class="form-control border rounded p-3"
+									  rows="5"
+									  name="text"
+									  placeholder="Hãy nhập bình luận ở đây..."
+									  required></textarea>
+						</div>
+						<div class="text-center text-lg-left">
+							<button type="submit"
+									class="btn bg-primary text-white font-weight-bold px-4 py-2 rounded-pill shadow-sm transition-3d-hover">
+								Gửi bình luận
+							</button>
+						</div>
+					</form>
+				}
+			</div>
+			<div class="col-lg-4 col-xl-3">
+
+				<!-- List -->
+				<ul id="sidebarNav" class="custom-dropdown list-unstyled border border-color-7 rounded pt-4 pb-1 mb-5">
+					<h5 class="font-weight-bold font-size-22 text-gray-6 mb-2 pb-1 px-4">Những bài viết mới nhất</h5>
+					<ul class="list-unstyled px-3">
+						@{
+							if (!blogInDay.Any())
+							{
+								<p>Hôm nay chưa có bài viết mới nào</p>
+							}
+							else
+							{
+								foreach (var baiviet in blogInDay)
+								{
+									var anh = Common.GetImagePath(baiviet.ListImg?.Split(',').FirstOrDefault()) == "/AppData/no-image.png" ? "/AppData/BaiViet/BaiVietMacDinh.jpg" : baiviet.ListImg?.Split(',').FirstOrDefault();
+
+									<li class="mb-3 d-flex align-items-center">
+										<a href="@Url.Action("ChiTiet","BaiViet",new{ area="",nameblog = @Common.GenerateSlug(baiviet.Name), id = baiviet.Id})">
+											<img src="@anh" alt="Ảnh bài viết" style="width: 70px; height: 70px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+										</a>
+										<div>
+											<div class="text-secondary font-size-12">@Common.GetDateTimeConvert(baiviet.DateCreate)</div>
+											<a href="@Url.Action("ChiTiet","BaiViet",new{ area="",nameblog = @Common.GenerateSlug(baiviet.Name), id = baiviet.Id})" class="line-ellipsis" style="color: #333; font-weight: bold;">
+												@baiviet.Name
+											</a>
+										</div>
+									</li>
+								}
+							}
+						}
+					</ul>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="border border-color-8"></div>
+@section Scripts {
+	<script>
+		document.getElementById('form-binhluan').addEventListener('submit', async function (e) {
+			e.preventDefault();
+
+			const form = e.target;
+			const formData = new FormData(form);
+
+			const response = await fetch(form.action, {
+				method: 'POST',
+				body: formData
+			});
+
+			if (response.ok) {
+				const html = await response.text();
+				document.getElementById('binhluan-container').innerHTML = html;
+				form.reset();
+			} else {
+				alert("Có lỗi xảy ra khi gửi bình luận.");
+			}
+		});
+	</script>
+}

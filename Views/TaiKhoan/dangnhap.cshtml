@@ -1,0 +1,291 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.AccountLoginForm
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+
+    Layout = "_LayoutTaiKhoan.cshtml";
+}
+
+<!-- end start -->
+<div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-4 col-lg-5">
+                <div class="card">
+
+                    <!-- Logo -->
+                    <div class="card-header py-2 text-center bg-primary">
+                        <h3 class="text-white text-center pb-0 fw-bold">Đăng nhập</h3>
+                        @* <a href="index.html">
+                        <span><img src="~/assets/images/logo.png" alt="logo" height="22"></span>
+                        </a> *@
+                    </div>
+
+                    <div class="card-body">
+
+                        @* <div class="text-center w-75 m-auto">
+                        <h4 class="text-dark-50 text-center pb-0 fw-bold">Đăng ký</h4>
+                        <p class="text-muted mb-2">
+                        Enter your email address and password to access admin panel.
+                        </p>
+                        </div> *@
+
+
+                        <div class="tab-content">
+                            <div class="tab-pane show active">
+                                
+                                <!--Tab-->
+                                <div class="tab-content">
+
+                                    <!--Canhan-->
+                                    <div class="tab-pane show active">
+                                        <form asp-action="dangnhap" asp-controller="taikhoan" asp-area="null" method="post">
+                                           
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="yourname" class="form-label">Email hoặc số điện thoại</label>
+                                                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Email hoặc số điện thoại" } })
+
+                                            </div>
+                                            
+                                            
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="password" class="form-label">Mật khẩu</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="password" id="Password" name="Password" class="form-control"
+                                                           placeholder="Nhập mật khẩu" required="">
+                                                    <div class="input-group-text" data-password="false">
+                                                        <span class="password-eye"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="mb-2">
+                                                <a href="@Url.Action("quenmatkhau", "taikhoan")"
+                                                   class="text-muted float-end">
+                                                    <small>
+                                                        Quên mật khẩu?
+                                                    </small>
+                                                </a>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           id="checkbox-signin" checked>
+                                                    <label class="form-check-label" for="checkbox-signin">
+                                                        Ghi nhớ tài khoản
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="mb-3 mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                            </div> -->
+                                            <div class="d-grid mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit" id="btnRegister">
+                                                    <i class="mdi mdi-login"></i> Đăng nhập
+                                                </button>
+                                            </div>
+
+                                            <!-- social-->
+                                            <div class="text-center mt-3">
+                                                <p class="text-muted font-16">Đăng nhập bằng</p>
+                                                <ul class="social-list list-inline m-1">
+                                                    <li class="list-inline-item">
+                                                        <a href="javascript: void(0);"
+                                                           class="social-list-item border-primary text-primary">
+                                                            <i class="mdi mdi-facebook"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <a href="@Url.Action("RegisterGoogle","taikhoan", new {roleID = 0})"
+                                                           class="social-list-item border-danger text-danger">
+                                                            <i class="mdi mdi-gmail"></i>
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--Canhan-->
+
+
+                                </div>
+
+                                <!--Tab-->
+
+                            </div> <!-- end preview-->
+                        </div>
+
+
+
+                    </div> <!-- end card-body -->
+
+                    <div class="card-footer">
+                        <footer class="footer footer-alt">
+                            <p class="text-muted mt-3">
+                                Bạn chưa có tài khoản? <a href="@Url.Action("dangky","taikhoan")"
+                                                          class="text-muted ms-1"><b>Đăng ký</b></a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- end row -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<script>
+    //1 register
+    //2 forgot
+    function getCode(type) {
+
+        $("#emailaddress").prop("disabled", true);
+
+        var email = $("#emailcanhan").val().trim();
+        $.ajax({
+            url: "SendEmailOTP",
+            type: "GET",
+            data: { toEmail: email, type: type },
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            success: function (res) {
+                if (res.success) {
+
+                    $("#emailaddress").prop("disabled", false);
+                } else {
+                    $("#emailaddress").prop("disabled", false);
+                }
+            },
+            error: function () {
+                $("#emailaddress").prop("disabled", false);
+
+            }
+        });
+    }
+
+</script>
+
+@* Xử lý tab active change value input *@
+@* <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
+
+        const activeTab = localStorage.getItem("activeTab");
+        if (activeTab) {
+            const tabTrigger = document.querySelector(`[data-bs-toggle="tab"][href="${activeTab}"]`);
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+        }
+
+
+        tabTriggers.forEach(function (tab) {
+            if (tab.hash == "#cainhan") {
+
+            }
+
+
+            tab.addEventListener('shown.bs.tab', function (event) {
+                const targetId = event.target.getAttribute('href'); // ex: "#home", "#profile"
+
+                if (targetId === "#cainhan") {
+                    document.getElementById('IdRole').value = "2";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký';
+                } else if (targetId === "#doitac") {
+                    document.getElementById('IdRole').value = "3";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký đối tác';
+                }
+            });
+        });
+    });
+</script> *@
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabKey = "activeTab";
+        const input = document.getElementById("IdRole");
+
+        // 1. Tự động kích hoạt tab đã lưu
+        const activeTab = localStorage.getItem(tabKey);
+        if (activeTab) {
+
+            // Xóa active cũ
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(el => {
+                el.classList.remove('active');
+                el.setAttribute('aria-expanded', 'false');
+            });
+
+
+            const tabTrigger = document.querySelector(`[data-bs-toggle="tab"][href="${activeTab}"]`);
+            if (tabTrigger) {
+
+
+                //new bootstrap.Tab(tabTrigger).show();
+                new bootstrap.Tab(tabTrigger).show();
+                tabTrigger.classList.add('active');
+                tabTrigger.setAttribute('aria-expanded', 'true');
+
+                // Cập nhật input theo tab
+                if (activeTab === "#cainhan") {
+                    input.value = "2";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký';
+                } else if (activeTab === "#doitac") {
+                    input.value = "3";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký đối tác';
+
+                }
+            }
+        } else {
+            activeTab = "#canhan"
+            const tabTrigger = document.querySelector(`[data-bs-toggle="tab"][href="${activeTab}"]`);
+            localStorage.setItem(tabKey, activeTab);
+            input.value = "2";
+
+            new bootstrap.Tab(tabTrigger).show();
+            tabTrigger.classList.add('active');
+            tabTrigger.setAttribute('aria-expanded', 'true');
+
+        }
+
+        // 2. Lắng nghe khi user đổi tab
+        const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabTriggers.forEach(tab => {
+            tab.addEventListener("shown.bs.tab", function (e) {
+                const tabId = e.target.getAttribute("href");
+                localStorage.setItem(tabKey, tabId);
+
+                // Thay đổi giá trị input theo tab
+                if (tabId === "#cainhan") {
+                    input.value = "2";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký';
+
+                } else if (tabId === "#doitac") {
+                    input.value = "3";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký đối tác';
+                              
+                }
+            });
+        });
+    });
+</script>

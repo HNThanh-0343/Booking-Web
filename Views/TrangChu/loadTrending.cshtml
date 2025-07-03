@@ -1,0 +1,169 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@model List<WEBSITE_TRAVELBOOKING.Models.CatCategory>
+@{
+    var getHotel = ViewBag.getHotel as List<HotelViewHome>;
+    var GetAminitise = ViewBag.GetAminitise as List<CatAminitieseRoom>;// toàn bộ tiện ích
+    var likedHotelIds = ViewBag.LikedHotelIds as List<int> ?? new List<int>();
+    var User = ViewBag.User;
+}
+<div class="container space-1">
+    <div class="w-md-80 w-lg-50 text-center mx-md-auto my-3">
+        <h2 class="section-title text-black font-size-30 mb-0" style="font-weight: bold">
+            Đang thịnh hành
+        </h2>
+    </div>
+    <!-- Nav Classic -->
+    <ul class="nav tab-nav-pill flex-nowrap pb-4 pb-lg-5 tab-nav justify-content-lg-center" role="tablist">
+        @{
+            var isFirst = true;
+            foreach (var item in Model)
+            {
+                var actives = isFirst ? "active" : "";
+                var ariaSelected = isFirst ? "true" : "false";
+                var tabId = $"pills-{item.Id}-example-t1"; ;
+                // var panelId = $"tabcontent-{item.Id}";
+                // var IdTab = $"pills-{item.Name}-t1";
+                <li class="nav-item" role="presentation" style="cursor:pointer;user-select: none;">
+                    <a class="nav-link font-weight-medium @actives" role="tab" aria-selected="@ariaSelected" aria-controls="@tabId" data-toggle="pill" id="@tabId-tab" onclick="getPostInIdCate(this,'@item.Id')">
+                        <div class="d-flex flex-column flex-md-row  position-relative text-dark align-items-center">
+                            <span class="tabtext font-weight-semi-bold" style="font-weight: bold; font-size: 20px">@item.Name</span>
+                        </div>
+                    </a>
+                </li>
+                isFirst = false;
+            }
+        }
+    </ul>
+    <!-- End Nav Classic -->
+    <div class="tab-content cardHome">
+        <div class="tab-pane active  fade show">
+            @{
+                if (getHotel == null || !getHotel.Any())
+                {
+                    <p style="color:black; text-align:center;">Không có loại du lịch nào. Mong quý khách thông cảm !!!</p>
+                }
+                else
+                {
+                    <div class="row" id="LoadPostClick">
+                        @foreach (var itemPost in getHotel)
+                        {
+                            var image = Common.GetImagePath(itemPost.Image);
+                            var liked = likedHotelIds.Contains(itemPost.Id) ? true : false;
+                            <div class="col-6 col-md-6 col-lg-4 col-xl-3 mb-3 mb-md-4 pb-1">
+                                <div class="card mb-1 transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative mb-1">
+                                        <a href="@itemPost.Url" class="d-block">
+                                            <img class="card-img-top imgHotel" src="@image" alt="img">
+                                        </a>
+                                        @if (User != null)
+                                        {
+                                            <div id="Like" class="position-absolute top-0 right-0 pt-3 pr-3">
+                                                <button type="button"
+                                                        id="btnLike-@itemPost.Id"
+                                                        class="btn btn-sm btn-icon rounded-circle btn-like position-absolute"
+                                                        style="top: 10px; right: 10px; background-color: white;"
+                                                        data-hotel-id="@itemPost.Id"
+                                                        data-liked="@(liked ? "true" : "false")"
+                                                        title="Yêu thích">
+                                                    @if (liked)
+                                                    {
+                                                        <span class="fa-solid fa-heart text-danger"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fa-regular fa-heart text-dark"></span>
+                                                    }
+                                                </button>
+                                            </div>
+                                        }                                        
+                                    </div>
+                                    <div class="card-body pl-2 pr-2 py-0">
+                                        <div class="starts">
+                                            <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                                <div class="green-lighter mr-2">
+                                                    @for (int i = 0; i < 5; i++)
+                                                    {
+                                                        if (i < @itemPost.NumberStar)
+                                                        {
+                                                            <small class="fas fa-star"></small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="far fa-star"></small>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @{
+                                            if (itemPost.Name.Length > 40)
+                                            {
+                                                <a href="@itemPost.Url" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus text-one_line" data-tooltip="@itemPost.Name">
+                                                    <div class="NameCustom">
+                                                        @itemPost.Name
+                                                    </div>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@itemPost.Url" class="card-title NameHotel text-dark fw-bold titleCard_cus text-one_line  mb-0">
+                                                    @itemPost.Name
+                                                </a>
+                                            }
+                                        }
+                                        <div class="priceCard">
+                                            <small class="color_card__Price">Từ:</small>
+                                            <span class="ViewPrice">
+                                                @itemPost.Price?.ToString("N0") VNĐ
+                                            </span>
+                                        </div>
+                                        <div class="d-flex bd-highlight font-size-14 text-gray-1 color_card__Price">
+                                            <div class="bd-highlight">
+                                                <i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+                                            </div>
+
+                                            @{
+                                                if (itemPost.Local.Length > 40)
+                                                {
+                                                    <div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@itemPost.Local">
+                                                        <div class="localCustom text-one_line">
+                                                            @itemPost.Local
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="localCustom text-one_line">
+                                                        @itemPost.Local
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function getPostInIdCate(el,idPost){
+       $('.tab-nav .nav-link').removeClass('active');
+    el.classList.add('active');
+       $("#LoadPostClick").load("/TrangChu/loadPostIdCate",{IdPost:idPost});
+    }
+    $(document).ready(function () {
+    $(".btn-like").click(function () {
+        var btn = $(this);
+        var hotelId = btn.data("hotel-id");
+
+        handleLikeButtonClick("/KhachSan/UpdateLike", hotelId, btn)
+        });
+    });
+</script>

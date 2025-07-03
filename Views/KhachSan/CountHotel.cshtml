@@ -1,0 +1,17 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="font-size-21 font-weight-bold mb-0 text-lh-1">
+        @{
+            var username = ViewBag.userName == null ? $"Hiện có {ViewBag.HotelsCountByUser} Khách sạn trống" : $"{ViewBag.userName}: Hiện có {ViewBag.HotelsCountByUser} Khách sạn trống";
+        }
+        @username
+    </h3>
+    <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link font-size-22 p-0 ml-2 active" id="pills-one-example1-tab" data-toggle="pill" href="#pills-one-example1" role="tab" aria-controls="pills-one-example1" aria-selected="false">
+                <div class="d-md-flex justify-content-md-center align-items-md-center">
+                    <i class="fa fa-th"></i>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

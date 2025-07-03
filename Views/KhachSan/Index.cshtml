@@ -1,0 +1,560 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.ModelHotel>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Khách sạn";
+
+	var countryCounts = ViewBag.getNameContry as List<WEBSITE_TRAVELBOOKING.Models.CountryHotelCountViewModel>;
+	var AllContry = ViewBag.AllContry as List<WEBSITE_TRAVELBOOKING.Models.CountryViewModel>;
+	var AllHotel = ViewBag.AllHotel as List<WEBSITE_TRAVELBOOKING.Models.HotelViewModel>;
+	// var visibleCountries = countryCounts?.Take(5).ToList();
+	// var hiddenCountries = countryCounts?.Skip(5).ToList();
+	// var hiddenCount = hiddenCountries?.Count ?? 0;
+	ViewData["Detail"] = true;
+	var s = Model;
+	var tinhThanhSuggestions = ViewBag.TinhThanh as List<String>;
+
+}
+
+
+<style>
+	.center-alert {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		max-width: 600px;
+		width: 100%;
+		margin-top: 50px;
+	}
+
+	/* Khi hover từng dòng gợi ý */
+	.list-group-item-action:hover {
+		background-color: #e6f0ff; /* nền xanh nhạt */
+		border-left: 4px solid #006ce4; /* viền trái nổi bật */
+		color: #006ce4;
+		font-weight: 500;
+	}
+
+	.js-slick-carousel {
+		margin-left: 0 !important;
+		text-align: left !important;
+	}
+
+		.js-slick-carousel .slick-track {
+			margin-left: 0 !important;
+		}
+
+	.btn-circle-soft {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: none;
+		background-color: #f0f4ff; /* Màu xanh nhạt dịu */
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		position: relative;
+		margin-bottom: 10px;
+	}
+
+		.btn-circle-soft:hover {
+			background-color: #e0eaff; /* Màu hover nhạt hơn */
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		.btn-circle-soft:active {
+			transform: scale(0.95);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		.btn-circle-soft i {
+			color: #0d6efd; /* Màu xanh chủ đạo */
+			font-size: 1.25rem;
+			transition: transform 0.3s ease;
+		}
+
+	.search-label {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		white-space: nowrap;
+		font-size: 0.8rem;
+		color: #0d6efd;
+		margin-top: 0.25rem;
+		display: none;
+	}
+
+	.rotate-icon {
+		transform: rotate(180deg);
+	}
+
+	.accordion .card-btn {
+		transition: background-color 0.3s ease;
+		border-radius: 0.5rem;
+		background-color: #f8f9fa;
+	}
+
+		.accordion .card-btn:hover {
+			background-color: #e9ecef;
+		}
+
+	.card-btn-arrow .fas {
+		transition: transform 0.3s ease;
+	}
+
+	.collapsed .card-btn-arrow .fas {
+		transform: rotate(0deg);
+	}
+
+	.card-btn[aria-expanded="true"] .card-btn-arrow .fas {
+		transform: rotate(180deg);
+	}
+
+	main {
+		background: #f9fafb !important;
+	}
+</style>
+
+
+<div class="container-fluid pt-5 pt-xl-8">
+	<div class="row mb-5 mb-lg-8 mt-xl-1">
+		<div class="col-12 col-lg-4 col-xl-2 order-lg-1">
+			<div class="card sidebar-mobile d-lg-block" id="sidebar">
+				<div class="d-flex justify-content-end pr-3 d-lg-none">
+					<div class="btn btn-primary btn-sm px-2 py-1 rounded-circle" onclick="searchMobile.toggle()">
+						<i class="fa-solid fa-circle-xmark"></i>
+					</div>
+				</div>
+				<div class="mb-0 w-100">
+					<div class="sidenav rounded-xs">
+						<!-- Accordiaon -->
+						<div id="PriceAccordion" class="accordion rounded shadow-none border-bottom">
+							<div class="card-collapse" id="PriceHeadingOne">
+								<h3 class="mb-0">
+									<button type="button" class="btn btn-link btn-block card-btn py-0 px-3 text-lh-2 collapsed" data-toggle="collapse" data-target="#shopPriceOne" aria-expanded="false" aria-controls="shopPriceOne">
+										<span class="row align-items-center">
+											<span class="col-9">
+												<span class="font-weight-bold font-size-18px text-dark mb-3">Giá</span>
+											</span>
+											<span class="col-3 text-right">
+												<span class="card-btn-arrow">
+													<span class="fas fa-chevron-down small"></span>
+												</span>
+											</span>
+										</span>
+									</button>
+								</h3>
+							</div>
+							<div id="shopPriceOne" class="collapse show" aria-labelledby="PriceHeadingOne" data-parent="#PriceAccordion">
+								<div class="card-body pt-2 px-3">
+									<div>
+										<div class="d-flex justify-content-between mb-3">
+											<span id="amount-min" class=""></span>
+											<span id="amount-max"></span>
+										</div>
+										<div class="price-range-slider px-2">
+											<div id="slider-range" class="range-bar"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="SearchAccordion" class="accordion rounded shadow-none border-bottom">
+							<div class="card-collapse" id="shopSearchHeadingOne">
+								<h3 class="mb-0">
+									<button type="button" class="btn btn-link btn-block card-btn py-0 px-3 text-lh-2" data-toggle="collapse" data-target="#shopSearchOne" aria-expanded="false" aria-controls="shopSearchOne">
+										<span class="row align-items-center">
+											<span class="col-9">
+												<span class="font-weight-bold font-size-18px text-dark mb-3">Tìm kiếm</span>
+											</span>
+											<span class="col-3 text-right">
+												<span class="card-btn-arrow">
+													<span class="fas fa-chevron-down small"></span>
+												</span>
+											</span>
+										</span>
+									</button>
+								</h3>
+							</div>
+							<div id="shopSearchOne" class="collapse show" aria-labelledby="shopSearchHeadingOne" data-parent="#SearchAccordion">
+								<div class="sidebar border-color-1 rounded-xs">
+									<div class="p-3 mb-1">
+										<!-- Input -->
+										<span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Nhập địa điểm / Tên Khách sạn</span>
+										<div class="mb-4">
+											<div class="input-group border-bottom border-width-2 border-color-1">
+												<i class="flaticon-pin-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
+												<input type="text" name="keyword" id="locationInput" class="form-control font-weight-medium font-size-15 shadow-none hero-form border-0 p-0" placeholder="Bạn muốn đến đâu?" autocomplete="off">
+											</div>
+
+											<div id="suggestionBox" class="list-group position-absolute w-100 shadow" style="z-index: 999; display: none; max-height: 300px; overflow-y: auto;">
+												<!-- Suggestion items sẽ được thêm bằng JS -->
+											</div>
+										</div>
+
+										<!-- End Input -->
+										<!-- Input -->
+										<span class="d-block text-gray-1 font-weight-normal mb-0 text-left">Ngày đến - Ngày đi</span>
+										<div class="mb-4">
+											<div class="border-bottom border-width-2 border-color-1">
+												<div id="datepickerWrapperPick" class="u-datepicker input-group">
+													<div class="input-group-prepend">
+														<span class="d-flex align-items-center mr-2 font-size-21">
+															<i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
+														</span>
+														<input id="checkInOut" class="js-range-datepicker font-weight-medium font-size-15 ml-1 shadow-none form-control hero-form bg-transparent border-0 flatpickr-input p-0" type="text" placeholder="Ngày đi - Ngày đến" aria-label="Ngày đến -Ngày đi" readonly style="width: 217.5px;" />
+													</div>
+												</div>
+												<!-- End Datepicker -->
+											</div>
+										</div>
+										<!-- End Input -->
+										<!-- Input -->
+										<span class="d-block text-gray-1 font-weight-normal mb-0 text-left">Số phòng và số người</span>
+										<div class="mb-4 position-relative">
+											<div class="border-bottom border-width-2 border-color-1">
+												<a id="basicDropdownClickInvoker" class="dropdown-nav-link dropdown-toggle flex-horizontal-center pt-3 pb-2" href="javascript:;" role="button" aria-controls="basicDropdownClick" aria-haspopup="true" aria-expanded="false" data-unfold-event="click" data-unfold-target="#basicDropdownClick" data-unfold-type="css-animation" data-unfold-duration="300" data-unfold-delay="300" data-unfold-hide-on-scroll="true" data-unfold-animation-in="slideInUp" data-unfold-animation-out="fadeOut">
+													<i class="flaticon-add-group d-flex align-items-center mr-3 font-size-20 text-primary font-weight-semi-bold"></i>
+													<span id="roomGuestSummary" class="text-black font-weight-medium font-size-15 mr-auto">Phòng - Người</span>
+												</a>
+												<div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col m-0 u-unfold--css-animation u-unfold--hidden fadeOut" aria-labelledby="basicDropdownClickInvoker" style="animation-duration: 300ms;">
+													<div class="w-100 py-2 px-3 mb-3">
+														<div class="js-quantity mx-3 row align-items-center justify-content-between">
+															<span class="d-block font-size-16 text-secondary font-weight-medium">Số phòng</span>
+															<div class="d-flex">
+																<a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-minus btn-icon__inner"></small>
+																</a>
+																<input name="rooms" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+																<a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-plus btn-icon__inner"></small>
+																</a>
+															</div>
+														</div>
+													</div>
+													<div class="w-100 py-2 px-3 mb-3">
+														<div class="js-quantity mx-3 row align-items-center justify-content-between">
+															<span class="d-block font-size-16 text-secondary font-weight-medium">Người lớn</span>
+															<div class="d-flex">
+																<a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-minus btn-icon__inner"></small>
+																</a>
+																<input name="adults" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+																<a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-plus btn-icon__inner"></small>
+																</a>
+															</div>
+														</div>
+													</div>
+													<div class="w-100 py-2 px-3">
+														<div class="js-quantity mx-3 row align-items-center justify-content-between">
+															<span class="d-block font-size-16 text-secondary font-weight-medium">Trẻ nhỏ</span>
+															<div class="d-flex">
+																<a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-minus btn-icon__inner"></small>
+																</a>
+																<input name="children" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+																<a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="#">
+																	<small class="fas fa-plus btn-icon__inner"></small>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- End Input -->
+
+										<div class="text-center">
+											<button class="btn btn-primary py-2 btn-block" onclick="hotel.btnSearch(); searchMobile.toggle()">
+												<i class="flaticon-magnifying-glass mr-1 font-size-17"></i>Tìm kiếm
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="RatingAccordion" class="accordion rounded shadow-none border-bottom">
+							<div class="card-collapse" id="shopRatingHeadingOne">
+								<h3 class="mb-0">
+									<button type="button" class="btn btn-link btn-block card-btn py-0 px-3 text-lh-2 collapsed" data-toggle="collapse" data-target="#shopRatingOne" aria-expanded="false" aria-controls="shopRatingOne">
+										<span class="row align-items-center">
+											<span class="col-9">
+												<span class="font-weight-bold font-size-18px text-dark mb-3">Số sao</span>
+											</span>
+											<span class="col-3 text-right">
+												<span class="card-btn-arrow">
+													<span class="fas fa-chevron-down small"></span>
+												</span>
+											</span>
+										</span>
+									</button>
+								</h3>
+							</div>
+							<div id="shopRatingOne" class="collapse show" aria-labelledby="shopRatingHeadingOne" data-parent="#RatingAccordion">
+								<div class="card-body pt-0 mt-1 px-5">
+									<!-- Checkboxes -->
+									@{
+										for (int i = 5; i >= 1; i--)
+										{
+											var textStartForLabel = $"star{i}";
+											<div class="form-group font-size-14 text-lh-md text-secondary mb-3">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input filter-rating" id="@textStartForLabel" data-stars="@i">
+													<label class="custom-control-label text-lh-inherit text-color-1" for="@textStartForLabel" style="cursor: pointer;">
+														<span class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary">
+															<span class="green-lighter ml-1 letter-spacing-2">
+																@{
+																	for (int j = 1; j <= i; j++)
+																	{
+																		<i class="fas fa-star"></i>
+																	}
+																}
+															</span>
+														</span>
+													</label>
+												</div>
+											</div>
+										}
+									}
+								</div>
+							</div>
+						</div>
+						<div id="cityCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+							<div class="border-0">
+								<div class="card-collapse" id="cityCategoryHeadingOne">
+									<h3 class="mb-0">
+										<button type="button" class="btn btn-link btn-block card-btn py-0 px-3 text-lh-2 collapsed" data-toggle="collapse" data-target="#cityCategoryOne" aria-expanded="false" aria-controls="cityCategoryOne">
+											<span class="row align-items-center">
+												<span class="col-9">
+													<span class="font-weight-bold font-size-18px text-dark mb-3">Thành phố</span>
+												</span>
+												<span class="col-3 text-right">
+													<span class="card-btn-arrow">
+														<span class="fas fa-chevron-down small"></span>
+													</span>
+												</span>
+											</span>
+										</button>
+									</h3>
+								</div>
+
+								<div id="cityCategoryOne" class="collapse show" aria-labelledby="cityCategoryHeadingOne" data-parent="#cityCategoryAccordion">
+									<div class="card-body pt-0 mt-1 px-5 pb-4">
+										@if (countryCounts != null)
+										{
+											foreach (var item in countryCounts.Take(5))
+											{
+												var name = item.Name;
+												var count = item.Count;
+												var id = "country_" + name.ToLower().Replace(" ", "").Replace(".", "").Replace(",", "").Replace("'", "");
+
+												<div class="form-group font-size-14 text-lh-md text-secondary mb-3 flex-center-between">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input country-checkbox" id="@id" name="countryFilter" value="@item.Id" data-id="@item.Id">
+														<label class="custom-control-label" for="@id">@name</label>
+													</div>
+													<span>@count</span>
+												</div>
+											}
+										}
+
+										<!-- End Checkboxes -->
+										<!-- View More - Collapse -->
+										@if (countryCounts != null && countryCounts.Any())
+										{
+											<div class="collapse" id="collapseMoreCountries">
+												@foreach (var item in countryCounts.Skip(5))
+												{
+													var name = item.Name;
+													var count = item.Count;
+													var id = "country_" + name.ToLower().Replace(" ", "").Replace(".", "").Replace(",", "").Replace("'", "");
+													<div class="form-group font-size-14 text-lh-md text-secondary mb-3 flex-center-between">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input country-checkbox" id="@id" name="countryFilter" value="@item.Id" data-id="@item.Id">
+															<label class="custom-control-label" for="@id">@name</label>
+														</div>
+														<span>@count</span>
+													</div>
+												}
+											</div>
+											<a class="link link-collapse small font-size-1" data-toggle="collapse"
+											   href="#collapseMoreCountries" role="button" aria-expanded="false" aria-controls="collapseMoreCountries">
+												<span class="link-collapse__default font-size-14">Hiển thị thêm (@(countryCounts.Count - 5))</span>
+												<span class="link-collapse__active font-size-14">Đóng Hiển thị</span>
+											</a>
+											<!-- End Link -->
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Accordion -->
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-lg-8 col-xl-10 order-md-1 order-lg-2 pb-5 pb-lg-0 cardFilter">
+			<div class="card mb-5">
+				<div class="u-slick__tab card-body">
+					<div class="tab-content loadUsingPage" id="loadFilter">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section styleAdd {
+	<!-- jQuery UI CSS -->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+}
+@section scriptsAdd {
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+	<script src="~/assets/user/js/InitSearch.js"></script>
+	<script src="~/assets/vendor/ion-rangeslider/js/ion.rangeslider.min.js"></script>
+	<script>
+			var priceMax='@ViewBag.getPriceMax';
+			var priceMin=0;
+			window.addEventListener("DOMContentLoaded", function () {
+			function reloadWithUrlParams() {
+				const urlParams = new URLSearchParams(window.location.search);
+				const currentUrl = new URL(window.location.href);
+				const locationParam = urlParams.get("location");
+				const dateRangeParam = urlParams.get("dateRange");
+				const rooms = urlParams.get("rooms");
+				const adults = urlParams.get("adults");
+				const children = urlParams.get("children");
+				const GiaTu = parseInt(urlParams.get("GiaTu"), 10);
+				const GiaDen = parseInt(urlParams.get("GiaDen"), 10);
+				const start = urlParams.get("start");
+				const country = urlParams.get("country");
+				const sort = urlParams.get("sort");
+				const page = urlParams.get("page");
+				let hasParams = false;
+
+				if (locationParam) {
+					$("[name='keyword']").val(locationParam);
+					hasParams = true;
+				}
+				if (dateRangeParam) {
+					$("#checkInOut").val(dateRangeParam);
+					hasParams = true;
+				}
+
+				if (rooms && adults && children) {
+					$("[name='rooms']").val(rooms);
+					$("[name='adults']").val(adults);
+					$("[name='children']").val(children);
+					var totalguest = Number(adults) + Number(children);
+					const summaryText = `${rooms} phòng, ${totalguest} khách`;
+					document.getElementById('roomGuestSummary').textContent = summaryText;
+					hasParams = true;
+				}
+				if(GiaTu || GiaDen){
+					hasParams = true;
+				}
+				if(start){
+					$('.filter-rating:checked').map(function () {
+						return $(this).data('start');
+					}).get().join(',');
+					hasParams = true;
+				}
+				if(country){
+					$('.country-checkbox:checked').map(function () {
+						return $(this).data('country');
+					}).get().join(',');
+				}if(sort){
+					$('#ChangeSortKS').val(sort);
+					hasParams = true;
+				} if (page) {
+					currentUrl.searchParams.set("page", page);
+					hasParams = true;
+				} else {
+					currentUrl.searchParams.delete("page");
+				}
+				loadpage.reload('#loadFilter', 'Đang tải dữ liệu khách sạn...');
+				// Nếu có params -> gọi tìm kiếm, ngược lại load mặc định
+				if (hasParams) {
+					var url = new URL("/KhachSan/loadFilter", window.location.origin);
+
+					if (locationParam) url.searchParams.append("ksdc", locationParam);
+					var dates = []
+					if (dateRangeParam) {
+						dates=dateRangeParam.split(" đến ");
+						if (dates.length === 2) {
+							url.searchParams.append("ngayden", dates[0]);
+							url.searchParams.append("ngaydi", dates[1]);
+						}
+					}
+					if (rooms) url.searchParams.append("phong", rooms);
+					if (adults) url.searchParams.append("nguoilon", adults);
+					if (children) url.searchParams.append("connit", children);
+					if (GiaTu) url.searchParams.append("giatu", GiaTu);
+					if (GiaDen) url.searchParams.append("giaden", GiaDen);
+					if(start) url.searchParams.append("sao", start);
+					if(country) url.searchParams.append("thanhpho", country);
+					if(sort) url.searchParams.append("sort", sort);
+					if(page) url.searchParams.append("page", page);
+					
+					var data = {
+								ksdc:locationParam,// get địa chỉ, tên ks
+								ngayden:  dates.length ? dates[0] : null,
+								ngaydi: dates.length ? dates[1] : null ,
+								phong: rooms,
+								nguoilon: adults,
+								connit: children,
+								sao: start,//get sao
+								sort: sort,// get sắp xếp
+								thanhpho: country,// get sắp xếp
+								page:page,
+								giatu : GiaTu ? GiaTu : "",// get gia tu
+								giaden : GiaDen ? GiaDen : ""// get gia den
+							};
+
+					// $('#loadFilter').load(url.toString());
+					$('#loadFilter').load("/KhachSan/loadFilter", data, function (response, status, xhr) {
+						if (status === "success") {
+							console.log("Load filter thành công");
+						} else {
+							console.error("Lỗi khi load filter:", xhr);
+						}
+					});
+				}
+			
+				else {
+					
+					$('#loadFilter').load("/KhachSan/loadFilter");
+				}
+
+				if (window.innerWidth > 768) {
+					document.getElementById("shopSearchOne").classList.add("show");
+				}
+			}
+
+			reloadWithUrlParams();
+
+			window.addEventListener('popstate', function () {
+				reloadWithUrlParams();
+			});
+
+		});
+
+		// setupDatePicker("#checkInOut");
+		setupRoomGuestSummary();
+		var locationInput = document.getElementById('locationInput');
+		var tinhThanhList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(AllContry));
+		var hotelList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(AllHotel));
+		setupLocationAutocomplete(tinhThanhList, hotelList, locationInput);
+	</script>
+	<script>
+
+	</script>
+}
+

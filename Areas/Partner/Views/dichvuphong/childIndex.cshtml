@@ -1,0 +1,127 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysBooking>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+    var ListHotel = ViewBag.ListHotel as List<WEBSITE_TRAVELBOOKING.Models.SysHotel>;
+    var listRoom = ViewBag.listRoom as List<WEBSITE_TRAVELBOOKING.Models.SysRoom>;
+}
+<style>
+    .equal-first-col td:first-child {
+        white-space: nowrap;
+        width: 1%;
+    }
+
+    .ribbon-overlay--left {
+        position: absolute;
+        top: 32px;
+        left: -5px;
+        z-index: 2;
+        border-radius: 0.25rem;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .ribbon-overlay--right {
+        position: absolute;
+        top: 32px;
+        right: 15px;
+        z-index: 2;
+        border-radius: 0.25rem;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown-toggle.no-caret::before {
+        display: none !important;
+    }
+
+    .ribbon-overlay--right .dropdown-item:focus,
+    .ribbon-overlay--right .dropdown-item:hover {
+        color: rgb(253 253 253) !important;
+        background-color: #0acf97 !important;
+    }
+</style>
+<div class="row">
+    @{
+        foreach (var item in Model)
+        {
+            var getRoom = listRoom.FirstOrDefault(m => m.Id == item.BookingItemId);
+            if (getRoom == null)
+            {
+                continue;
+            }
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card mb-3 ribbon-box">
+                    <div class="position-relative">
+                        <div class="ribbon-overlay--left bg-success text-white px-3 py-1">
+                            Phòng @getRoom.NumRoom
+                        </div>
+                        <div class="ribbon-overlay--right bg-success text-white px-2 py-1">
+                            <div class="btn-group dropstart">
+                                <p class="dropdown-toggle no-caret m-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ri-more-2-line"></i>
+                                </p>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("chuyenphong", "dichvuphong", new {IdBooking = item.Id})" data-toggle='modal' data-sizeModal="modal-md">Chuyển phòng</a>
+                                    <a class="dropdown-item" href="@Url.Action("giahanphong", "dichvuphong", new {IdBooking = item.Id})" data-toggle='modal' data-sizeModal="modal-md">Gia hạn</a>
+                                    @{
+                                        if (item.CheckInDate == null)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("huyphong", "dichvuphong", new {IdBooking = item.Id})" data-toggle='modal' data-sizeModal="modal-md">Hủy phòng</a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-2 px-3">
+                            <img src="/assets/images/small/small-3.jpg" class="card-img-top" alt="...">
+                        </div>
+                    </div>
+                    <div class="card-body px-3 py-1 shadow-lg rounded bg-body">
+                        @{
+                            bool isLate = DateTime.Now > item.EndDate;
+                            if (!isLate)
+                            {
+                                <div class="d-grid">
+                                    <a href="@Url.Action("chinhSuaDichvuKhachSan", "dichvuphong", new {IdBooking = item.Id})" class="btn btn-success btn-sm" title="Thêm dịch vụ cho phòng" data-toggle='modal' data-sizeModal="modal-lg">Thêm dịch vụ</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex gap-2">
+                                    <a href="@Url.Action("chinhSuaDichvuKhachSan", "dichvuphong", new {IdBooking = item.Id})" class="btn btn-success btn-sm flex-fill" title="Thêm dịch vụ cho phòng" data-toggle='modal' data-sizeModal="modal-lg">Thêm dịch vụ</a>
+                                    <a href="@Url.Action("giahanphong", "dichvuphong", new {IdBooking = item.Id})" class="btn btn-warning btn-sm flex-fill" title="Thêm dịch vụ cho phòng" data-toggle='modal' data-sizeModal="modal-md">Gia hạn</a>
+                                </div>
+                            }
+                        }
+
+
+                        <div class="card-title mb-0">
+                        </div>
+                    </div> <!-- end card-body -->
+                </div> <!-- end card -->
+            </div>
+        }
+        if (Model.Count() == 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                <i class="ri-close-circle-line me-1 align-middle font-16"></i>
+                Hiện tại không có thông tin phòng đặt.
+            </div>
+        }
+    }
+</div>
+@{
+    if (Model.Count() > 0)
+    {
+        <div class="d-flex align-items-center justify-content-end py-1">
+            @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page, searchValue = ViewBag.searchValue }),
+                 PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+        </div>
+    }
+}

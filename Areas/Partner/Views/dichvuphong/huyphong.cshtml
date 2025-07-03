@@ -1,0 +1,66 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBooking;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Hủy đặt phòng";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="text" value="@Model.Id" name="Id" hidden>
+        <div class="row">
+            <div class="col-12 mb-2">
+                <p class="text-center">Thông tin đặt phòng</p>
+                <table class="table table-bordered border-info table-sm table-centered mb-0">
+                    <tr>
+                        <td>Họ tên:</td>
+                        <td>@(Model.IdUser == null ? Model.FullNameGuest : Model.IdUserNavigation.Name)</td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại:</td>
+                        <td>@(Model.IdUser == null ? Model.PhoneGuest : Model.IdUserNavigation.Phone)</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>@(Model.IdUser == null ? Model.EmailGuest : Model.IdUserNavigation.Email)</td>
+                    </tr>
+                    <tr>
+                        <td>Giá phòng:</td>
+                        <td>@Model.Price.ToString("N0") VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày nhận phòng:</td>
+                        <td>@Model.StartDate</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày trả phòng:</td>
+                        <td>@Model.EndDate</td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái:</td>
+                        <td>
+                            @(Model.Status == 1 ? "Đã thanh toán" : Model.Status == 2 ? ((Model.Deposit ?? 0) == 0 ? "Chưa đặt cọc" : $"Đã đặt cọc: {Model.Deposit:N0} đ") : "")
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center">
+                <span>Lý do</span>
+            </div>
+            <div class="col-10">
+                <div class="position-relative">
+                    <input type="text" name="Note" placeholder="Lý do hủy phòng" class="form-control" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("huyphong")" class="btn bg-success-subtle edit text-success waves-effect text-start  prevent-double-click">
+        Xác nhận
+    </button>
+</div>

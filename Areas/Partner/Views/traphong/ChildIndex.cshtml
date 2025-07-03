@@ -1,0 +1,163 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysBooking>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+    var ListHotel = ViewBag.ListHotel as List<WEBSITE_TRAVELBOOKING.Models.SysHotel>;
+    var listRoom = ViewBag.listRoom as List<WEBSITE_TRAVELBOOKING.Models.SysRoom>;
+}
+<style>
+    .equal-first-col td:first-child {
+    white-space: nowrap;
+    width: 1%;
+    }
+
+    .ribbon-overlay {
+    position: absolute;
+    top: 32px;
+    left: -5px;
+    z-index: 2;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .checkboxRoom.active {
+    display: block;
+    }
+
+    .checkboxRoom {
+    position: absolute;
+    top: 32px;
+    right: 20px;
+    z-index: 2;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    display: none;
+    }
+
+    .checkboxRoom .form-check-input {
+    width: 1.512em !important;
+    height: 1.512em !important;
+    }
+
+    .btnCheckoutOne.active {
+    display: none !important
+    }
+</style>
+<div class="row">
+    @{
+        foreach (var item in Model)
+        {
+            var getRoom = listRoom.FirstOrDefault(m => m.Id == item.BookingItemId);
+            if (getRoom == null)
+            {
+                continue;
+            }
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card mb-3 ribbon-box">
+                    <div class="position-relative checkoutMuiltImg">
+                        <div class="ribbon-overlay bg-success text-white px-3 py-1">
+                            Phòng @getRoom.NumRoom
+                        </div>
+                        <div class="checkboxRoom bg-success px-1 py-1">
+                            <input type="checkbox" class="form-check-input mt-0" name="" value="@item.Id" />
+                        </div>
+                        <div class="pt-2 px-3">
+                            <img src="/assets/images/small/small-3.jpg" class="card-img-top" alt="...">
+                        </div>
+                    </div>
+                    <div class="card-body px-3 py-1 shadow-lg rounded bg-body btnCheckoutOne">
+                        <table class="table table-borderless mb-0">
+                            <tr>
+                                <td class="pb-1 p-0 fw-bolder text-dark">Nhận phòng:</td>
+                                <td class="pb-1 p-0 fw-bolder text-dark">@item.StartDate.ToString("dd/MM HH:mm")</td>
+                            </tr>
+                            <tr>
+                                <td class="pb-1 p-0 fw-bolder text-dark">Trả phòng:</td>
+                                <td class="pb-1 p-0 fw-bolder text-dark">@item.EndDate.ToString("dd/MM HH:mm")</td>
+                            </tr>
+                        </table>
+                        <div class="d-grid">
+                            @{
+                                bool isLate = DateTime.Now > item.EndDate;
+                                if (!isLate)
+                                {
+                                    <a href="@Url.Action("traphong", "traphong", new {IdBooking = item.Id})" class="btn btn-success btn-sm" title="Trả phòng" data-toggle='modal' data-sizeModal="modal-lg">Trả phòng</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("traphong", "traphong", new {IdBooking = item.Id})" class="btn btn-danger btn-sm" title="Trả phòng (trễ)" data-toggle='modal' data-sizeModal="modal-lg">Trả phòng (trễ)</a>
+
+                                }
+                            }
+                        </div>
+                        <div class="card-title mb-0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.Count() == 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                <i class="ri-close-circle-line me-1 align-middle font-16"></i>
+                Hiện tại không có thông tin phòng đặt.
+            </div>
+        }
+    }
+</div>
+@{
+    if (Model.Count() > 0)
+    {
+        <div class="d-flex align-items-center justify-content-end py-1">
+            @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page, searchValue = ViewBag.searchValue }),
+                 PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+        </div>
+    }
+}
+
+<script>
+    $('input[type="checkbox"].form-check-input, .checkoutMuiltImg').on('click', function () {
+        if(!checkboxAddBill){
+            return;
+        }
+         var $checkbox;
+        if ($(this).hasClass('form-check-input')) {
+            // Trường hợp click trực tiếp vào checkbox
+            $checkbox = $(this);
+        } else {
+            // Trường hợp click vào .checkoutMuiltImg → tìm checkbox bên trong
+            $checkbox = $(this).find('input[type="checkbox"].form-check-input');
+
+            // Đảo trạng thái checkbox
+            $checkbox.prop('checked', !$checkbox.prop('checked'));
+        }
+
+        var anyChecked = $('input[type="checkbox"].form-check-input:checked').length > 0;
+        $('.btnTraPhongAddBill').toggleClass('active', anyChecked);
+
+        var val = parseInt($checkbox.val());
+        var idx = BookingMutil.indexOf(val);
+
+        $checkbox.is(':checked')
+            ? idx === -1 && BookingMutil.push(val)
+            : idx !== -1 && BookingMutil.splice(idx, 1);
+    });
+    if(checkboxAddBill){
+        $('.checkboxRoom').toggleClass('active', checkboxAddBill);
+        var hasActive = $('.checkboxRoom.active').length > 0;
+        $('.btnCheckoutOne').css('visibility', hasActive ? 'hidden' : 'visible');
+    }
+    if(BookingMutil.length>0){
+         $('.checkboxRoom input[type="checkbox"]').each(function () {
+            var val = parseInt($(this).val());
+            $(this).prop('checked', BookingMutil.includes(val));
+        });
+    }
+</script>

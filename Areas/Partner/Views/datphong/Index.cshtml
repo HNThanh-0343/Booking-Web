@@ -1,0 +1,217 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Quản lý phòng";
+    var ListHotel = ViewBag.ListHotel as List<SysHotel>;
+    var getTypeRoom = ViewBag.getTypeRoom as List<CatTypeRoom>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+
+}
+<style>
+    .input-width-50 {
+        width: 50px !important;
+    }
+
+    .adultsChild {
+        min-width: 240px;
+    }
+    #roomGuestDropdown{
+        border:var(--ct-border-width) solid var(--ct-border-color);
+        background: #ffffff;
+    }
+</style>
+<link href="~/assets/partner/css/cssbill.css" rel="stylesheet" />
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                @* <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                <li class="breadcrumb-item active">Data Tables</li>
+                </ol>
+                </div> *@
+                <h4 class="page-title">@ViewData["TitleAdmin"]</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <div class="row formsearch">
+                            @*    <div class="col-2">
+                                <div class="dataTables_filter">
+                                    <input type="search" class="form-control" id="" name="searchValue" placeholder="Tìm kiếm..." aria-controls="products-datatable">
+                                </div>
+                            </div> *@
+                            @{
+                                if (ListHotel != null && ListHotel.Count() > 1)
+                                {
+                                    <div class="col-2">
+                                        <div class="dataTables_filter">
+                                            @Html.DropDownList("IdHotel", new SelectList(ListHotel, "Id", "Name", ViewBag.IdKhachSan), "Chọn khách sạn", new { @class = "form-select m-input" })
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="col-2">
+                                <div class="dataTables_filter">
+                                    @Html.DropDownList("IdTypeRoom", new SelectList(getTypeRoom, "Id", "Name", getTypeRoom), "Chọn loại phòng", new { @class = "form-select m-input" })
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="dataTables_filter">
+                                    @{
+                                        var valueCheckIn = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                                        if (ViewBag.DateCheckIn != null)
+                                        {
+                                            valueCheckIn = ViewBag.DateCheckIn.ToString("dd/MM/yyyy HH:mm");
+                                        }
+                                    }
+                                    <input id="checkin" name="DateCheckIn" class="form-control mb-2" placeholder="Nhận phòng" value="@valueCheckIn">
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="dataTables_filter">
+                                    @{
+                                        var valueCheckOut = "";
+                                        if (ViewBag.DateCheckIn != null)
+                                        {
+                                            valueCheckOut = ViewBag.DateCheckOut.ToString("dd/MM/yyyy HH:mm");
+                                        }
+                                    }
+                                    <input id="checkout" name="DateCheckOut" class="form-control" placeholder="Trả phòng" value="@valueCheckOut">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="dropdown">
+                                    <a class="btn btn-light dropdown-toggle d-flex align-items-center" href="#" role="button" id="roomGuestDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-people-fill me-2"></i>
+                                        <span id="roomGuestSummary">0 người lớn, 0 trẻ em</span>
+                                    </a>
+                                    <ul class="dropdown-menu p-1 adultsChild" style="" aria-labelledby="roomGuestDropdown">
+                                        <li class="mb-2 d-flex justify-content-between align-items-center">
+                                            <span class="me-2">Người lớn</span>
+                                            <div class="input-group input-group-sm w-auto">
+                                                <button class="btn btn-outline-secondary minus-btn" data-target="adult">−</button>
+                                                <input type="text" class="form-control text-center count-input input-width-50" name="adult" id="adult" value="0" readonly>
+                                                <button class="btn btn-outline-secondary plus-btn" data-target="adult">+</button>
+                                            </div>
+                                        </li>
+
+                                        <li class="mb-0 d-flex justify-content-between align-items-center">
+                                            <span class="me-2">Trẻ nhỏ</span>
+                                            <div class="input-group input-group-sm w-auto">
+                                                <button class="btn btn-outline-secondary minus-btn" data-target="child">−</button>
+                                                <input type="text" class="form-control text-center count-input input-width-50" name="child" id="child" value="0" readonly>
+                                                <button class="btn btn-outline-secondary plus-btn" data-target="child">+</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button data-url="@Url.Action("childIndex", "datphong")" type="button" class="btn btn-info searchformDateTime">
+                                    <i class="mdi mdi-magnify me-1"></i> <span>Tìm kiếm</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="alertJs" class="mt-2"></div>
+                        <div class="row py-2">
+                            <div class="col-sm-12 tableCartPartner" id="DataTable">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#DataTable').load('/partner/datphong/childIndex');
+    });
+    function SearchData() {
+        var searchValue = $('#searchValue')[0].value;
+        $.ajax({
+            url: '/partner/datphong/childIndex',
+            type: 'GET',
+            data: { searchValue: searchValue },
+            success: function (data) {
+                $("#DataTable").html(data);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<script>
+    flatpickr("#checkin", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "d/m/Y H:i",
+        minDate: "today",
+        locale: "vn",
+        onChange: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length > 0) {
+                checkout.set('minDate', selectedDates[0]);
+            }
+        }
+    });
+
+    const checkout = flatpickr("#checkout", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "d/m/Y H:i",
+        minDate: "today",
+        locale: "vn"
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const summary = document.getElementById('roomGuestSummary');
+
+        function updateSummary() {
+            const adultCount = parseInt(document.getElementById('adult').value, 10);
+            const childCount = parseInt(document.getElementById('child').value, 10);
+            summary.textContent = `${adultCount} người lớn, ${childCount} trẻ em`;
+        }
+
+        document.querySelectorAll('.plus-btn, .minus-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                let value = parseInt(input.value, 10);
+
+                if (btn.classList.contains('plus-btn')) {
+                    value++;
+                } else if (btn.classList.contains('minus-btn') && value > 0) {
+                    value--;
+                }
+
+                input.value = value;
+                updateSummary();
+            });
+        });
+
+        // Ngăn dropdown bị đóng khi click vào bên trong
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+
+        updateSummary();
+    });
+</script>

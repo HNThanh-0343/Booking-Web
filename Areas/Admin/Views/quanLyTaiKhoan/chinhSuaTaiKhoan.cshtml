@@ -1,0 +1,111 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysUser;
+@{
+    // Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Chỉnh sửa đối tác";
+    var listRole = ViewBag.NhomQuyen as List<WEBSITE_TRAVELBOOKING.Models.SysRole>;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="dataForm" method="post" action="chinhSuaTaiKhoan" novalidate>
+        <input type="number" name="Id" value="@Model.Id" hidden />
+        <input type="number" name="PartnerId" value="@Model.PartnerId" hidden />
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên đối tác <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="Tên đối tác" value="@Model.Name" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom02">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" name="Email" placeholder="Email đối tác" value="@Model.Email" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Địa chỉ <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Local" placeholder="Địa chỉ đối tác" value="@Model.Local" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Số điện thoại </label>
+                    <input type="text" class="form-control" id="Phone" name="Phone" value="@Model.Phone">
+                    <div class="invalid-feedback" id="PhoneError">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Mật khẩu <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" name="Password" placeholder="Mật khẩu" value="@Model.Password" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Nhóm quyền <span class="text-danger">*</span></label>
+                    @Html.DropDownListFor(model => model.IdRole, new SelectList(ViewBag.NhomQuyen, "Id", "Name", Model.IdRole), "Chọn nhóm quyền", new { @class = "form-select m-input" })
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        @{
+                            foreach (var itemTrangThai in ViewBag.DSTrangThai as List<SelectListItem>)
+                            {
+                                var check = itemTrangThai.Value.ToLower() == "1" ? "true" : "false";
+                                var selecteds = "";
+                                if (check.ToLower() == Model.Status.ToString().ToLower())
+                                {
+                                    selecteds = "selected";
+                                }
+                                <option value="@itemTrangThai.Value" @selecteds>@itemTrangThai.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaTaiKhoan", new { area = "Admin" })" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+<script>
+    $(document).ready(function () {
+        // kiểm tra Số điện thoại
+        var phoneInput = $('#Phone');
+        var errorDiv = $('#PhoneError');
+        // Chỉ cho phép nhâp số
+        phoneInput.on('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        phoneInput.on('blur', function () {
+            var value = this.value.trim();
+            var isValid = /^\d{10,11}$/.test(value);
+
+            if (!isValid) {
+                phoneInput.addClass('is-invalid');
+                errorDiv.text("Vui lòng nhập số điện thoại hợp lệ (10 đến 11 chữ số).").show();
+            } else {
+                phoneInput.removeClass('is-invalid');
+                errorDiv.text("").hide();
+            }
+        });
+    });
+
+</script>

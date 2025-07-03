@@ -1,0 +1,131 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysContact;
+@using WEBSITE_TRAVELBOOKING.Models
+
+
+<form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+    <input type="number" id="Id" name="Id" value="@Model.Id" hidden />
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Tên <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="Name" placeholder="" value="@Model.Name" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập đầy đủ thông tin.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Số điện thoại <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="Phone" placeholder="" value="@Model.Phone" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập đầy đủ thông tin.
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" name="Email" placeholder="" value="@Model.Email" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập đầy đủ thông tin.
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Địa chỉ <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="Local" placeholder="" value="@Model.Address" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập đầy đủ thông tin.
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                <select class="form-select" name="Status">
+                    @if (Model.Status == true)
+                    {
+                        <option value="true" selected>Kích hoạt</option>
+                        <option value="false">Chưa kịch hoạt</option>
+                    }
+                    else
+                    {
+                        <option value="true">Kích hoạt</option>
+                        <option value="false" selected>Chưa kịch hoạt</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Địa chỉ facebook</label>
+                <input type="text" class="form-control" name="Urlfb" placeholder="" value="@Model.Urlfb">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Địa chỉ twitter</label>
+                <input type="text" class="form-control" name="Urltwi" placeholder="" value="@Model.Urltwi">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Địa chỉ instagram</label>
+                <input type="text" class="form-control" name="Urlinta" placeholder="" value="@Model.Urlinta">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Địa chỉ linkedin</label>
+                <input type="text" class="form-control" name="Urlin" placeholder="" value="@Model.Urlin">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <label class="form-label">Đường dẫn iframe Google Maps</label>
+                <input type="text" class="form-control" id="iframeInput" name="ContentMap" value="@Model.ContentMap" placeholder="Dán đường dẫn iframe Google Maps vào đây" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Xem bản đồ</label>
+                <div id="iframePreviewContainer" class="border rounded" style="height: 300px; overflow: hidden;">
+                    <iframe id="iframePreview" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<button type="button" id="btnSubmit" data-url="@Url.Action("chinhSuaLienHe", "quanlylienhe", new { area = "Admin" })" class="btn bg-success-subtle edit text-success waves-effect text-start">
+    Cập nhật
+</button>
+<script>
+    $(document).ready(function () {
+        // Hiện bản đồ lần đầu
+        var iframeSrc = $('#iframeInput').val();
+        iframeSrc = iframeSrc.match(/src\s*=\s*"(.*?)"/);
+        var firstSrc = iframeSrc ? iframeSrc[1] : iframeSrc;
+        $('#iframePreview').attr('src', firstSrc);
+        $('#iframePreviewContainer').show();
+
+        // Hiển thị bản đồ
+        $('#iframeInput').on('input', function () {
+            var value = $(this).val();
+            if (value && value.includes('iframe')) {
+                // Trích xuất src trong iframe nếu người dùng dấn nguyên đoạn iframe
+                var srcMatch = value.match(/src\s*=\s*"(.*?)"/);
+                var src = srcMatch ? srcMatch[1] : value;
+                $('#iframePreview').attr('src', src);
+                $('#iframePreviewContainer').show();
+            } else if (value.includes("https://") && (value.includes("google.com/maps") || value.includes("maps.app.goo.gl"))) {
+                // Nếu người dùng chỉ dán đường link chứa src
+                $('#iframePreview').attr('src', value);
+                $('#iframePreviewContainer').show();
+            } else {
+                $('#iframePreviewContainer').hide();
+                $('#iframePreview').attr('src', '');
+            }
+        });
+    });
+</script>

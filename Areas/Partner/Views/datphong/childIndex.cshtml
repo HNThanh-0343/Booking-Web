@@ -1,0 +1,164 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.RoomStatusDto>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+    var ListHotel = ViewBag.ListHotel as List<WEBSITE_TRAVELBOOKING.Models.SysHotel>;
+}
+<style>
+    .equal-first-col td:first-child {
+        white-space: nowrap;
+        width: 1%;
+    }
+
+    .ribbon-overlay {
+        position: absolute;
+        top: 32px;
+        left: -5px;
+        z-index: 2;
+        border-radius: 0.25rem;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .nameRoomAndBtnBook {
+        position: absolute;
+        bottom: 6px;
+        left: 18px;
+        z-index: 2;
+        width: 90%;
+        border-radius: 0.25rem;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: #e3e3e3b0;
+    }
+
+        .nameRoomAndBtnBook .nameRoom {
+            color: #0420fff7 !important
+        }
+
+        .nameRoomAndBtnBook .btnBook {
+            color: white !important;
+            background: #0420ffc7 !important;
+            -webkit-box-shadow: var(--ct-btn-box-shadow) rgba(4, 32, 255, 0.9686) !important;
+            box-shadow: var(--ct-btn-box-shadow) rgba(4, 32, 255, 0.9686) !important;
+        }
+
+            .nameRoomAndBtnBook .btnBook:active {
+                border-color: #0420ffc7 !important
+            }
+</style>
+<div class="row">
+    @{
+        foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card mb-3 ribbon-box">
+                    <div class="position-relative">
+                        <div class="ribbon-overlay bg-@item.StatusDisplay.Color text-white px-3 py-1">
+                            @item.StatusDisplay.Text
+                        </div>
+                        <div class="pt-2 px-2">
+                            <a href="@Url.Action("chitietphong", "datphong", new {id = item.RoomId})" data-toggle='modal' data-sizeModal="modal-xl">
+                                <img src="@item.ListImg" class="card-img-top" alt="...">
+                            </a>
+                        </div>
+                        <div class="nameRoomAndBtnBook text-white px-3 py-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="@Url.Action("chitietphong", "datphong", new {id = item.RoomId})" class="text-dark fw-bolder nameRoom" data-toggle='modal' data-sizeModal="modal-xl">
+                                    @item.Name
+                                </a>
+                                <a href="@Url.Action("datphong", "datphong", new {id = item.RoomId})" class="btn btn-sm btnBook" title="Đặt phòng" data-toggle='modal' data-sizeModal="modal-lg">Đặt</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-2 py-1 shadow-lg rounded bg-body">
+
+                        <table class="table table-borderless  mb-0">
+                            @{
+                                if (ListHotel.Count() > 1)
+                                {
+                                    var getNameHotel = ListHotel.FirstOrDefault(m => m.Id == item.IdHotel);
+                                    if (getNameHotel != null)
+                                    {
+                                        <tr>
+                                            <td class="pb-0 p-0 fw-bolder text-dark">Khách sạn:</td>
+                                            <td class="pb-0 p-0 fw-bolder text-dark">@getNameHotel.Name</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="pb-0 p-0 fw-bolder text-dark">Khách sạn:</td>
+                                            <td class="pb-0 p-0 fw-bolder text-dark"></td>
+                                        </tr>
+                                    }
+
+                                }
+                            }
+                            <tr>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Loại phòng: </td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.TypeRoomName</td>
+                            </tr>
+                            <tr>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Người lớn:</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.AdultsMax</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Trẻ em:</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.ChildrenMax</td>
+                            </tr>
+                            <tr>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Số phòng:</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.NumRoom</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Tầng:</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.Floor</td>
+                            </tr>
+                            <tr>
+                                <td class="pb-0 p-0 fw-bolder text-dark">Giá:</td>
+                                <td class="pb-0 p-0 fw-bolder text-dark">@item.Price?.ToString("N0") VNĐ</td>
+                            </tr>
+                            @{
+                                if (item.FromDate != null)
+                                {
+                                    <tr>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">Trống từ:</td>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">@item.FromDate?.ToString("dd/MM HH:mm")</td>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">Đến:</td>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">@item.ToDate?.ToString("dd/MM HH:mm")</td>
+                                    </tr>
+                                }
+                                if (item.SoonCheckout)
+                                {
+                                    <tr>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">Trả phòng:</td>
+                                        <td class="pb-0 p-0 fw-bolder text-dark">@item.CheckoutTime?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                }
+                            }
+
+                        </table>
+                    </div> <!-- end card-body -->
+                </div> <!-- end card -->
+            </div>
+        }
+        if (Model.Count() == 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                <i class="ri-close-circle-line me-1 align-middle font-16"></i>
+                Hiện tại không có thông tin phòng đặt.
+            </div>
+        }
+    }
+</div>
+@{
+    if (Model.Count() > 0)
+    {
+        <div class="d-flex align-items-center justify-content-end py-1">
+            @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page, searchValue = ViewBag.searchValue, IdHotel = ViewBag.IdKhachSan, DateCheckIn = ViewBag.DateCheckIn, DateCheckOut = ViewBag.DateCheckOut }),
+                 PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+        </div>
+    }
+}

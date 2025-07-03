@@ -1,0 +1,342 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.SysBooking>;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Thông tin trả phòng của " + (Model?.First()?.IdUser == null ? Model?.First()?.FullNameGuest : Model?.First()?.IdUserNavigation.Name);
+    ViewBag.RunScript = true;
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var GetAminities = ViewBag.GetAminities as List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom>;
+    var getAllRoom = ViewBag.getRoom as List<WEBSITE_TRAVELBOOKING.Models.SysRoom>;
+    var ListService = ViewBag.ListService as List<WEBSITE_TRAVELBOOKING.Models.CatRoomService>;
+    var getAccount = Account.GetAccount();
+}
+<style>
+    .fake-link {
+        color: #0d6efd;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+        .fake-link:hover {
+            opacity: 0.8;
+        }
+</style>
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div id="NotiBookSuccses"></div>
+        <div class="border p-1 mt-2 mt-lg-0 rounded">
+            <h4 class="header-title m-1 mb-2 text-center">Hóa đơn tạm tính</h4>
+            <div class="table-responsive">
+                <table class="table table-sm table-nowrap table-centered mb-0">
+                    <tbody>
+                        @{
+                            decimal subtotal = 0;
+                            decimal totalAll = 0; // tổng bill hiển thị có mã giảm giá
+                            decimal totalAllBill = 0; // tổng bill không có mã giảm giá
+                            decimal PriceDiscount = 0;
+                            string ListIdBooking = string.Join(",", Model.Where(item => getAllRoom.Any(m => m.Id == item.BookingItemId)).Select(item => item.Id));
+
+                            foreach (var itemBooking in Model)
+                            {
+                                var getRoom = getAllRoom.FirstOrDefault(m => m.Id == itemBooking.BookingItemId);
+                                if (getRoom == null)
+                                {
+                                    continue;
+                                }
+                                int nights = (itemBooking.EndDate - itemBooking.StartDate).Days;
+                                decimal tutorialRoom = nights * Convert.ToDecimal(itemBooking?.DiscountedPrice); // tính giá phòng đã giảm giá
+                                decimal tutorialRoomNotDiscount = nights * itemBooking.Price; // giá phòng chưa giảm giá
+                                PriceDiscount = tutorialRoomNotDiscount - tutorialRoom; // giá phòng chưa giảm giá
+                                if (itemBooking.Status == 2)// chưa thành toán mới tổng tiền phòng vào
+                                {
+                                    subtotal += tutorialRoom;
+                                    if (itemBooking.Deposit != null)
+                                    {
+                                        subtotal = subtotal - Convert.ToDecimal(itemBooking.Deposit);
+                                    }
+                                }
+                                <tr class="table-info">
+                                    <td>
+                                        <p class="m-0 d-inline-block align-middle">
+                                            <span class="fw-bold">
+                                                @getRoom.Name
+                                                @if (itemBooking.Status == 1)
+                                                {
+                                                    <span class="badge bg-success">Đã thanh toán</span>
+                                                }
+                                            </span><br>
+                                            @if (@itemBooking.DiscountedPrice == null)
+                                            {
+                                                <small>
+                                                    @nights đêm x <del>@getRoom.Price?.ToString("N0") VNĐ</del>
+                                                    <span class="text-danger fw-bold">@itemBooking.DiscountedPrice?.ToString("N0") VNĐ</span>
+                                                </small>
+                                            }
+                                            else
+                                            {
+                                                <small>
+                                                    @nights đêm x @getRoom.Price?.ToString("N0") VNĐ
+                                                </small>
+                                            }
+                                        </p>
+                                    </td>
+                                    <td class="text-end fw-bold">
+                                        <span class="">@tutorialRoom.ToString("N0") VNĐ</span>
+                                        <br>
+                                        <small><del class="text-muted">@tutorialRoomNotDiscount.ToString("N0") VNĐ</del></small>
+                                        <span class="moneyroom" hidden>@tutorialRoom</span>
+                                    </td>
+                                    @if (itemBooking.Status == 1)// đã thanh toán
+                                    {
+                                        <td hidden class="money">0</td>
+                                    }
+                                    else
+                                    {
+                                        <td hidden class="money">@tutorialRoom</td>
+                                    }
+                                </tr>
+                                if (!string.IsNullOrEmpty(itemBooking.ListItemServices))
+                                {
+                                    foreach (var itemService in Common.DeserializeServiceList(itemBooking.ListItemServices) as List<RoomServiceItem>)
+                                    {
+                                        var getItem = ListService.FirstOrDefault(m => m.Id == itemService.IdService);
+                                        if (getItem != null)
+                                        {
+                                            decimal tutorialServiceRoom = itemService.Quantity * Convert.ToDecimal(getItem.Price ?? 0);
+                                            subtotal += tutorialServiceRoom;
+                                            <tr>
+                                                <td>
+                                                    <p class="m-0 d-inline-block align-middle">
+                                                        <span class="fw-bold">@getItem.Name</span>
+                                                        <br>
+                                                        <small>@itemService.Quantity x @getItem.Price?.ToString("N0") VNĐ</small>
+                                                    </p>
+                                                </td>
+                                                <td class="text-end fw-bold">
+                                                    @tutorialServiceRoom.ToString("N0") VNĐ
+                                                </td>
+                                                <td hidden class="money">@tutorialServiceRoom</td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                                var CheckTimeCheckin = DateTime.Now;
+                                if (itemBooking.CheckInDate.HasValue)
+                                {
+                                    TimeSpan chenhLech = itemBooking.CheckInDate.Value - itemBooking.StartDate;
+                                    if (chenhLech.TotalMinutes < 0)
+                                    {
+                                        // Đến sớm
+                                        double soPhutSom = Math.Abs(chenhLech.TotalMinutes);
+                                        if (soPhutSom > 60)
+                                        {
+                                            var note = $"Khách đến sớm {Math.Round(soPhutSom / 60)} giờ";
+                                            <tr>
+                                                <td class="text-end" colspan="2">
+                                                    <small>
+                                                        <span class="text-danger">*</span>
+                                                        @note
+                                                    </small>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="my-2">
+                    <div class="row text-center">
+                        <div class="col-2 d-flex align-items-center justify-content-center">
+                            <span>Phụ thu</span>
+                        </div>
+                        <div class="col-3">
+                            <div class="position-relative">
+                                <input type="number" id="moneyPhuThu" placeholder="Tiền phụ thu" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex align-items-center justify-content-center">
+                            <span>Lý do</span>
+                        </div>
+                        <div class="col-5">
+                            <div class="position-relative">
+                                <input type="text" placeholder="Lý do phụ thu" class="form-control lydophuthutext" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="text-center" id="urlQRCode">
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-nowrap table-centered mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-end">
+                                        <h6 class="m-0">Phụ thu:</h6>
+                                    </td>
+                                    <td class="text-end" id="tienphuthu">
+                                        0 VNĐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end">
+                                        <h6 class="m-0">Tạm tính:</h6>
+                                    </td>
+                                    <td class="text-end" id="SubTotalAllBill">
+                                        @subtotal.ToString("N0") VNĐ
+                                    </td>
+                                    <td class="text-end" id="SubTotalAllBillhide" hidden>
+                                        @subtotal
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end">
+                                        <h6 class="m-0">Giảm giá:</h6>
+                                    </td>
+                                    <td class="text-end" id="VocherBill">
+                                        <del>@PriceDiscount.ToString("N0") VNĐ</del>
+                                    </td>
+                                </tr>
+                                <tr class="text-end">
+                                    <td>
+                                        <h5 class="m-0">Tổng:</h5>
+                                    </td>
+                                    <td class="text-end fw-semibold" id="TotalAllBill">
+                                        @totalAll.ToString("N0") VNĐ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" class="btn bg-success text-white waves-effect text-start prevent-double-click" onclick="ComfirmCheckOut()">
+        Xác nhận
+    </button>
+</div>
+@if (ViewBag.RunScript != null && (bool)ViewBag.RunScript)
+{
+    <script>
+        getTotalBill();
+        function getTotalBill(){
+            var totalAll = 0;
+            document.querySelectorAll('.money').forEach(el => {
+                var value = parseInt(el.textContent.trim(), 10);
+                if (!isNaN(value)) {
+                    totalAll += value;
+                }
+            });
+             $('#TotalAllBill').text(totalAll.toLocaleString() + ' VNĐ');
+             getIMGQRCode(totalAll);
+        }
+        function getIMGQRCode(totalBill){
+            debugger;
+            var qrc= JSON.parse(@Html.Raw(Json.Serialize(ViewBag.ConnentQRCode)));
+            var urlIMGQRCode = `https://qr.sepay.vn/img?acc=${qrc.acc}&bank=${qrc.bank}&amount=${totalBill}&des=${qrc.des}`;
+            $('#urlQRCode').empty().append(`<img src='${urlIMGQRCode}'  width="150" />`);
+        }
+
+    </script>
+}
+
+<script>
+
+    function formatCurrencyVND(value) {
+        var number = parseInt(value.replace(/\D/g, ""));
+        if (isNaN(number)) return "0 VNĐ";
+        return number.toLocaleString('vi-VN') + " VNĐ";
+    }
+
+    $('#moneyPhuThu').on('blur', function (e) {
+        var $input = $(this);
+        var $suggestions = $('#suggestions');
+        var raw = $input.val().replace(/\D/g, "");
+        $('#tienphuthu').text(formatCurrencyVND(raw));
+        $('#suggestions').removeClass('d-none d-flex').addClass('d-none');
+    });
+
+    var targetNode = $('#tienphuthu')[0];  // Lấy DOM element từ jQuery object
+
+    var observer = new MutationObserver(function(mutationsList) {
+        mutationsList.forEach(mutation => {
+            if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                // Lấy giá trị số từ #SubTotalAllBillhide
+                var getTienTamTinh = parseFloat($('#SubTotalAllBillhide').text().trim()) || 0;
+
+                // Lấy giá trị text từ #tienphuthu, bỏ "VNĐ" và dấu cách, rồi chuyển sang số
+                var tienPhuThuText = $('#tienphuthu').text().trim();  // "1.000 VNĐ"
+                var cleanText = tienPhuThuText.replace(/\./g, '').replace(/[^0-9-]+/g, '');  // "1000"
+                var tienPhuThuNumber = parseFloat(cleanText) || 0;
+                // Tính tổng
+                var tongstring = getTienTamTinh + tienPhuThuNumber;
+                var formatTamTinh = formatCurrencyVND(tongstring.toString());
+                $('#SubTotalAllBill').text(formatTamTinh);
+                $('#TotalAllBill').text(formatTamTinh);
+                getIMGQRCode(tongstring);
+            }
+        });
+    });
+
+    observer.observe(targetNode, {
+        characterData: true,
+        subtree: true,
+        childList: true
+    });
+</script>
+<script>
+    function ComfirmCheckOut(){
+        debugger;
+        var ListId = "@ListIdBooking";
+        var lydophuthu = $('.lydophuthutext').val();
+        var tienphuthu = $('#moneyPhuThu').val();
+        var TotalMoney = parseInt($('#TotalAllBill').text().replace(/\D/g, '')) || 0;
+
+        var invoiceRoom = {
+            IdBooking: ListId,
+            TotalMoney: TotalMoney,
+            Surcharge: tienphuthu,
+            Note: lydophuthu
+        };
+
+        $.post('/partner/traphong/traphong',invoiceRoom)
+         .done(function (res) {
+             console.log("OK", res);
+             var htmlAlert="";
+             if(res.success){
+                  $('#NotiBookSuccses').empty().append(`<div class="alert alert-success" role="alert">
+                            Thanh toán <strong> thành công</strong>
+                        </div>`);
+             }
+             else
+             {
+                $('#NotiBookSuccses').empty().append(`<div class="alert alert-danger" role="alert">
+                                        Thanh toán <strong> thất bại</strong>
+                                    </div>`);
+             }
+
+            })
+            .fail(function (err) {
+                console.error("Lỗi", err);
+        });
+    }
+</script>

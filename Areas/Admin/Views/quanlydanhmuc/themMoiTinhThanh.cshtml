@@ -1,0 +1,38 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.CatContry;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Thêm mới tỉnh thành";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên tỉnh thành <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        <option value="true">Kích hoạt</option>
+                        <option value="false">Chưa kịch hoạt</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("themMoiTinhThanh", new { area = "Admin" })" class="btn bg-success-subtle create text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>

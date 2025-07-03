@@ -1,0 +1,164 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBlog;
+@using WEBSITE_TRAVELBOOKING.Models;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Chỉnh sửa bài viết";
+    var catCategories = ViewBag.CatCategory as List<CatCategory>;
+}
+@*Thư viện soạn thảo*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet" />
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <input type="number" id="IdBlog" name="Id" value="@Model.Id" hidden />
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tiêu đề <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="Tiêu đề" value="@Model.Name" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom03">Loại bài viết <span class="text-danger">*</span></label>
+                    <select class="form-select select2" data-toggle="select2" id="" name="IdTypeBlog" required>
+                        <option value="">Chọn loại bài viết</option>
+                        @foreach (var item in catCategories)
+                        {
+                            if(item.Id == Model.IdTypeBlog)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            } else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        Vui lòng chọn loại bài viết.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Nhãn bài viết <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Tag" placeholder="Nhãn bài viết" value="@Model.Tag" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        @if(Model.Status)
+                        {
+                            <option value="true" selected>Kích hoạt</option>
+                            <option value="false">Chưa kịch hoạt</option>
+                        } else
+                        {
+                            <option value="true">Kích hoạt</option>
+                            <option value="false" selected>Chưa kịch hoạt</option>
+                        }
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Tóm tắt nội dung <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="ContentsShort" placeholder="Tóm tắt nội dụng" value="@Model.ContentsShort" required>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="summernote" name="Contents" rows="10" required>@Html.Raw(Model.Contents)</textarea>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập đầy đủ thông tin.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="example-fileinput" class="form-label">Hình ảnh</label>
+                    <input type="file" name="postedFile" class="form-control" accept="image/*" multiple>
+                </div>
+                <!-- Hiển thị ảnh đã lưu -->
+                <div id="imageList" class="row">
+                    @foreach (var imgPath in Model.ListImg?.Split(',') ?? new string[] { })
+                    {
+                        if (!string.IsNullOrWhiteSpace(imgPath))
+                        {
+                            var fileName = System.IO.Path.GetFileName(imgPath);
+                            <div class="col-2">
+                                <div class="card mb-1 shadow-none border image-container" data-path="@imgPath">
+                                    <div class="p-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <img src="@Common.GetImagePath(Url.Content(imgPath))" class="avatar-sm rounded" alt="file-image" />
+                                            </div>
+                                            <div class="col ps-0">
+                                                <a href="javascript:void(0);" class="text-muted fw-bold">@fileName</a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <!-- Button -->
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-3 btn-delete-image" onclick="DeleteIMG()" title="Xóa ảnh">
+                                                    ✖
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaBlog", new { area = "Admin" })" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 200 // chiều cao tính bằng pixel
+        });
+    });
+    function DeleteIMG() {
+        if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
+
+        var imgContainer = $(this).closest(".image-container");
+        var imgPath = imgContainer.data("path");
+        var IdBlog = $("#IdBlog").val();
+
+        $.ajax({
+            url: '/Admin/quanlybaiviet/XoaAnh',
+            type: 'POST',
+            data: { imagePath: imgPath, IdBlog: IdBlog },
+            success: function (res) {
+                if (res.result) {
+                    imgContainer.remove(); // Xóa ảnh khỏi giao diện
+                } else {
+                    alert(res.message || "Lỗi khi xóa ảnh.");
+                }
+            },
+            error: function () {
+                alert("Có lỗi xảy ra.");
+            }
+        });
+    }
+</script>

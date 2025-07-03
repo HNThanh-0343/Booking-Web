@@ -1,0 +1,256 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysRoom;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Thông tin đặt phòng " + Model?.Name.ToLower();
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var GetAminities = ViewBag.GetAminities as List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div id="NotiBookSuccses"></div>
+        <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+            <div class="row">
+                <input type="text" class="form-control" name="BookingItemId" value="@Model?.Id" hidden>
+                <input type="text" class="form-control" name="Price" value="@Model?.Price" hidden>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Họ tên <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="FullNameGuest" placeholder="Họ tên" value="" required>
+                        <span asp-validation-for="FullNameGuest" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Điện thoại <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="PhoneGuest" placeholder="Số điện thoại khách" value="" required>
+                        <span asp-validation-for="PhoneGuest" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Email</label>
+                        <input type="text" class="form-control" name="EmailGuest" placeholder="Email" value="">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Số người <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="GuestsNumber" placeholder="Số người" value="" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Nhận phòng <span class="text-danger">*</span></label>
+                        @* <input type="datetime-local" class="form-control" name="DateCheckIn" placeholder="Nhận phòng" value="" required> *@
+                        <input id="dpcheckin" name="StartDate" class="form-control mb-2" placeholder="Nhận phòng" value="" required>
+                        <input type="hidden" name="StartDate_ISO" id="StartDate_ISO" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="validationCustom01">Trả phòng <span class="text-danger">*</span></label>
+                        @* <input type="datetime-local" class="form-control" name="DateCheckOut" placeholder="Trả phòng" value="" required> *@
+                        <input id="dpcheckout" name="EndDate" class="form-control" placeholder="Trả phòng" value="" required>
+                        <input type="hidden" name="EndDate_ISO" id="EndDate_ISO" />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("datphong")" data-showbill="@Url.Action("showbill")" data-arg="StartDate,EndDate" data-function="toISOFormatDateTime" class="btn bg-success custom text-white waves-effect text-start prevent-double-click">
+        Đặt phòng
+    </button>
+</div>
+
+<script>
+
+        var checkInDate = null;
+    var checkOutDate = null;
+    var pricePerNight = 500000; // giá 1 đêm
+    var  dpcheckin = flatpickr("#dpcheckin", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "d/m/Y H:i",
+        minDate: "today",
+        locale: "vn",
+        onChange: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length > 0) {
+                checkInDate = selectedDates[0];
+                dpcheckout.set('minDate', checkInDate);
+                            // calculateNightsAndPrice();
+            }
+        }
+    });
+
+    var dpcheckout = flatpickr("#dpcheckout", {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "d/m/Y H:i",
+            minDate: "today",
+            locale: "vn",
+            onChange: function(selectedDates) {
+            if (selectedDates.length > 0) {
+                checkOutDate = selectedDates[0];
+                // calculateNightsAndPrice();
+            }
+        }
+    });
+        function calculateNightsAndPrice() {
+        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+            // Lấy phần ngày (bỏ giờ) để tính đúng số đêm theo nghiệp vụ khách sạn
+            const ci = new Date(checkInDate.getFullYear(), checkInDate.getMonth(), checkInDate.getDate());
+            const co = new Date(checkOutDate.getFullYear(), checkOutDate.getMonth(), checkOutDate.getDate());
+
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const nights = Math.round((co - ci) / msPerDay); // làm tròn cho chắc
+
+            const total = nights * pricePerNight;
+
+            document.getElementById("nightCount").textContent = `Số đêm: ${nights}`;
+            document.getElementById("totalPrice").textContent = `Tổng tiền: ${total.toLocaleString()} VNĐ`;
+        } else {
+            document.getElementById("nightCount").textContent = "";
+            document.getElementById("totalPrice").textContent = "";
+        }
+    }
+            function toISOFormatDateTime(inputNames) {
+                if (!inputNames || inputNames.length === 0) return;
+
+                var ArrinputNames = inputNames[0].split(',');
+
+                ArrinputNames.forEach(name => {
+                    const input = $(`[name="${name}"]`);
+                    const val = input.val();
+                    if (!val) return;
+
+                    const parsed = flatpickr.parseDate(val, "d/m/Y H:i");
+                    if (!parsed) return;
+
+                    const iso = flatpickr.formatDate(parsed, "Y-m-d\\TH:i");
+
+                    // Gán ISO format vào input hidden tương ứng
+                    $(`[name="${name}_ISO"]`).val(iso);
+                });
+            }
+</script>
+
+<script>
+    // custom
+    $(document).on('click', '.custom', function () {
+        const $btn = $(this);
+        const functionName = $btn.data("function"); // lấy tên hàm
+        const args = [];
+
+        // nếu có function và tồn tại trong window thì gọi
+        if (functionName && typeof window[functionName] === "function") {
+            // duyệt tất cả các data-argX và push vào mảng args
+            $.each(this.attributes, function () {
+                if (this.name.startsWith('data-arg')) {
+                    args.push(this.value);
+                }
+            });
+            const result = window[functionName](args); // thực thi hàm với tham số động
+            if (result === false) return;
+        }
+
+        //Validate clien
+        var form = $("#dataForm")[0];
+        var formData = new FormData(form);
+        var Noloadtable = $(".noloadTable");
+        /*form.validate();*/
+        if (!form.checkValidity()) {
+            $("#dataForm").addClass("was-validated");
+            return;
+        }
+
+        //if (form.valid()) {
+        var urlbill = $(this).data('showbill');
+        $.ajax({
+            type: 'POST',
+            url: $(this).data('url'),
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (result) {
+                // alert("Bạn đã đặt phòng thành công");
+                // Book phòng đó với thời gian đó phòng đó thành công,
+                $('#NotiBookSuccses').empty().append(`
+                                <div class="alert alert-success mb-1" role="alert">
+                                    <i class="ri-check-line me-1 align-middle font-16"></i> Đặt phòng <strong>thành công</strong>!
+                                </div>`);
+
+
+    $('#myModalContent').load(`${urlbill}/${result.idBooking}`);
+
+            },
+            error: function (xhr) {
+                if (Noloadtable.length > 0) {
+                    if (xhr.status === 400) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.message != '') {
+                            MessAlert.AlertAction(false, "create");
+                            //Toast.Nofication(false, response.message)
+                        } else {
+                            MessAlert.AlertAction(false, "create");
+                            //Toast.Nofication(false, "Thêm mới thất bại")
+                        }
+                    }
+                } else if (xhr.status === 400 && xhr.responseJSON) {
+                    const errors = xhr.responseJSON.errors;
+
+                    // Reset trước
+                    $('#dataForm .form-control').removeClass('is-invalid');
+                    $('#dataForm .invalid-feedback').text('');
+
+                    for (const key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            const input = $(`#dataForm [name="${key}"]`);
+                            input.addClass('is-invalid');
+
+                            const feedback = input.closest('.mb-3').find('.invalid-feedback');
+                            if (feedback.length) {
+                                feedback.text(errors[key][0]);
+                            }
+                        }
+                    }
+                } else {
+                    MessAlert.AlertAction(false, "create");
+                    //Toast.Nofication(false, "Thêm mới thất bại")
+
+                }
+
+                //alert('Failed to receive the Data');
+            }
+        })
+        //}
+    });
+</script>
+<script>
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".prevent-double-click");
+        if (!btn) return;
+
+        if (btn.disabled) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Đang xử lý...";
+    });
+</script>

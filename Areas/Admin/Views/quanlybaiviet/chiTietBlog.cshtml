@@ -1,0 +1,90 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysBlog;
+@using WEBSITE_TRAVELBOOKING.Models;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Chi tiết bài viết";
+    var catCategories = ViewBag.getCategories as CatCategory;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <div class="mainslider w-10">
+                    <div class="slider">
+                        @{
+                            var listHinhAnh = "";
+                            if (string.IsNullOrEmpty(Model.ListImg))
+                            {
+                                listHinhAnh = "/AppData/no-image.png";
+                                <div>
+                                    <img src="@listHinhAnh" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                </div>
+                            }
+                            else
+                            {
+                                var listIMG = Model.ListImg.Split(',');
+                                foreach (var item in listIMG)
+                                {
+                                    listHinhAnh = Common.GetImagePath(item);
+                                    <div>
+                                        <img src="@listHinhAnh" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <h4 class="mt-2 mb-2">@Model.Name</h4>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Nhãn bài viết:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.Tag</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Loại bài viết:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@catCategories?.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Nội dung</h4>
+            <div class="mb-3">
+                <div class="p-2" style="text-align:justify">@Html.Raw(Model.Contents)</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaBlog", new { id = Model.Id, area = "Admin" })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa
+        </button>
+    }
+</div>
+<script>
+    $('.slider').slick({
+        dots: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        centerMode: true,
+        autoplay: true,        // tự động chuyển
+        autoplaySpeed: 2000,   // thời gian chuyển (ms)
+        arrows: false // 👈 Tắt cả hai nút
+    });
+
+</script>

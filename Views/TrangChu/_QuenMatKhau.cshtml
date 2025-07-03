@@ -1,0 +1,120 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.AccountForgotForm
+
+<div class="modal-header bg-primary text-white d-flex justify-content-center position-relative">
+	<h5 class="modal-title fw-bold mb-0" id="exampleModalLabel">Quên Mật Khẩu</h5>
+	<button type="button" class="close position-absolute" style="right: 20px; top: 45px; transform: translateY(-50%);" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true" class="text-white">&times;</span>
+	</button>
+</div>
+<div class="modal-body p-4">
+	<form asp-action="quenmatkhau" asp-controller="taikhoan" asp-area="null" method="post">
+
+		<div class="mb-2">
+			<a href="#"
+			   class="text-danger float-end">
+				<small>
+					@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+				</small>
+			</a>
+			<label for="email" class="form-label">Địa chỉ email</label>
+			<input class="form-control" type="email" id="email" name="Email" value="@Model.Email"
+				   required="" placeholder="Nhập email của bạn">
+		</div>
+
+		<div class="mb-2">
+			<a href="#"
+			   class="text-danger float-end">
+				<small>
+					@Html.ValidationMessageFor(model => model.CodeOTP, "", new { @class = "text-danger" })
+				</small>
+			</a>
+			<label for="emailaddress" class="form-label">Mã xác thực</label>
+			<div class="input-group">
+				<input type="text" class="form-control"
+					   placeholder="Mã xác thực từ email" aria-label="Mã xác thực từ email" name="CodeOTP" value="@Model.CodeOTP" required="">
+				<button class="btn btn-primary" type="button" id="btnEmail" onclick="getCode(1)">
+					<i class="mdi mdi-send me-1"></i><span>OTP</span>
+				</button>
+			</div>
+
+		</div>
+
+		<!-- Mật khẩu -->
+		<div class="mb-4">
+			<small class="text-danger float-right">
+				@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+			</small>
+
+			<label for="Password" class="form-label">Mật khẩu</label>
+
+			<div class="input-group custom-password-group">
+				<input type="password" id="Password" name="Password" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+				<div class="input-group-append">
+					<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password">
+						<i class="mdi mdi-eye-off" id="password-icon"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- <div class="mb-3 mb-0 text-center">
+			<button class="btn btn-primary" type="submit"> Đăng nhập </button>
+		</div> -->
+		<div class="d-grid">
+			<button class="btn btn-primary btn-block" type="submit" id="btnRegister">
+				<i class="mdi mdi-login"></i> Xác thực
+			</button>
+		</div>
+
+	</form>
+</div>
+<div class="modal-footer justify-content-center">
+	<p class="text-muted">
+		Quay lại trang <a data-toggle='modal' data-sizeModal='modal-md' href="@Url.Action("DangNhap","TrangChu",new {area="", role = ViewBag.Role})"
+					class="ms-1 fw-bold">Đăng nhập</a>
+	</p>
+</div>
+<script>
+	//1 Đăng ký
+	//2 quên pass
+	function getCode(type) {
+
+		$("#btnEmail").prop("disabled", true);
+
+		var email = $("#email").val().trim();
+		$.ajax({
+			url: "/TaiKhoan/SendEmailOTP",
+			type: "GET",
+			data: { toEmail: email, type: type },
+			headers: {
+				"X-Requested-With": "XMLHttpRequest"
+			},
+			success: function (res) {
+				if (res.success) {
+
+					$("#btnEmail").prop("disabled", false);
+				} else {
+					$("#btnEmail").prop("disabled", false);
+				}
+			},
+			error: function () {
+				$("#btnEmail").prop("disabled", false);
+
+			}
+		});
+	}
+			$(document).ready(function () {
+		// Toggle mật khẩu
+		$('#toggle-password').on('click', function () {
+			const passwordInput = $('#Password');
+			const icon = $('#password-icon');
+			const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+
+			passwordInput.attr('type', type);
+			icon.toggleClass('mdi-eye mdi-eye-off');
+		});
+	});
+		
+
+</script>

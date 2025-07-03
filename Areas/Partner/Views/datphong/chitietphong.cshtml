@@ -1,0 +1,127 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysRoom;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Chi tiết phòng " + Model?.Name.ToLower();
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var GetAminities = ViewBag.GetAminities as List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<style>
+    .avatar-md-custome {
+    height: 4.5rem;
+    width: 5.5rem;
+    }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <div class="mainslider  w-10">
+                    <div class="slider">
+                        @{
+                            var listIMG = Model.ListImg.Split(',');
+                            var slidesToShow = listIMG.Length > 2 ? 3 : listIMG.Length;
+                            foreach (var item in listIMG)
+                            {
+                                <div>
+                                    <img src="@item" alt="image" class="img-fluid img-thumbnail" width="300" />
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="card mb-2">
+                        <div class="card-body px-2 py-1">
+                            <div class="card-title mb-0">
+                                <div class="text-dark fs-4 fw-bolder">
+                                    Thông tin
+                                </div>
+                            </div>
+                            @Html.Raw(@Model.Description)                           
+                        </div>
+                    </div>
+                    <div class="card mb-0">
+                        <div class="card-body px-2 py-1">
+                            <div class="card-title mb-0">
+                                <div class="text-dark fs-4 fw-bolder">
+                                    Tiện ích
+                                </div>
+                                <div class="d-flex align-items-start flex-wrap gap-2">
+                                    @{
+                                        if (!string.IsNullOrEmpty(Model.ListAminities))
+                                        {
+                                            var listId = Model.ListAminities.Split(',').Select(int.Parse).ToList();
+                                            var getListTienIch = GetAminities.Where(m => listId.Contains(m.Id)).ToList();
+                                            foreach (var itemTienIch in getListTienIch)
+                                            {
+                                                <span class="badge bg-light text-dark rounded-pill py-1 px-2">
+                                                    <i class="@itemTienIch.Icon py-1"></i> @itemTienIch.Name
+                                                </span>
+                                                // <span class="border border-primary-subtle avatar-md bg-light bg-opacity-50"></span>
+                                                // <div class="card avatar-md-custome text-center mb-0 border border-primary-subtle rounded-4">
+                                                //     <div class="card-body p-1 d-flex flex-column align-items-center justify-content-center h-100 text-dark">
+                                                //         <i class="@itemTienIch.Icon py-1"></i>
+                                                //         <span>@itemTienIch.Name</span>
+                                                //     </div>
+                                                // </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            @* @Html.Raw(Model.AmenitiesLong) *@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title mb-0">
+                                <div class="text-dark fs-4 fw-bolder">
+                                    Giá
+                                </div>
+                            </div>
+                            <div class="fs-3 text-dark h-50">
+                                @Model.Price?.ToString("N0") VNĐ /Đêm
+                            </div>
+                            <div class="text-center">
+                                <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaKhachSan", new { id = Model.Id })" class="btn bg-success text-white waves-effect text-start">
+                                    Đặt phòng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var intervalSlickDetailRoom = setInterval(function () {
+        var $slider = $('.slider:visible'); // chỉ lấy slider đang hiển thị (đã mở popup)
+        if ($slider.length > 0 && !$slider.hasClass('slick-initialized')) {
+            $slider.slick({
+                dots: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: @slidesToShow,
+                centerPadding: '0px',
+                centerMode: true,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                arrows: false
+            });
+
+            clearInterval(intervalSlickDetailRoom); // ❌ Dừng interval sau khi đã khởi tạo
+        }
+    }, 300); // kiểm tra mỗi 300ms
+</script>

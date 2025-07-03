@@ -1,0 +1,335 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.AccountForm
+
+@{
+    ViewData["Title"] = "Đăng ký";
+
+    Layout = "_LayoutTaiKhoan.cshtml";
+}
+
+<!-- end start -->
+<div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-4 col-lg-5">
+                <div class="card">
+
+                    <!-- Logo -->
+                    <div class="card-header py-2 text-center bg-primary">
+                        <h3 class="text-white text-center pb-0 fw-bold">Đăng ký</h3>
+                        @* <a href="index.html">
+                        <span><img src="~/assets/images/logo.png" alt="logo" height="22"></span>
+                        </a> *@
+                    </div>
+
+                    <div class="card-body">
+
+                        @* <div class="text-center w-75 m-auto">
+                        <h4 class="text-dark-50 text-center pb-0 fw-bold">Đăng ký</h4>
+                        <p class="text-muted mb-2">
+                        Enter your email address and password to access admin panel.
+                        </p>
+                        </div> *@
+
+
+                        <div class="tab-content">
+                            <div class="tab-pane show active">
+                                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                                    <li class="nav-item">
+                                        <a href="#canhan" data-bs-toggle="tab" aria-expanded="false"
+                                           class="nav-link rounded-0">
+                                            <i class="mdi mdi-account-supervisor d-md-none d-block"></i>
+                                            <span class="d-none d-md-block">Cá nhân</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#doitac" data-bs-toggle="tab" aria-expanded="false"
+                                           class="nav-link rounded-0">
+                                            <i class="mdi mdi-account d-md-none d-block"></i>
+                                            <span class="d-none d-md-block">Đối tác</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                                <!--Tab-->
+                                <div class="tab-content">
+
+                                    <!--Canhan-->
+                                    <div class="tab-pane show active">
+                                        <form asp-action="dangky" asp-controller="taikhoan" asp-area="null" method="post">
+                                            @* asp-action="DangKy" *@
+                                            <!--Hiden roleId-->
+
+                                            <input hidden class="form-control" type="text" id="IdRole" name="IdRole" value="2"
+                                                   required="" placeholder="abcxyz">
+                                            <!--Hiden roleId-->
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="yourname" class="form-label">Họ và tên</label>
+                                                @* <input class="form-control" type="text" id="yourname" name="Name" value="@Model.Name"
+                                                required="" placeholder="Nhập họ tên của bạn"> *@
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập họ tên của bạn" } })
+
+                                            </div>
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="phonenumber" class="form-label">Số điện thoại</label>
+                                                @* <input class="form-control" type="text" id="phonenumber" name="Phone" value="@Model.Phone"
+                                                required="" placeholder="Số điện thoại"> *@
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @required = "", @placeholder = "Nhập số điện thoại" } })
+
+                                            </div>
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="emailaddress" class="form-label">Địa chỉ email</label>
+                                                <input class="form-control" type="email" id="email" name="Email" value="@Model.Email"
+                                                       required="" placeholder="Nhập email của bạn">
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="password" class="form-label">Mật khẩu</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="password" id="Password" name="Password" class="form-control"
+                                                           placeholder="Nhập mật khẩu" required="">
+                                                    <div class="input-group-text" data-password="false">
+                                                        <span class="password-eye"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="#"
+                                                   class="text-danger float-end">
+                                                    <small>
+                                                        @Html.ValidationMessageFor(model => model.CodeOTP, "", new { @class = "text-danger" })
+                                                    </small>
+                                                </a>
+                                                <label for="emailaddress" class="form-label">Mã xác thực</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Mã xác thực từ email" aria-label="Mã xác thực từ email" name="CodeOTP" value="@Model.CodeOTP">
+                                                    <button class="btn btn-primary" type="button" id="btnEmail" onclick="getCode(2)">
+                                                        <i class="mdi mdi-send me-1"></i><span>OTP</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <a href="@Url.Action("quenmatkhau", "taikhoan")"
+                                                   class="text-muted float-end">
+                                                    <small>
+                                                        Quên mật khẩu?
+                                                    </small>
+                                                </a>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           id="checkbox-signin" checked>
+                                                    <label class="form-check-label" for="checkbox-signin">
+                                                        Ghi nhớ tài khoản
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="mb-3 mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit"> Đăng nhập </button>
+                                            </div> -->
+                                            <div class="d-grid mb-0 text-center">
+                                                <button class="btn btn-primary" type="submit" id="btnRegister">
+                                                    <i class="mdi mdi-login"></i> Đăng ký
+                                                </button>
+                                            </div>
+
+                                            <!-- social-->
+                                            <div class="text-center mt-3">
+                                                <p class="text-muted font-16">Đăng ký bằng</p>
+                                                <ul class="social-list list-inline m-1">
+                                                    <li class="list-inline-item">
+                                                        <a href="@Url.Action("loginwithzalo","taikhoan")"
+                                                           class="social-list-item border-primary text-primary">
+                                                            <i class="mdi mdi-facebook"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li id="authRole2" style="display:none" class="list-inline-item">
+                                                        <a href="@Url.Action("RegisterGoogle","taikhoan", new {roleID = 2})"
+                                                           class="social-list-item border-danger text-danger">
+                                                            <i class="mdi mdi-gmail"></i>
+                                                        </a>
+
+                                                    </li>
+
+                                                    <li id="authRole3" style="display:none" class="list-inline-item">
+                                                        <a href="@Url.Action("RegisterGoogle","taikhoan", new {roleID = 3})"
+                                                           class="social-list-item border-danger text-danger">
+                                                            <i class="mdi mdi-gmail"></i>
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--Canhan-->
+
+
+                                    <div class="tab-pane" id="doitac123">
+                                       
+                                    </div>
+
+                                </div>
+
+                                <!--Tab-->
+
+                            </div> <!-- end preview-->
+                        </div>
+
+
+
+                    </div> <!-- end card-body -->
+
+                    <div class="card-footer">
+                        <footer class="footer footer-alt">
+                            <p class="text-muted mt-3">
+                                Bạn đã có tài khoản? <a href="@Url.Action("dangnhap","taikhoan")"
+                                                          class="text-muted ms-1"><b>Đăng nhập</b></a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- end row -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<script>
+    //1 Đăng ký
+    //2 quên pass
+    function getCode(type) {
+
+        $("#btnEmail").prop("disabled", true);
+
+        var email = $("#email").val().trim();
+        $.ajax({
+            url: "SendEmailOTP",
+            type: "GET",
+            data: { toEmail: email, type: type },
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            success: function (res) {
+                if (res.success) {
+
+                    $("#btnEmail").prop("disabled", false);
+                } else {
+                    $("#btnEmail").prop("disabled", false);
+                }
+            },
+            error: function () {
+                $("#emailaddress").prop("disabled", false);
+
+            }
+        });
+    }
+
+</script>
+
+@* Xử lý tab register *@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabKey = "activeTab";
+        const input = document.getElementById("IdRole");
+
+        // 1. Tự động kích hoạt tab đã lưu
+        var activeTab = localStorage.getItem(tabKey);
+
+        if (activeTab === null) {
+            activeTab = "#canhan";
+            localStorage.setItem(tabKey, activeTab);
+            
+        }
+
+        if (activeTab) {
+
+
+            // Xóa active cũ
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(el => {
+                el.classList.remove('active');
+                el.setAttribute('aria-expanded', 'false');
+            });
+
+
+            const tabTrigger = document.querySelector(`[data-bs-toggle="tab"][href="${activeTab}"]`);
+            if (tabTrigger) {
+
+
+                new bootstrap.Tab(tabTrigger).show();
+                tabTrigger.classList.add('active');
+                tabTrigger.setAttribute('aria-expanded', 'true');
+
+                // Cập nhật input theo tab
+                if (activeTab === "#canhan") {
+                    input.value = "2";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký';
+                    $("#authRole3").hide();
+                    $("#authRole2").show();
+                } else if (activeTab === "#doitac") {
+                    input.value = "3";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký đối tác';
+                    $("#authRole3").show();
+                    $("#authRole2").hide();
+                }
+            }
+        }
+
+        // 2. Lắng nghe khi user đổi tab
+        const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabTriggers.forEach(tab => {
+            tab.addEventListener("shown.bs.tab", function (e) {
+                const tabId = e.target.getAttribute("href");
+                localStorage.setItem(tabKey, tabId);
+
+                // Thay đổi giá trị input theo tab
+                if (tabId === "#canhan") {
+                    input.value = "2";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký';
+                    $("#authRole3").hide();
+                    $("#authRole2").show();
+
+                } else if (tabId === "#doitac") {
+                    input.value = "3";
+                    document.getElementById('btnRegister').innerHTML = '<i class="mdi mdi-login"></i> Đăng ký đối tác';
+                    $("#authRole3").show();
+                    $("#authRole2").hide();
+                }
+            });
+        });
+    });
+</script>

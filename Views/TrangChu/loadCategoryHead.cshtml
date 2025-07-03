@@ -1,0 +1,236 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.CatCategory>
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+
+}
+<ul class="nav tab-nav flex-nowrap tab-nav-boxed pb-4 pt-2 justify-content-xl-center" role="tablist">
+    @{
+        var isFirst = true;
+        foreach (var item in Model)
+        {
+            var IdTab = $"pills-{Common.GenerateSlug(item.Name)}";
+            var activeClass = isFirst ? "active pl-md-5 pl-3" : "pl-md-5 pl-3";
+            var ariaSelected = isFirst ? "true" : "false";
+            var actionUrl = Url.Action("Index", item.Controller);
+            <li role="presentation">
+                <a class="nav-link font-weight-medium @activeClass"
+                   id="tab"
+                   data-toggle="pill"
+                   href="#pills-Tab"
+                   role="tab"
+                   aria-controls="pills-Tab"
+                   aria-selected="@ariaSelected"
+                   data-action="@actionUrl">
+                    <div class="d-flex flex-column flex-md-row position-relative text-white align-items-center">
+                        <figure class="ie-height-40 d-md-block my-md-2 mr-md-3">
+                            <i class="icon @item.Icon font-size-3"></i>
+                        </figure>
+                        <span class="tabtext mt-2 mt-md-0" style="font-weight: bold;font-size:20px">@item.Name</span>
+                    </div>
+                </a>
+            </li>
+            isFirst = false;
+        }
+    }
+
+</ul>
+
+<div class="tab-content hero-tab-pane">
+    @{
+        var shows = "active show";
+        <div class="tab-pane fade @shows" id="pills-Tab" role="tabpanel" aria-labelledby="tab">
+            <!-- Search Jobs Form -->
+            <div class="card border-0 tab-shadow">
+                <div class="sidebar p-4 mb-1">
+                    <form id="searchForm" class="js-validate" method="get"
+                          action="@Url.Action("Index", "KhachSan")">
+                        <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end" style="margin-top: 15px;">
+                            <!-- Điểm đến hoặc Tên khách sạn -->
+                            <div class="col-sm-12 col-lg-3dot6 col-xl-3gdot5 mb-4 mb-lg-0">
+                                <span class="d-block text-gray-1 font-weight-normal text-left mb-0">Nhập địa điểm / Tên Khách sạn</span>
+
+                                <!-- Styled input giống hero-form -->
+                                <div class="position-relative">
+                                    <div class="input-group border-bottom border-width-2 border-color-1">
+                                        <i class="flaticon-pin-1 d-flex align-items-center mr-2 text-primary font-weight-semi-bold font-size-22"></i>
+                                        <input type="text" name="location" id="locationInput"
+                                               class="form-control font-weight-medium font-size-15 shadow-none hero-form border-0 p-0"
+                                               placeholder="Bạn muốn đến đâu?" autocomplete="off">
+                                    </div>
+
+                                    <!-- Gợi ý -->
+                                    <div id="suggestionBox"
+                                         class="list-group position-absolute w-100 shadow bg-white"
+                                         style="z-index: 999; display: none; max-height: 300px; overflow-y: auto;">
+                                        <!-- Suggestion items sẽ được thêm bằng JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-lg-3dot7 col-xl-3gdot5 mb-4 mb-lg-0 ">
+                                <!-- Input -->
+                                <span class="d-block text-gray-1 text-left font-weight-normal mb-0">Ngày đến - Ngày đi</span>
+                                <div class="border-bottom border-width-2 border-color-1">
+                                    <div id="datepickerWrapperFromOne" class="u-datepicker input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="d-flex align-items-center mr-2">
+                                                <i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
+                                            </span>
+                                        </div>
+                                        <input id="dateRangeInput"
+                                               name="dateRange"
+                                               class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0"
+                                               type="text"
+                                               placeholder="Ngày đến → Ngày đi">
+                                    </div>
+                                    <!-- Kết thúc Datepicker -->
+                                </div>
+                                <!-- Kết thúc Input -->
+                            </div>
+
+                            <div class="dropdown col-sm-12 col-xl-3 mb-4 mb-lg-0 dropdown-custom">
+                                <span class="d-block text-gray-1 text-left font-weight-normal mb-0">Số phòng và số người</span>
+                                <a id="basicDropdownClickInvoker" class="dropdown-nav-link dropdown-toggle d-flex pt-3 pb-2" role="button"
+                                   aria-controls="basicDropdownClick"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   data-toggle="dropdown" href="#">
+                                    <i class="flaticon-plus d-flex align-items-center mr-3 font-size-18 text-primary font-weight-semi-bold"></i>
+                                    <span id="roomGuestSummary" class="text-black font-weight-medium font-size-15 mr-auto">Phòng - Người</span>
+                                </a>
+
+                                <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col-11 m-0" aria-labelledby="basicDropdownClickInvoker" style="min-width: 250px;">
+                                    <div class="w-100 py-2 px-3 mb-3">
+                                        <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                            <span class="d-block font-size-16 text-secondary font-weight-medium">Số phòng</span>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-minus btn-icon__inner"></small>
+                                                </a>
+                                                <input name="rooms" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-plus btn-icon__inner"></small>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w-100 py-2 px-3 mb-3">
+                                        <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                            <span class="d-block font-size-16 text-secondary font-weight-medium">Người lớn</span>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-minus btn-icon__inner"></small>
+                                                </a>
+                                                <input name="adults" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-plus btn-icon__inner"></small>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w-100 py-2 px-3">
+                                        <div class="js-quantity mx-3 row align-items-center justify-content-between">
+                                            <span class="d-block font-size-16 text-secondary font-weight-medium">Trẻ nhỏ</span>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-minus btn-icon__inner"></small>
+                                                </a>
+                                                <input name="children" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="1">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;">
+                                                    <small class="fas fa-plus btn-icon__inner"></small>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-xl-2 align-self-lg-end text-md-right">
+                                <button type="submit" class="btn btn-primary height-60 w-100 font-weight-bold mb-xl-0 mb-lg-1 transition-3d-hover">
+                                    <i class="flaticon-magnifying-glass mr-2 font-size-17"></i>Tìm kiếm
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <!-- End Checkbox -->
+                    </form>
+                </div>
+            </div>
+            <!-- End Search Jobs Form -->
+        </div>
+
+    }
+</div>
+
+<script>
+    $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+    $.HSCore.components.HSSelectPicker.init('.js-select');
+</script>
+
+
+<script src="~/assets/user/js/search.js"></script>
+<script>
+    const tinhThanhList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.TinhThanh));
+    const hotelList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.HotelName));
+    setupLocationAutocomplete(tinhThanhList, hotelList);
+    setupDatePicker("#dateRangeInput");
+</script>
+
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+            var action = $(e.target).data('action'); // Lấy action từ tab mới
+            $('#searchForm').attr('action', action); // Gán lại action cho form
+        });
+
+        // Gán action ban đầu cho form
+        var firstAction = $('a[data-toggle="pill"].active').data('action');
+        $('#searchForm').attr('action', firstAction);
+
+        const doneBtn = $('#basicDropdownClick .done-btn');
+        const plusMinusButtons = document.querySelectorAll('#basicDropdownClick .js-plus, #basicDropdownClick .js-minus');
+        // xử lý nút +, -
+        function updateSummaryText() {
+            const results = $('#basicDropdownClick .js-result');
+            const roomCount = parseInt(results.eq(0).val()) || 0;
+            const adultCount = parseInt(results.eq(1).val()) || 0;
+            const childCount = parseInt(results.eq(2).val()) || 0;
+            const totalGuests = adultCount + childCount;
+            const summaryText = `${roomCount} phòng, ${totalGuests} khách`;
+            $('#roomGuestSummary').text(summaryText);
+        }
+
+        $('#basicDropdownClick .js-plus').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const input = $(this).closest('.d-flex').find('.js-result');
+            if (input.prop('readonly')) return;
+            let val = parseInt(input.val()) || 0;
+            val++;
+            input.val(val); // Cập nhật giá trị input ngay lập tức
+            updateSummaryText(); // Cập nhật summary ngay lập tức
+        });
+
+        // Xử lý nút trừ
+        $('#basicDropdownClick .js-minus').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const input = $(this).closest('.d-flex').find('.js-result');
+            if (input.prop('readonly')) return;
+            let val = parseInt(input.val()) || 0;
+            if (val > 0) val--;
+            input.val(val); // Cập nhật giá trị input ngay lập tức
+            updateSummaryText(); // Cập nhật summary ngay lập tức
+        });
+
+        // Chặn dropdown đóng khi click trong dropdown
+        $('#basicDropdownClick').click(function (e) {
+            e.stopPropagation();
+        });
+    });
+</script>

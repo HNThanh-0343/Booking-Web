@@ -1,0 +1,247 @@
+@model List<WEBSITE_TRAVELBOOKING.Models.SysRoom>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using Microsoft.AspNetCore.Http;
+@using WEBSITE_TRAVELBOOKING.Models;
+
+@{
+    var hotel = ViewBag.Hotels as SysHotel;
+}
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var rooms in Model)
+    {
+        var anhroom = !string.IsNullOrEmpty(rooms.ListImg) ? rooms.ListImg.Split(",")[0] : "/AppData/no-image.png"; // Hình ảnh mặc định nếu không có hình
+        anhroom = Common.GetImagePath(anhroom);
+        <div class="card border-color-7 mb-2 overflow-hidden">
+            <div class="product-item__outer w-100">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-xl-3 dot5">
+                        <div class="pt-3 pb-3 pl-4 pr-4 pl-md-2 pr-md-1 pr-xl-2 colRoomIMG">
+                            <div class="product-item__header mt-2 mt-md-0">
+                                <div class="position-relative">
+                                    <img data-room-id="@rooms.Id" onclick="showRoomModal(@rooms.Id)" class="img-fluid rounded-sm w-100" src="@anhroom" alt="Image Description" style="height: 154px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-lg-5 col-xl-5 flex-horizontal-center pl-xl-0 colRoomText">
+                        <div class="w-100 position-relative m-4 m-md-0 card_colRoomText">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <a href="javascript:;" data-room-id="@rooms.Id" onclick="showRoomModal(@rooms.Id)" class="d-inline-block">
+                                    <span class="font-weight-bold font-size-17 text-dark titleCard_cus">@rooms.Name</span>
+                                </a>
+                                @if (rooms.Feature != false)
+                                {
+                                    <ul class="list-unstyled mb-0 d-flex flex-wrap ml-2">
+                                        <li class="rounded-xs d-flex align-items-center text-lh-1 py-1">
+                                            <span class="badge bg-warning text-dark px-3 py-2">Nổi bật</span>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+
+                            @if (rooms.TypeRoomNavigation != null)
+                            {
+                                <div class="mdi text-primary ml-2 mb-3 typeRoom card-color__icon">
+                                    <i class="@rooms.TypeRoomNavigation.Icon mr-1 font-size-20"></i>@rooms.TypeRoomNavigation.Name
+                                </div>
+                            }
+
+                            <div class="mb-3 tienich">
+                                <p class="text-muted font-size-14">Không có thông tin về tiện nghi phòng.</p>
+                            </div>
+
+                            <div class="details pb-1">
+                                <!-- On Target Modal -->
+                                <a class="font-size-14 text-underline d-block" href="javascript:;" data-room-id="@rooms.Id" onclick="showRoomModal(@rooms.Id)">
+                                    Hình ảnh và chi tiết phòng
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-4 flex-content-center border-xl-left colRoomPrice">
+                        <div class="priceCard text-center">
+                            <div class="pb-3 prices">
+                                @{
+                                    var originalRoomPrice = rooms.Price.GetValueOrDefault();
+                                    var hotelStrikePrice = originalRoomPrice;
+                                    if (hotel?.IdPromotionNavigation != null)
+                                    {
+                                        var promo = hotel.IdPromotionNavigation;
+                                        if (promo.Type == true)
+                                            hotelStrikePrice = originalRoomPrice + originalRoomPrice * promo.SaleOff.GetValueOrDefault() / 100.0;
+                                        else
+                                            hotelStrikePrice = originalRoomPrice + promo.SaleOff.GetValueOrDefault();
+                                    }
+                                }
+                                @if (originalRoomPrice > 0)
+                                {
+                                    <small class="color_card__Price">Chỉ từ </small>
+                                    <span class="price-overlay">
+                                        @if (hotelStrikePrice != originalRoomPrice)
+                                        {
+                                            <small class="original-price">@hotelStrikePrice.ToString("N0") VNĐ</small>
+                                        }
+                                        <span class="new-price">@originalRoomPrice.ToString("N0") VNĐ</span>
+                                    </span>
+                                    <small class="color_card__Price"> / Đêm</small>
+                                }
+                                else
+                                {
+                                    <span class="font-weight-bold font-size-22 ml-1">Liên hệ</span>
+                                }
+                            </div>
+                            @*
+                            @if (Context.Session.GetInt32("UserId") != null)
+                            {
+                                <div class="px-5 booknows">
+                                    <button type="button" class="btn btn-outline-primary border-radius-3 border-width-2 px-4 font-weight-bold min-width-200 py-2 text-lh-lg" onclick="bookRoom(@rooms.Id, '@Common.GenerateSlug(rooms.Name)')">Đặt ngay</button>
+                                </div>
+                            }
+                            *@  
+                            <div class="btn-group mb-2">
+                                <div class="">
+                                    <a href="tel:@ViewBag.hotelPhone" onclick="ghiloglienhe(1)" class="btn btn-outline-primary border-radius-3 border-width-2 px-5 py-2" type="submit" id="lienhe"><i class="fas fa-phone mr-2"></i>Liên hệ</a>
+                                </div>
+                                <div class=" ml-3">
+                                    <a href="https://zalo.me/@(ViewBag.hotelPhone)" onclick="ghiloglienhe(2)" class="btn p-0" target="_blank" type="submit" id="zalo">
+                                        <img src='@Url.Content("~/assets/img/icons/zalo_icon.png")' style="height:44px; object-fit:contain;" alt="Zalo" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-info">
+        <i class="fa fa-info-circle mr-2"></i> Không tìm thấy phòng trống phù hợp với tiêu chí tìm kiếm của bạn.
+        <p class="mt-2 mb-0">Vui lòng thử chọn ngày khác hoặc điều chỉnh số lượng khách.</p>
+    </div>
+}
+
+<style>
+    .ml-7 {
+        margin-left: 3rem;
+    }
+
+    .font-size-1 {
+        font-size: 14px;
+    }
+
+    .text-gray-1 {
+        color: #5e6d77;
+    }
+
+    .border-radius-3 {
+        border-radius: 3px;
+    }
+
+    .border-width-2 {
+        border-width: 2px;
+    }
+
+    .min-width-200 {
+        min-width: 200px;
+    }
+
+    .text-lh-lg {
+        line-height: 1.5;
+    }
+
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .custom-toast {
+        background-color: #fff;
+        border-left: 4px solid #dc3545;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        animation: slideIn 0.3s ease-in-out;
+    }
+
+        .custom-toast i {
+            color: #dc3545;
+            margin-right: 0.5rem;
+        }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @@keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .price-overlay {
+        position: relative;
+        display: inline-block;
+    }
+
+        .price-overlay .original-price {
+            position: absolute;
+            top: -0.75em;
+            left: 0;
+            font-size: 0.75em;
+            color: gray;
+            text-decoration: line-through;
+        }
+
+        .price-overlay .new-price {
+            display: inline-block;
+            margin-top: 0.2em;
+        }
+</style>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    function showDateRequiredToast() {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Vui lòng chọn ngày nhận phòng và ngày trả phòng</span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease-in-out';
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+</script>

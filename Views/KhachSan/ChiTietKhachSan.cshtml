@@ -1,0 +1,2290 @@
+@model WEBSITE_TRAVELBOOKING.Models.SysHotel;
+@using WEBSITE_TRAVELBOOKING.Helper
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Chi tiết khách sạn";
+    ViewData["Detail"] = true;
+    var listHotel = ViewBag.Hotelss as List<WEBSITE_TRAVELBOOKING.Models.SysHotel>;
+    var amenitiesIds = !string.IsNullOrEmpty(Model.Amenities) ? Model.Amenities.Split(',').Select(id => int.Parse(id.Trim())).ToList() : new List<int>();
+    var hotelAmenities = ViewBag.HotelAmenities as List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom> ?? new List<WEBSITE_TRAVELBOOKING.Models.CatAminitieseRoom>();
+
+    // Xử lý đánh giá có bình luận để hiển thị
+    var reviewsWithComments = new List<dynamic>();
+    if (ViewBag.HotelReviews != null)
+    {
+        foreach (var r in ViewBag.HotelReviews)
+        {
+            if (!string.IsNullOrEmpty(r.Comment))
+            {
+                reviewsWithComments.Add(r);
+            }
+        }
+    }
+
+    string GetRatingLabel(double? score)
+    {
+        if (!score.HasValue || score.Value < 1.0) return "";
+
+        return score.Value switch
+        {
+            var s when s >= 4.5 => "Xuất sắc",
+            var s when s >= 4.0 => "Tốt",
+            var s when s >= 3.0 => "Trung bình",
+            var s when s >= 2.0 => "Tệ",
+            var s when s >= 1.0 => "Rất tệ",
+            _ => ""
+        };
+    }
+
+    var hotelid = ViewBag.IDHOTEL;
+    var User = ViewBag.User;
+    var liked = ViewBag.Liked;
+    decimal? discountPrice = Model.PriceMin ?? 0;
+
+}
+
+<style>
+/* Gom nhóm modal carousel và main-image-container */
+    .modal-carousel,
+    .main-image-container {
+        height: 70vh; /* Changed from 500px to 70% of viewport height */
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .modal-carousel .js-slide img,
+        .main-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+    /* Room details container */
+    .room-details-container {
+        display: flex;
+        flex-direction: column;
+        height: 70vh; /* Changed from 500px to 70% of viewport height */
+    }
+
+    .room-details-header {
+        background-color: #fff;
+        z-index: 10;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .room-details-scroll {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 50vh; /* Changed from 300px to 50% of viewport height */
+        padding-right: 10px;
+        scrollbar-width: thin;
+    }
+
+        .room-details-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .room-details-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .room-details-scroll::-webkit-scrollbar-track {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+    /* Modal size and position */
+    #roomDetailModal .modal-dialog {
+        
+        max-width: 90vw;
+        overflow: visible;
+    }
+
+    #roomDetailModal .modal-content {
+        border-radius: 0;
+        border: none;
+        overflow: visible;
+    }
+
+    #roomDetailModal .modal-header {
+        padding: 0;
+        border-bottom: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1050;
+        background: transparent;
+    }
+
+    #roomDetailModal .modal-content .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+        z-index: 1051;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        opacity: 1 !important;
+        background-color: #297cbb;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.25rem;
+        line-height: 1;
+        color: #fff;
+        box-shadow: 0 2px 4px #000;
+        transition: background-color .2s;
+    }
+
+        #roomDetailModal .modal-content .close:hover,
+        #roomDetailModal .modal-content .close:focus {
+            background-color: #1f5d8a;
+            color: #fff;
+            outline: none;
+        }
+
+    /* Responsive behavior */
+    @@media (max-width: 767px) {
+        .modal-carousel,
+        .modal-carousel .js-slide img,
+        .main-image-container,
+        .main-image-container img {
+            height: 40vh; /* Changed from 300px to 40% of viewport height */
+        }
+
+        .room-details-container {
+            height: auto;
+            max-height: 40vh; /* Changed from 300px to 40% of viewport height */
+        }
+
+        .room-details-scroll {
+            max-height: 30vh; /* Changed from 220px to 30% of viewport height */
+        }
+
+        .gallery-thumb {
+            height: 60px;
+        }
+
+        #sliderSyncingThumb .slick-track {
+            display: flex;
+            align-items: center;
+        }
+
+        #sliderSyncingThumb .js-slide {
+            padding: 4px;
+        }
+
+        #sliderSyncingThumb {
+            padding: 5px 0;
+        }
+    }
+
+    /* Related hotels responsive styles */
+    @@media (max-width: 768px) {
+        .product-card-v3 .js-slide {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .product-card-v3 .card {
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .product-card-v3 .card-img-top {
+            height: 220px;
+            object-fit: cover;
+        }
+        /* Fix for featured badge on mobile */
+        .border-primary.bg-primary.rounded-xs {
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: 100%;
+        }
+    }
+
+    /* Gallery styles */
+    .gallery-thumb {
+        height: 80px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .u-slick--gutters-4 {
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+    }
+
+        .u-slick--gutters-4 .js-slide {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+
+    #sliderSyncingThumb .slick-current .gallery-thumb {
+        border: 2px solid #297cbb;
+        opacity: 1;
+    }
+    /* Touch-friendly padding */
+    #sliderSyncingThumb .js-slide {
+        padding: 4px;
+    }
+
+    /* Rating star styles */
+    .rating-star {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        opacity: 0.5;
+        margin-right: 5px;
+        font-size: 20px;
+        letter-spacing: 3px;
+        color: #297cbb;
+    }
+
+        .rating-star.active,
+        .rating-star.selected {
+            opacity: 1;
+            transform: scale(1.1);
+            font-weight: 900;
+        }
+
+    .rating-container {
+        display: inline-block;
+        color: #297cbb;
+    }
+
+    /* Collapse Link Styles */
+    .link-collapse .link-collapse__active,
+    .link-collapse-custom .link-collapse__active {
+        display: none;
+    }
+
+    .link-collapse.active .link-collapse__default,
+    .link-collapse-custom.active .link-collapse__default {
+        display: none;
+    }
+
+    .link-collapse.active .link-collapse__active,
+    .link-collapse-custom.active .link-collapse__active {
+        display: inline-block;
+    }
+
+    /* Additional styling for text justification */
+    .text-justify {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+        /* Make sure list items in justified text maintain proper spacing */
+        .text-justify li div.d-flex div:last-child {
+            text-align: justify;
+            flex: 1;
+        }
+    /* Ensure proper spacing in justified paragraphs */
+    .description-preview p, .description-full p {
+        text-align: justify;
+    }
+
+    /* Room modal amenities styles */
+    #roomModalAmenities .row {
+        margin: 0 -10px;
+    }
+
+    #roomModalAmenities .col-md-6 {
+        padding: 0 10px;
+    }
+
+    #roomModalAmenities .d-flex {
+        padding: 8px 0;
+    }
+
+    #roomModalAmenities,
+    #hotelsAmenities i {
+        font-size: 20px;
+        min-width: 24px;
+    }
+
+        #roomModalAmenities span {
+            font-size: 14px;
+        }
+
+        .amenities-preview .card-color__icon,
+        .amenities-full .card-color__icon,
+        #roomModalAmenities .card-color__icon {
+            color: #939bad !important;
+            transition: color 0.2s;
+        }
+
+            .amenities-preview .card-color__icon:hover,
+            .amenities-full .card-color__icon:hover,
+            #roomModalAmenities .card-color__icon:hover {
+                color: #006ce4 !important;
+            }
+
+    /* Reviews styles */
+    #reviewsContainer {
+        max-height: none;
+        overflow: visible;
+    }
+
+    #hiddenReviews {
+        transition: all 0.3s ease;
+    }
+
+    #toggleReviewsBtn {
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        #toggleReviewsBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+    /* Fix share dropdown hover text color */
+    .custom-social-share .dropdown-menu .dropdown-item:hover {
+        color: #fff;
+    }
+
+        .custom-social-share .dropdown-menu .dropdown-item:hover i {
+            color: #fff;
+        }
+
+    .cssShareMobile span {
+        border: 1px solid rgb(130, 127, 127) !important
+    }
+
+        .cssShareMobile span:hover {
+            background: #006ce4;
+            border: 1px solid #006ce4 !important;
+        }
+
+            .cssShareMobile span:hover i {
+                color: white !important;
+            }
+
+        .cssShareMobile span a {
+            width: 15px;
+            height: 15px;
+        }
+
+        .cssShareMobile span i {
+            color: rgb(130, 127, 127) !important;
+        }
+
+.text-content.collapsed {
+    max-height: 120px;
+    overflow: hidden;
+    position: relative;
+}
+
+.text-content.collapsed::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(transparent, white);
+}
+
+.toggle-btn {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 5px;
+    font-size: 14px;
+}
+</style>
+
+
+@if (Model != null)
+{
+    <div class="container mt-7">
+        <div class="row">
+            <div class="col-lg-8 col-xl-9">
+                <div class="d-block d-md-flex flex-center-between align-items-start">
+                    <div class="mb-3">
+                        <div class="d-flex flex-wrap align-items-center">
+                            @if (Model.Featured == true)
+                            {
+                                <ul class="list-unstyled mb-0 d-flex flex-wrap mr-2">
+                                    <li class="rounded-xs d-flex align-items-center text-lh-1 py-1">
+                                        <span class="badge bg-warning text-dark px-3 py-2">Nổi bật</span>
+                                    </li>
+                                </ul>
+                            }
+
+                            @if (Model.IdPromotion != null)
+                            {
+                                <a>
+                                    @if (Model.IdPromotionNavigation.Type == true)
+                                    {
+                                        <span class="badge" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                            Giảm @Model.IdPromotionNavigation.SaleOff %
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                            Giảm @Model.IdPromotionNavigation.SaleOff?.ToString("N0") VNĐ
+                                        </span>
+                                    }
+                                </a>
+                            }
+                        </div>
+                        <div class="d-block d-md-flex flex-horizontal-center mb-2 mb-md-0 cardDetail">
+                            <h4 class="font-size-23 font-weight-bold mb-1 d-inline-flex align-items-center">
+                                @Model.Name
+                            </h4>
+                            <div class="ml-3 font-size-14 letter-spacing-2 sao">
+                                <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                    <div class="green-lighter mr-2">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (i < Model.NumStar)
+                                            {
+                                                <small class="fas fa-star"></small>
+                                            }
+                                            else
+                                            {
+                                                <small class="far fa-star"></small>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="d-block d-md-flex flex-horizontal-center font-size-14 text-gray-1">
+                            <i class="icon flaticon-placeholder mr-2 font-size-20"></i> @Model.Local
+                            <a href="javascript:void(0);" onclick="openMapModal()" class="ml-1 d-block d-md-inline"> - Hiển thị trên bản đồ</a>
+                        </div>
+
+                        <!-- Điểm đánh giá trong mobile -->
+                        <div class="mb-2 mt-2 ml-0 cssShareMobile d-lg-none d-flex align-items-center">
+                            @if (Model.Score.HasValue && Model.Score.Value > 0)
+                            {
+                                <div class="d-flex align-items-center p-1">
+                                    <div class="badge-primary rounded-xs px-1">
+                                        <span class="badge font-size-16 px-2 py-1 mb-0 text-lh-inherit">
+                                            @(Model.Score?.ToString("0.0") ?? "0")/5
+                                        </span>
+                                    </div>
+                                    <div class="ml-2">
+                                        @if (Model.Score.HasValue && Model.Score.Value >= 1.0)
+                                        {
+                                            <span class="text-primary font-size-14 font-weight-bold">
+                                                @GetRatingLabel(Model.Score)
+                                            </span>
+                                        }
+                                        <span class="text-gray-1 font-size-12 ml-1">(@(Model.Reviews.HasValue? Model.Reviews.Value.ToString() : "Chưa có đánh giá"))</span>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (User != null)
+                            {
+                                <span class="rounded-circle p-2 d-inline-block" style="">
+                                    <a id="btnLike-@hotelid"
+                                       class="d-flex justify-content-center align-items-center text-white btn-like"
+                                       style="background-color: white; "
+                                       data-hotel-id="@hotelid"
+                                       data-liked="@(liked ? "true" : "false")"
+                                       title="Yêu thích">
+                                        @if (liked)
+                                        {
+                                            <span class="fa-solid fa-heart text-danger"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fa-regular fa-heart text-dark"></span>
+                                        }
+                                    </a>
+                                </span>
+                            }
+                            <span class="rounded-circle p-2 d-inline-block" style="">
+                                <a class="d-flex justify-content-center align-items-center text-white" href="javascript:void(0);" onclick="copyCurrentUrl()" class="">
+                                    <i class="fas fa-copy" style=""></i>
+                                </a>
+                            </span>
+                            <span class="rounded-circle p-2 d-inline-block" style="">
+                                <a class="d-flex justify-content-center align-items-center text-white" href="https://www.facebook.com/sharer/sharer.php?u=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)" target="_blank">
+                                    <i class="fab fa-facebook-f" style=""></i>
+                                </a>
+                            </span>
+                            <span class="rounded-circle p-2 d-inline-block" style="">
+                                <a class="d-flex justify-content-center align-items-center text-white" href="https://twitter.com/intent/tweet?url=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)&text=@Model.Name" target="_blank">
+                                    <i class="fab fa-twitter" style=""></i>
+                                </a>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--Hình ảnh-->
+                <div class="pb-2">
+                    <div class="position-relative">
+
+                        <!-- Images Carousel -->
+                        <div id="sliderSyncingNav" class="js-slick-carousel u-slick mb-2"
+                             data-infinite="true"
+                             data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-centered--y rounded-circle"
+                             data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-lg-2 ml-xl-4"
+                             data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-lg-2 mr-xl-4"
+                             data-nav-for="#sliderSyncingThumb">
+
+                            @{
+                                var images = new List<string>();
+                                if (!string.IsNullOrEmpty(Model.ListImg))
+                                {
+                                    images = Model.ListImg.Split(',')
+                                    .Select(i => i.Trim())
+                                    .Where(i => !string.IsNullOrEmpty(i))
+                                    .ToList();
+                                }
+                            }
+
+                            @{
+                                var index = 0;
+                                var anhmacdinh = new List<string>();
+                            }
+                            @foreach (var img in images)
+                            {
+
+                                var imgPath = Common.GetImagePath(img.Trim()) == "/AppData/no-image.png"
+                                ? "/AppData/BaiViet/BaiVietMacDinh.jpg"
+                                : img.Trim();
+                                if (imgPath != "/AppData/BaiViet/BaiVietMacDinh.jpg")
+                                {
+                                    <div class="js-slide">
+                                        <div class="main-image-container">
+                                            <img class="img-fluid border-radius-3"
+                                                 src="@imgPath"
+                                                 alt="Hotel Image"
+                                                 onerror="replaceWithPlaceholder(this, 'images')" />
+                                        </div>
+                                    </div>
+
+                                    index++;
+                                }
+                                else
+                                {
+                                    anhmacdinh.Add(img);
+                                }
+                            }
+
+                            @foreach (var anh in anhmacdinh)
+                            {
+                                if (index < 6)
+                                {
+                                    <div class="js-slide">
+                                        <div class="main-image-container">
+                                            <img class="img-fluid border-radius-3"
+                                                 src="@anh"
+                                                 alt="Hotel Image"
+                                                 onerror="replaceWithPlaceholder(this, 'images')" />
+                                        </div>
+                                    </div>
+
+                                    index++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                        </div>
+
+                        <div id="sliderSyncingThumb" class="js-slick-carousel u-slick u-slick--gutters-4 u-slick--transform-off"
+                             data-infinite="false"
+                             data-slides-show="6"
+                             data-is-thumbs="true"
+                             data-focus-on-select="true"
+                             data-nav-for="#sliderSyncingNav"
+                             data-responsive='[
+                                                 { "breakpoint": 992,
+                                                 "settings": { "slidesToShow": 4 } },
+                                                 { "breakpoint": 576,
+                                                 "settings": { "slidesToShow": 3 } }
+                                             ]'>
+
+                            @foreach (var img in images)
+                            {
+                                var imgPath = Common.GetImagePath(img.Trim()) == "/AppData/no-image.png"
+                                ? "/AppData/BaiViet/BaiVietMacDinh.jpg"
+                                : img.Trim();
+                                if (imgPath != "/AppData/BaiViet/BaiVietMacDinh.jpg")
+                                {
+                                    <div class="js-slide" style="cursor: pointer;">
+                                        <img class="img-fluid border-radius-3 gallery-thumb"
+                                             src="@imgPath"
+                                             alt="Thumbnail"
+                                             onerror="this.onerror=null; this.src='/AppData/BaiViet/BaiVietMacDinh.jpg';" />
+                                    </div>
+                                    index++;
+                                }
+                                else
+                                {
+                                    anhmacdinh.Add(img);
+                                }
+                            }
+
+                            @foreach (var anh in anhmacdinh)
+                            {
+                                if (index < 6)
+                                {
+                                    <div class="js-slide" style="cursor: pointer;">
+                                        <img class="img-fluid border-radius-3 gallery-thumb"
+                                             src="@anh"
+                                             alt="Thumbnail"
+                                             onerror="replaceWithPlaceholder(this, 'images')" />
+                                    </div>
+
+                                    index++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        </div>
+                        <!-- End Images Carousel -->
+                    </div>
+                </div>
+
+                <!--Tổng quát-->
+                @if (!String.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="border-bottom position-relative py-2">
+                        <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-2">Tổng quát</h5>
+                        
+                        <div class="description-preview text-justify">
+                            <div class="text-content collapsed" id="textContent">
+                                @Html.Raw(Model.Description)
+                            </div>
+                            <button class="toggle-btn" onclick="toggleText()" id="toggleBtn">Xem thêm</button>
+                        </div>               
+                    </div>
+                }
+
+
+                <!--Tiện nghi-->
+                @if (amenitiesIds.Any())
+                {
+                    var allAmenities = amenitiesIds
+                    .Select(id => hotelAmenities.FirstOrDefault(a => a.Id == id))
+                    .Where(a => a != null)
+                    .ToList();
+                    var previewCount = 6;
+                    var AmenitiesToggle = allAmenities.Count > previewCount;
+
+                    <div class="border-bottom py-2">
+                        <h5 id="hotel_amenities_section" class="font-size-21 font-weight-bold text-dark mb-2">Tiện nghi</h5>
+
+                        <div class="row amenities-preview" id="hotelsAmenities">
+                            @foreach (var amenityId in amenitiesIds.Take(previewCount))
+                            {
+                                var amenity = hotelAmenities.FirstOrDefault(a => a.Id == amenityId);
+                                if (amenity != null)
+                                {
+                                    <div class="col-md-4 col-6 mb-3 colmobile">
+                                        <div class="d-flex align-items-center card-color__icon">
+                                            @if (!string.IsNullOrEmpty(amenity.Icon))
+                                            {
+                                                <i class="@amenity.Icon mr-3 "></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-check-circle mr-3 "></i>
+                                            }
+                                            <span>@amenity.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        @if (AmenitiesToggle)
+                        {
+                            <div class="row amenities-full d-none" id="hotelsAmenities">
+                                @foreach (var amenity in allAmenities)
+                                {
+                                    <div class="col-md-4 col-6 mb-3 colmobile">
+                                        <div class="d-flex align-items-center card-color__icon">
+                                            @if (!string.IsNullOrEmpty(amenity.Icon))
+                                            {
+                                                <i class="@amenity.Icon mr-3 "></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-check-circle mr-3 "></i>
+                                            }
+                                            <span>@amenity.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <a href="javascript:void(0)" class="text-primary font-size-14 mt-2 d-inline-block" data-toggle-key="amenities">
+                                <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                                <span class="show-less d-none">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                            </a>
+                        }
+                    </div>
+                }
+
+
+                <!--Form tìm phòng-->
+                <div class="border-bottom py-2">
+                    <h5 id="hotel_rooms_section" class="font-size-21 font-weight-bold text-dark">Chọn phòng của bạn</h5>
+                    <div class="p-3">
+                        <div class="d-flex flex-lg-row flex-column justify-content-between align-items-lg-start align-items-center gap-3">
+                            <!-- Ngày đến - ngày đi -->
+                            <div class="flex-fill w-100  mr-lg-3 mb-3 mb-lg-0">
+                                <span class="d-block text-gray-1 font-weight-normal mb-0 text-left">Ngày đến - Ngày đi</span>
+                                <div class="border-bottom border-width-2 border-color-1">
+                                    <div id="datepickerWrapperPick" class="u-datepicker input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="d-flex align-items-center mr-2 font-size-21">
+                                                <i class="flaticon-calendar text-primary font-weight-semi-bold"></i>
+                                            </span>
+                                        </div>
+                                        <input id="checkInOut"
+                                               class="js-range-datepicker font-size-lg-16 ml-1 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0"
+                                               type="text"
+                                               placeholder="Ngày đến - Ngày đi"
+                                               aria-label="Ngày đến - Ngày đi">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Số khách -->
+                            <div class="flex-fill w-100  mr-lg-3 mb-3 mb-lg-0 position-relative">
+                                <span class="d-block text-gray-1 font-weight-normal mb-0 text-left">Số khách</span>
+                                <div class="border-bottom border-width-2 border-color-1">
+                                    <a id="basicDropdownClickInvoker" class="dropdown-nav-link dropdown-toggle flex-horizontal-center pt-3 pb-2" href="javascript:;" role="button" aria-controls="basicDropdownClick" aria-haspopup="true" aria-expanded="false" data-unfold-event="click" data-unfold-target="#basicDropdownClick" data-unfold-type="css-animation" data-unfold-duration="300" data-unfold-delay="300" data-unfold-hide-on-scroll="true" data-unfold-animation-in="slideInUp" data-unfold-animation-out="fadeOut">
+                                        <i class="flaticon-add-group d-flex align-items-center mr-3 font-size-20 text-primary font-weight-semi-bold"></i>
+                                        <span id="roomGuestSummary" class="text-black font-size-16 font-weight-semi-bold mr-auto">2 Khách</span>
+                                    </a>
+                                    <div id="basicDropdownClick" class="dropdown-menu dropdown-unfold col m-0" aria-labelledby="basicDropdownClickInvoker" style="z-index: 1050;">
+                                        <div class="w-100 py-2 px-3 mb-3">
+                                            <div class="js-quantity mx-3 d-flex flex-column align-items-start">
+                                                <span class="d-block font-size-16 text-secondary font-weight-medium">Người lớn</span>
+                                                <div class="d-flex">
+                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, false, 'adultCount')">
+                                                        <small class="fas fa-minus btn-icon__inner"></small>
+                                                    </a>
+                                                    <input id="adultCount" name="adults" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="2">
+                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, true, 'adultCount')">
+                                                        <small class="fas fa-plus btn-icon__inner"></small>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-100 py-2 px-3">
+                                            <div class="js-quantity mx-3 d-flex flex-column align-items-start">
+                                                <span class="d-block font-size-16 text-secondary font-weight-medium">Trẻ nhỏ</span>
+                                                <div class="d-flex">
+                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, false, 'childCount')">
+                                                        <small class="fas fa-minus btn-icon__inner"></small>
+                                                    </a>
+                                                    <input id="childCount" name="children" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="0">
+                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle" href="javascript:;" onclick="updateCounter(this, true, 'childCount')">
+                                                        <small class="fas fa-plus btn-icon__inner"></small>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Nút -->
+                            <div class="flex-shrink-0 w-100 align-self-end w-auto mx-auto">
+                                <a href="javascript:void(0);" id="searchRoomsBtn" class="btn btn-primary py-2 btn-block transition-3d-hover pd-btn__mobile">
+                                    <i class="flaticon-magnifying-glass mr-2"></i>Xem phòng trống
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="room-list-container" style="max-height: 600px; overflow-y: auto; padding-right: 10px;">
+                        <div id="roomListResults">
+                            @{
+                                ViewBag.hotelphone = Model.Phone;
+                            }
+                            @await Html.PartialAsync("_AvailableRooms", ViewBag.RoomsList as List<WEBSITE_TRAVELBOOKING.Models.SysRoom>)
+                        </div>
+                    </div>
+                </div>
+
+                <!--Nội quy khách sạn-->
+                @if (!string.IsNullOrEmpty(Model.HouseRules))
+                {
+                    <div class="border-bottom position-relative py-2">
+                        <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-2">Nội quy khách sạn</h5>
+                    </div>
+                }
+
+
+                <!--Đánh giá trung bình-->
+                @if (Model.Score.HasValue && Model.Score.Value > 0)
+                {
+                    <div id="scroll-reviews" class="border-bottom py-4">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-4">Đánh giá trung bình</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-4 mb-md-0">
+                                <div class="border rounded flex-content-center py-2 border-width-2">
+                                    <div class="text-center">
+                                        <h2 class="font-size-50 font-weight-bold text-primary mb-0 text-lh-sm">
+                                            @(Model.Score?.ToString("0.0") ?? "0")<span class="font-size-20">/5</span>
+                                        </h2>
+                                        @if (Model.Score.HasValue && Model.Score.Value >= 1.0)
+                                        {
+                                            <div class="font-size-25 text-dark mb-3">
+                                                @GetRatingLabel(Model.Score)
+                                            </div>
+                                        }
+                                        <div class="text-gray-1">@(Model.Reviews.HasValue ? $"Từ {Model.Reviews.Value} đánh giá" : "Chưa có đánh giá")</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    @{
+                                        string[] categories = { "cleanliness", "facilities", "valueForMoney", "service", "location" };
+                                        string[] categoryLabels = { "Vệ sinh", "Tiện nghi", "Giá trị", "Dịch vụ", "Vị trí" };
+
+                                        for (int i = 0; i < categories.Length; i++)
+                                        {
+                                            var score = ViewBag.CategoryRatings != null ? ViewBag.CategoryRatings[categories[i]] : 0;
+                                            var percent = score * 20; // Convert 5-point scale to percentage
+
+                                            <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+                                                <h6 class="font-weight-normal text-gray-1 mb-1">
+                                                    @categoryLabels[i]
+                                                </h6>
+                                                <div class="flex-horizontal-center mr-6">
+                                                    <div class="progress bg-gray-33 rounded-pill w-100" style="height: 7px;">
+                                                        <div class="progress-bar rounded-pill" role="progressbar" style="width: @percent%;" aria-valuenow="@score" aria-valuemin="0" aria-valuemax="5"></div>
+                                                    </div>
+                                                    <div class="ml-3 text-primary font-weight-bold">
+                                                        @score
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                <!-- Danh sách đánh giá của khách hàng -->
+                @if (reviewsWithComments.Any())
+                {
+                    <div id="verified-reviews" class="border-bottom py-2">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-4">Đánh giá của khách hàng</h5>
+
+                        <div id="reviewsContainer">
+                            <div id="reviewsList">
+                                @foreach (var review in reviewsWithComments.Take(3))
+                                {
+                                    <div class="media flex-column flex-md-row align-items-center align-items-md-start mb-1">
+                                        <div class="mr-md-5">
+                                            @{
+                                                var originalPath = Common.GetImagePath(review.Avatar);
+                                                var avatarSrc = originalPath == "/AppData/no-image.png"
+                                                ? "/assets/img/user.png"
+                                                : originalPath;
+                                            }
+                                            <a class="d-block" href="#">
+                                                <img class="img-fluid mb-3 mb-md-0 rounded-circle"
+                                                     src="@avatarSrc"
+                                                     alt="@review.Name"
+                                                     style="width: 75px; height: 75px; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='/assets/img/user.png';" />
+                                            </a>
+                                        </div>
+                                        <div class="media-body text-center text-md-left">
+                                            <div class="mb-0">
+                                                <h6 class="d-flex font-weight-bold text-gray-3 mb-0 align-items-center binhluan">
+                                                    <a href="#" class="text-dark pr-2">@review.Name</a>
+                                                    <div class="d-flex align-items-center flex-column flex-md-row mb-0">
+                                                        <button type="button" class="btn btn-xs btn-primary rounded-xs font-size-14 btndanhgiasao">@review.AverageScore/5 </button>
+                                                    </div>
+                                                </h6>
+                                                <div class="font-weight-normal font-size-14 text-gray-9 mb-1">@review.Date.ToString("dd-MM-yyyy hh:mm")</div>
+
+                                                <div class="review-comment-container">
+                                                    @{
+                                                        var commentLines = review.Comment.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                                                        var firstLine = commentLines.Length > 0 ? commentLines[0] : review.Comment;
+                                                        var hasMoreLines = commentLines.Length > 1 || (review.Comment.Length > 150);
+
+                                                        if (firstLine.Length > 150 && !firstLine.Contains("\n"))
+                                                        {
+                                                            firstLine = firstLine.Substring(0, 150) + "...";
+                                                        }
+                                                    }
+
+                                                    <div class="comment-preview font-weight-bold font-italic text-gray-3 text-justify">
+                                                        @firstLine
+                                                        @if (hasMoreLines)
+                                                        {
+                                                            <span>...</span>
+                                                        }
+                                                    </div>
+                                                    @if (hasMoreLines)
+                                                    {
+                                                        <div class="comment-full font-weight-bold font-italic text-gray-3 text-justify" style="display: none;">
+                                                            @review.Comment
+                                                        </div>
+                                                        <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
+                                                           onclick="toggleComment(this)">
+                                                            <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                                                            <span class="show-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="border-bottom: 1px solid #ddd; margin: 0.1rem 0 0.5rem;"></div>
+                                }
+                            </div>
+
+                            @if (reviewsWithComments.Count > 3)
+                            {
+                                <div id="hiddenReviews" style="display: none;">
+                                    @foreach (var review in reviewsWithComments.Skip(3))
+                                    {
+                                        <div class="media flex-column flex-md-row align-items-center align-items-md-start mb-1">
+                                            <div class="mr-md-5">
+                                                @{
+                                                    var originalPath = Common.GetImagePath(review.Avatar);
+                                                    var avatarSrc = originalPath == "/AppData/no-image.png"
+                                                    ? "/assets/img/user.png"
+                                                    : originalPath;
+                                                }
+                                                <a class="d-block" href="#">
+                                                    <img class="img-fluid mb-3 mb-md-0 rounded-circle"
+                                                         src="@avatarSrc"
+                                                         alt="@review.Name"
+                                                         style="width: 75px; height: 75px; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='/assets/img/user.png';" />
+                                                </a>
+                                            </div>
+                                            <div class="media-body text-center text-md-left">
+                                                <div class="mb-0">
+                                                    <h6 class="d-flex font-weight-bold text-gray-3 mb-0 align-items-center binhluan">
+                                                        <a href="#" class="text-dark pr-2">@review.Name</a>
+                                                        <div class="d-flex align-items-center flex-column flex-md-row mb-0">
+                                                            <button type="button" class="btn btn-xs btn-primary rounded-xs font-size-14 btndanhgiasao">@review.AverageScore/5 </button>
+                                                        </div>
+                                                    </h6>
+                                                    <div class="font-weight-normal font-size-14 text-gray-9 mb-1">@review.Date.ToString("dd-MM-yyyy hh:mm")</div>
+
+                                                    <div class="review-comment-container">
+                                                        @{
+                                                            var commentLines = review.Comment.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                                                            var firstLine = commentLines.Length > 0 ? commentLines[0] : review.Comment;
+                                                            var hasMoreLines = commentLines.Length > 1 || (review.Comment.Length > 150);
+
+                                                            if (firstLine.Length > 150 && !firstLine.Contains("\n"))
+                                                            {
+                                                                firstLine = firstLine.Substring(0, 150) + "...";
+                                                            }
+                                                        }
+
+                                                        <div class="comment-preview font-weight-bold font-italic text-gray-3 text-justify">
+                                                            @firstLine
+                                                            @if (hasMoreLines)
+                                                            {
+                                                                <span>...</span>
+                                                            }
+                                                        </div>
+                                                        @if (hasMoreLines)
+                                                        {
+                                                            <div class="comment-full font-weight-bold font-italic text-gray-3 text-justify" style="display: none;">
+                                                                @review.Comment
+                                                            </div>
+                                                            <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
+                                                               onclick="toggleComment(this)">
+                                                                <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                                                                <span class="show-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #ddd; margin: 0.1rem 0 0.5rem;"></div>
+                                    }
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button id="toggleReviewsBtn" class="btn btn-outline-primary" onclick="toggleReviews()">
+                                        <span class="show-more">Xem thêm đánh giá <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
+                                        <span class="show-less" style="display: none;">Ẩn bớt đánh giá <i class="flaticon-arrow font-size-10 ml-1"></i></span>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+
+                <!-- Form đánh giá -->
+                @if (Context.Session.GetInt32("UserId") != null && User != null && User.IdRole == 2 )
+                {
+                    <div class="py-4 card_danhgia">
+                        <h5 class="font-size-21 font-weight-bold text-dark mb-6 text_danhgia">Viết đánh giá</h5>
+                        <div class="row">
+                            @{
+                                string[] ratingCategories = { "cleanliness", "facilities", "value", "service", "location" };
+                                string[] ratingLabels = { "Vệ sinh", "Tiện nghi", "Giá trị", "Dịch vụ", "Vị trí" };
+
+                                for (int i = 0; i < ratingCategories.Length; i++)
+                                {
+                                    <div class="col-6 col-md-6 col-lg-4 col-xl-3 col_danhgia">
+                                        <h6 class="font-weight-bold text-dark mb-1">
+                                            @ratingLabels[i]
+                                        </h6>
+                                        <div class="rating-container" data-category="@ratingCategories[i]">
+                                            @for (int j = 1; j <= 5; j++)
+                                            {
+                                                <i class="rating-star far fa-smile" data-value="@j"></i>
+                                            }
+                                            <input type="hidden" name="@(ratingCategories[i])_rating" value="0">
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div id="review-form-container">
+                            <form id="reviewForm" class="js-validate" method="post" novalidate>
+                                <div class="row mb-5 mb-lg-0">
+                                    <!-- Hidden Hotel ID -->
+                                    <input type="hidden" name="hotelId" value="@Model.Id" />
+
+                                    <!-- Input -->
+                                    <div class="col-sm-6 mb-5">
+                                        <div class="js-form-message">
+                                            <input type="text" class="form-control" name="name" placeholder="Họ tên" data-error-class="u-has-error" data-msg="Vui lòng nhập họ tên." data-success-class="u-has-success">
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <!-- Input -->
+                                    <div class="col-sm-6 mb-5">
+                                        <div class="js-form-message">
+                                            <input type="email" class="form-control" name="email" placeholder="Email" data-msg="Vui lòng nhập email hợp lệ." data-error-class="u-has-error" data-success-class="u-has-success">
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <div class="col-sm-12 mb-5">
+                                        <div class="js-form-message">
+                                            <div class="input-group">
+                                                <textarea class="form-control" rows="6" cols="77" name="comment" placeholder="Nội dung đánh giá" aria-label="Nhập nội dung đánh giá của bạn..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+                                    <div class="col d-flex justify-content-center justify-content-lg-start">
+                                        <button type="submit" id="submitReview" class="btn rounded-xs bg-blue-dark-1 text-white p-2 height-51 width-190 transition-3d-hover btn-sm">Gửi đánh giá</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="review-message" class="alert" style="display:none;"></div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+            <!--Right collum-->
+            <div class="col-lg-4 col-xl-3">
+                <div class="mb-4 d-none d-lg-block">
+                    <div class="flex-horizontal-center">
+                        <ul class="ml-n1 list-group list-group-borderless list-group-horizontal custom-social-share">
+                            @if (User != null)
+                            {
+                                <a class="height-45 width-45 border rounded border-width-2 flex-content-center btnhold">
+                                    <button type="button"
+                                            id="btnLike-@hotelid"
+                                            class="btn btn-sm btn-icon rounded-circle btn-like"
+                                            style="background-color: white; "
+                                            data-hotel-id="@hotelid"
+                                            data-liked="@(liked ? "true" : "false")"
+                                            title="Yêu thích">
+                                        @if (liked)
+                                        {
+                                            <span class="fa-solid fa-heart text-danger"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fa-regular fa-heart text-dark"></span>
+                                        }
+                                    </button>
+                                </a>
+                            }
+                            <li class="list-group-item px-1 py-0">
+
+                                <div class="dropdown">
+                                    <a href="javascript:void(0);" class="height-45 width-45 border rounded border-width-2 flex-content-center dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon-share font-size-18 text-dark"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right py-2">
+                                        <a href="javascript:void(0);" onclick="copyCurrentUrl()" class="dropdown-item">
+                                            <i class="fas fa-copy mr-2"></i> Sao chép đường dẫn
+                                        </a>
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)" target="_blank" class="dropdown-item">
+                                            <i class="fab fa-facebook-f mr-2"></i> Facebook
+                                        </a>
+                                        <a href="https://twitter.com/intent/tweet?url=@(Context.Request.Scheme + "://" + Context.Request.Host + Context.Request.Path)&text=@Model.Name" target="_blank" class="dropdown-item">
+                                            <i class="fab fa-twitter mr-2"></i> X (Twitter)
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        @if (Model.Score.HasValue && Model.Score.Value > 0)
+                        {
+                            <div class="flex-horizontal-center ml-2">
+                                <div class="badge-primary rounded-xs px-1">
+                                    <span class="badge font-size-19 px-2 py-2 mb-0 text-lh-inherit">
+                                        @(Model.Score?.ToString("0.0") ?? "0")/5
+                                    </span>
+                                </div>
+
+                                <div class="ml-2 text-lh-1">
+                                    <div class="ml-1">
+                                        @if (Model.Score.HasValue && Model.Score.Value >= 1.0)
+                                        {
+                                            <span class="text-primary font-size-14 font-weight-bold">
+                                                @GetRatingLabel(Model.Score)
+                                            </span>
+                                        }
+                                        <div class="text-gray-1 font-size-14 mt-2">@(Model.Reviews.HasValue ? $"Từ {Model.Reviews.Value} đánh giá" : "Chưa có đánh giá")</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Booking form - hidden on mobile -->
+                <div class="d-none d-lg-block border border-color-7 rounded mb-5">
+                    <div class="border-bottom">
+                        <div class=" priceCard p-2">
+                            @if (Model.IdPromotion != null)
+                            {
+                                @if (Model.IdPromotionNavigation?.Type == true)
+                                {
+                                    discountPrice = Model.PriceMin + (Model.PriceMin * (Model.IdPromotionNavigation?.SaleOff) / 100);
+                                }
+                                else
+                                {
+                                    discountPrice = Model.PriceMin + Model.IdPromotionNavigation.SaleOff;
+                                }
+
+                            }
+
+                            @if (discountPrice != Model.PriceMin && discountPrice != null)
+                            {
+                                <small class="text-gray-1">Chỉ từ:</small>
+                                <span class="column">
+
+                                    <small style="text-decoration: line-through; color: gray;">
+                                        @discountPrice.Value.ToString("N0")
+                                    </small>
+                                    <span class="font-size-18 text-primary font-weight-bold ml-1">
+                                        @(Model.PriceMin?.ToString("N0")) VNĐ
+                                    </span>
+                                </span>
+                                <small class="text-gray-1"> / Đêm</small>
+                            }
+
+                            else if (Model.PriceMin != null)
+                            {
+                                <small class="text-gray-1">Chỉ từ:</small>
+                                <span class="font-size-24 text-primary font-weight-bold ml-1">
+                                    @(Model.PriceMin?.ToString("N0")) VNĐ
+                                </span>
+                                <small class="text-gray-1"> / Đêm</small>
+                            }
+
+                            else
+                            {
+                                <span class="font-size-24 text-gray-6 font-weight-bold ml-1">Liên hệ</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <ul class="list-unstyled d-md-flex align-items-center m-0">
+                            <a href="tel:@Model.Phone" onclick="ghiloglienhe(1)" class="btn btn-primary flex-grow-1 height-50 transition-3d-hover mr-1 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-phone mr-2"></i>Liên hệ ngay
+                            </a>
+
+                            <a href="https://zalo.me/@(Model.Phone)" onclick="ghiloglienhe(2)" class="btn d-flex p-0 transition-3d-hover" target="_blank">
+                                <img src='@Url.Content("~/assets/img/icons/zalo_icon.png")' style="width: 100%; height: 50px; object-fit: contain;" alt="Zalo icon" onerror="this.onerror=null;this.src='/images/no-image.jpg';" />
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="border border-color-7 rounded p-3 mb-5">
+                    <div class="p-0">
+                        @if (!string.IsNullOrEmpty(Model.Localiframe))
+                        {
+                            <div id="mapContainer" class="border rounded " style="aspect-ratio: 1/1; overflow: hidden;">
+                                @if (Model.Localiframe.Contains("iframe"))
+                                {
+                                    <div class="map-wrapper" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                        @Html.Raw(Model.Localiframe.Replace("width=\"600\"", "width=\"100%\"").Replace("height=\"450\"", "height=\"100%\"").Replace("style=\"border:0;\"", "style=\"border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;\""))
+                                    </div>
+                                }
+                                else if (Model.Localiframe.Contains("/embed?"))
+                                {
+                                    <iframe id="mapModalIframe" src="@Model.Localiframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                                }
+                                else
+                                {
+                                    <div class="text-center p-3">
+                                        <p class="text-danger">Liên kết bản đồ không hợp lệ. Vui lòng sử dụng liên kết "Chia sẻ" > "Nhúng bản đồ" từ Google Maps.</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="border rounded mb-4 text-center py-4">
+                                <p class="text-muted">Không có thông tin bản đồ</p>
+                                <img class="img-fluid" src="~/assets/images/map.jpg" alt="Map Placeholder" style="max-height: 200px;">
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Mobile-only booking button -->
+                <div class="d-lg-none mb-4 xemphongcossan">
+                    <a href="#hotel_rooms_section" class="btn btn-primary btn-block height-60 transition-3d-hover btn-sm">
+                        <i class="flaticon-magnifying-glass mr-2"></i>Xem phòng có sẵn
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Khách sạn liên quan -->
+        <div class="product-card-block product-card-v3 card_lienquan">
+            <div class="space-1">
+                <div class="w-md-80 w-lg-50 text-center mx-md-auto pb-4 lienquan_Text">
+                    <h2 class="section-title text-black font-size-30 font-weight-bold mb-0">Khách sạn liên quan</h2>
+                </div>
+
+                <div class="js-slick-carousel u-slick u-slick--equal-height u-slick--gutters-3"
+                     data-slides-show="4" data-slides-scroll="1"
+                     data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic v1 u-slick__arrow-classic--v1 u-slick__arrow-centered--y rounded-circle"
+                     data-arrow-left-classes="fas fa-chevron-left u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left"
+                     data-arrow-right-classes="fas fa-chevron-right u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right"
+                     data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
+                     data-responsive='[{
+                                                                "breakpoint": 1200,
+                                                                "settings": {
+                                                                    "slidesToShow": 3
+                                                                }
+                                                            }, {
+                                                                "breakpoint": 992,
+                                                                "settings": {
+                                                                    "slidesToShow": 2
+                                                                }
+                                                            }, {
+                                                                "breakpoint": 768,
+                                                                "settings": {
+                                                                    "slidesToShow": 1
+                                                                }
+                                                            }]'>
+
+                    @if (listHotel != null && listHotel.Any())
+                    {
+                        foreach (var hotel in listHotel)
+                        {
+                            decimal? discountPrices = hotel.PriceMin ?? 0;
+                            <div class="js-slide py-3">
+                                <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative">
+                                        <a href="@Url.Action("ChiTietKS", "KhachSan", new { nameblog = @Common.GenerateSlug(hotel.Name), ks = hotel.Id })" class="d-block">
+                                            <img class="min-height-230 bg-img-hero card-img-top"
+                                                 src="@(!string.IsNullOrEmpty(hotel.ListImg) ? hotel.ListImg.Split(",")[0] : "/AppData/BaiViet/BaiVietMacDinh.jpg")"
+                                                 alt="@hotel.Name"
+                                                 style="max-height: 230px;"
+                                                 onerror="replaceWithPlaceholder(this, 'hotel')">
+                                        </a>
+                                    </div>
+
+                                    <div class="card-body pl-3 pr-4 pt-2 pb-3">
+
+                                        <div class="">
+                                            <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                                <div class="green-lighter mr-2">
+                                                    @for (int i = 0; i < 5; i++)
+                                                    {
+                                                        if (i < @hotel.NumStar)
+                                                        {
+                                                            <small class="fas fa-star"></small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="far fa-star"></small>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @{
+                                            if (hotel.Name.Length > 30)
+                                            {
+                                                <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.Id })" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus" data-tooltip="@hotel.Name">
+                                                    <div class="NameCustom text-one_line">
+                                                        @hotel.Name
+                                                    </div>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.Id })" class="card-title NameHotel text-dark fw-bold text-one_line  mb-0 titleCard_cus">
+                                                    @hotel.Name
+                                                </a>
+                                            }
+                                        }
+
+                                        <div class="d-flex justify-content-around amenities-container ">
+                                            @{
+                                                var getIdAmini = hotel.Amenities?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(id => int.Parse(id)).ToList() ?? new List<int>();
+
+                                                var matchedAminities = hotelAmenities.Where(a => getIdAmini.Contains(a.Id)).ToList();
+                                                var TienIchMore = 0;
+                                                if (matchedAminities.Count > 8)
+                                                {
+                                                    TienIchMore = matchedAminities.Count - 8;
+                                                }
+                                                foreach (var item in matchedAminities.Take(8))
+                                                {
+                                                    <span class="custom-tooltip" data-tooltip="@item.Name">
+                                                        <i class="@item.Icon card-color__icon"></i>
+                                                    </span>
+                                                }
+                                                if (TienIchMore > 0)
+                                                {
+
+                                                    <span class="AminiMore">
+                                                        +@TienIchMore
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+
+                                        <div class="priceCard">
+                                            @if (hotel.IdPromotion != null)
+                                            {
+                                                @if (hotel.IdPromotionNavigation?.Type == true)
+                                                {
+                                                    discountPrices = hotel.PriceMin + (hotel.PriceMin * (hotel.IdPromotionNavigation?.SaleOff) / 100);
+                                                }
+                                                else
+                                                {
+                                                    discountPrices = hotel.PriceMin + hotel.IdPromotionNavigation.SaleOff;
+                                                }
+
+                                            }
+
+                                            <small class="color_card__Price">Chỉ từ:</small>
+                                            <span class="column">
+                                                @if (discountPrices != hotel.PriceMin && discountPrices != null)
+                                                {
+                                                    <small style="text-decoration: line-through; color: gray;">
+                                                        @discountPrices.Value.ToString("N0")
+                                                    </small>
+                                                }
+                                                <span>
+                                                    @(hotel.PriceMin?.ToString("N0")) VNĐ
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <div class="d-flex bd-highlight font-size-14 text-gray-1">
+                                            <div class="bd-highlight">
+                                                <i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+                                            </div>
+
+                                            @{
+                                                if (hotel.Local.Length > 40)
+                                                {
+                                                    <div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@hotel.Local">
+                                                        <div class="localCustom text-one_line">
+                                                            @hotel.Local
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="localCustom text-one_line">
+                                                        @hotel.Local
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+
+                                        <div class="position-absolute top-0 left-0 p-3 d-flex gap-2 z-1">
+
+                                            @if (hotel.Featured == true)
+                                            {
+
+                                                <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.Id })">
+                                                    <span class="badge bg-warning text-dark khuyenmai pr-3" style="padding: 0.5rem 1rem;">
+                                                        Nổi bật
+                                                    </span>
+                                                </a>
+
+                                    
+                                                <span>&nbsp;</span>
+                                            }
+                                            @if (hotel.IdPromotion != null)
+                                            {
+                                                <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.Id })">
+                                                    @if (hotel.IdPromotionNavigation.Type == true)
+                                                    {
+                                                        <span class="badge khuyenmai pr-3" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                                            Giảm @hotel.IdPromotionNavigation.SaleOff %
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge khuyenmai pr-3" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white;  padding: 0.5rem 1rem;">
+                                                            Giảm @hotel.IdPromotionNavigation.SaleOff?.ToString("N0") VNĐ
+                                                        </span>
+                                                    }
+                                                </a>
+                                            }
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Chi tiết phòng -->
+    <div class="modal fade" id="roomDetailModal" tabindex="-1" role="dialog" aria-labelledby="roomDetailModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-body p-0">
+                    <div class="card border-0 rounded-0 mb-0">
+                        <div class="row no-gutters">
+                            <!-- Image carousel - stretched to fit modal -->
+                            <div class="col-md-8">
+                                <div id="roomModalCarousel" class="js-slick-carousel u-slick modal-carousel overflow-hidden h-100" data-slides-show="1" data-slides-scroll="1" data-pagi-classes="text-right justify-content-end position-absolute right-0 bottom-0 left-0 u-slick__pagination u-slick__pagination--white mb-3 mr-3" data-arrows-classes="u-slick__arrow-classic u-slick__arrow-centered--y" data-arrow-left-classes="fas fa-arrow-left font-size-18 bg-transparent text-white u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-2" data-arrow-right-classes="fas fa-arrow-right font-size-18 bg-transparent text-white u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-2">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="room-details-container">
+                                    <!-- Fixed header section -->
+                                    <div class="room-details-header">
+                                        <div class="d-flex justify-content-between align-items-center px-3 pt-3">
+                                            <div id="roomModalName" class="font-weight-bold font-size-19 mb-0 mr-3 flex-grow-1">Room Name</div>
+                                            @* @if (Context.Session.GetInt32("UserId") != null)
+                                            {
+                                                <a id="roomModalBookBtn" href="javascript:void(0);" class="btn btn-primary btn-sm px-3 py-2">Đặt ngay</a>
+
+                                            } *@
+
+                                            <div class="d-flex flex-shrink-0">
+                                                <a href="tele:@Model.Phone;" target="_blank" onclick="ghiloglienhe(1)" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center mr-1" style="width: 44px; height: 44px;"><i class="fas fa-phone"></i></a>                                                
+                                                <a href="https://zalo.me/@(ViewBag.hotelPhone)" onclick="ghiloglienhe(2)" class="btn btn-sm d-flex align-items-center justify-content-center p-0" style="height:44px;" target="_blank" type="submit" id="zalo">
+                                                    <img src='@Url.Content("~/assets/img/icons/zalo_icon.png")' style="height:44px; object-fit:contain;" alt="Zalo" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 price-info px-3">
+                                            <span class="mr-1 font-size-14 text-gray-1">Giá từ</span>
+                                            <span id="roomModalPrice" class="font-weight-bold font-size-22 text-primary">0 VNĐ</span>
+                                            <span class="font-size-14 text-gray-1"> / Đêm</span>
+                                        </div>
+                                        <div class="mb-3 room-type-info px-3">
+                                            <div class="d-flex align-items-center card-color__icon" id="RoomTypeIcon">
+                                                <i id="roomTypeIcon" class="mdi text-primary mr-2" style="font-size: 30px;"></i>
+                                                <span id="roomTypeName" class="font-size-14 text-gray-3">Loại phòng</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" px-3 pt-3 mt-2">
+                                        <div class="fw-bold mb-1"><b>Tiện nghi:</b></div>
+                                    </div>
+                                    <!-- Scrollable content section -->
+                                    <div class="room-details-scroll">
+                                        <div id="roomModalAmenities" class="px-3">
+                                            <!-- Amenities will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal bản đồ -->
+    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-2 pl-3">
+                    <h5 class="modal-title" id="mapModalLabel">Vị trí khách sạn @Model.Name</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-3">
+                    <div id="mapModalContainer" style="height: 75vh; width: 100%;">
+                        @if (!string.IsNullOrEmpty(Model.Localiframe))
+                        {
+                            @if (Model.Localiframe.Contains("iframe"))
+                            {
+                                <div class="map-wrapper border rounded" style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                    @Html.Raw(Model.Localiframe.Replace("width=\"600\"", "width=\"100%\"").Replace("height=\"450\"", "height=\"100%\"").Replace("style=\"border:0;\"", "style=\"border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;\""))
+                                </div>
+                            }
+                            else if (Model.Localiframe.Contains("/embed?"))
+                            {
+                                <iframe id="mapModalIframe" src="@Model.Localiframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                            }
+                            else
+                            {
+                                <div class="text-center p-3">
+                                    <p class="text-danger">Liên kết bản đồ không hợp lệ. Vui lòng sử dụng liên kết "Chia sẻ" > "Nhúng bản đồ" từ Google Maps.</p>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center py-4">
+                                <p class="text-muted">Không có thông tin bản đồ</p>
+                                <img class="img-fluid" src="~/assets/images/map.jpg" alt="Map Placeholder" style="max-height: 200px;">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+else
+{
+
+}
+
+
+<!-- script modal phòng-->
+<script>
+    // Lưu dữ liệu phòng để sử dụng khi cần
+    var roomsData = [
+    @foreach (var room in ViewBag.RoomsList)
+    {
+        var typeRoomName = room.TypeRoomNavigation != null ? room.TypeRoomNavigation.Name : "Phòng tiêu chuẩn";
+        var typeRoomIcon = room.TypeRoomNavigation != null ? room.TypeRoomNavigation.Icon : "mdi-bed-outline";
+
+        string listImgRaw = room.ListImg as string ?? string.Empty;
+
+        var imgList = listImgRaw
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)   // skip empty pieces
+            .Select(i => i.Trim())                               // trim spaces
+            .Where(i => !string.IsNullOrWhiteSpace(i))           // extra safety
+            .Select(i => Common.GetImagePath(i))                 // map to public URL
+            .Where(p => !string.IsNullOrEmpty(p))
+            .ToList();
+
+        if (!imgList.Any())
+            imgList.Add("/AppData/BaiViet/BaiVietMacDinh.jpg");
+
+        var imgListJson = Json.Serialize(imgList);
+
+        @:{
+        @:  id: @room.Id,
+        @:  name: "@Html.Raw(room.Name.Replace("\"", "\\\""))",
+        @:  price: "@room.Price.ToString("N0")",
+        @:  typeRoomId: @(room.TypeRoom != null ? room.TypeRoom : 0),
+        @:  typeRoomName: @Html.Raw(Json.Serialize(typeRoomName)),
+        @:  typeRoomIcon: @Html.Raw(Json.Serialize(typeRoomIcon)),
+        @:  amenitiesList: @Html.Raw(Json.Serialize(room.ListAminities)),
+        @:  listImg: @Html.Raw(imgListJson)
+        @:},
+    }
+    ];
+
+    // Khởi tạo các thành phần sau khi trang đã tải xong
+    document.addEventListener('DOMContentLoaded', function() {
+        initRatingSystem();
+        initReviewForm();
+        setupGalleryInteraction();
+        setupRoomDetailsModal();
+        initDateRangePicker();
+        $(".btn-like").click(function () {
+        var btn = $(this);
+        var hotelId = btn.data("hotel-id");
+
+        handleLikeButtonClick("/KhachSan/UpdateLike", hotelId, btn)
+        });
+    });
+
+    // Khởi tạo chọn ngày đến/đi bằng flatpickr
+    function initDateRangePicker() {
+            flatpickr("#checkInOut", {
+            mode: "range",
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "d/m/Y H:i",
+            minDate: "today",
+            locale: {
+                rangeSeparator: " → "
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    const start = selectedDates[0];
+                    const end = selectedDates[1];
+
+                    // Calculate time difference in hours
+                    const diffInMs = end - start;
+                    const diffInHours = diffInMs / (1000 * 60 * 60);
+
+                    if (diffInHours < 24) {
+                        alert("Ngày đi phải cách ngày đến ít nhất 24 giờ!");
+
+                        // Automatically set checkout time to checkin + 24 hours
+                        const newEnd = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+
+                        // Update the date range
+                        this.setDate([start, newEnd], true);
+                    }
+                }
+            }
+        });
+    }
+    // Cập nhật số lượng khách
+    function updateCounter(element, increment, inputId) {
+        var counter = document.getElementById(inputId);
+        var currentValue = parseInt(counter.value);
+        var newValue = increment ? currentValue + 1 : currentValue - 1;
+
+        // Set minimum value to 0
+        newValue = Math.max(0, newValue);
+
+        // For adults, set minimum to 1
+        if (inputId === 'adultCount') {
+            newValue = Math.max(1, newValue);
+        }
+
+        counter.value = newValue;
+
+        // Update summary text with separate counts
+        updateGuestSummary();
+    }
+
+    // Update guest summary with separate counts
+    function updateGuestSummary() {
+        const adults = parseInt(document.getElementById("adultCount").value, 10) || 0;
+        const children = parseInt(document.getElementById("childCount").value, 10) || 0;
+        const guests = adults + children;
+        const summary = document.getElementById("roomGuestSummary");
+        summary.textContent = `${adults} Người lớn, ${children} Trẻ em`;
+    }
+
+    // Optional: Nếu muốn khởi tạo hiển thị tổng khi trang load
+    document.addEventListener("DOMContentLoaded", function () {
+        updateGuestSummary();
+    });
+
+    // Thiết lập tương tác cho gallery ảnh (có thể mở rộng sau)
+    function setupGalleryInteraction() {
+    }
+
+    // Thiết lập modal chi tiết phòng
+    function setupRoomDetailsModal() {
+        console.log("Đã khởi tạo modal phòng, số lượng phòng:", roomsData?.length || 0);
+    }
+
+    // Hiển thị modal chi tiết phòng
+    function showRoomModal(roomId) {
+        try {
+        // Tìm dữ liệu phòng theo ID
+                        const room = roomsData.find(r => r.id === roomId);
+            if (!room) {
+                console.error("Room not found with ID:", roomId);
+                return;
+            }
+
+            const $modal = $('#roomDetailModal');
+            const $carousel = $('#roomModalCarousel');
+
+            // Hủy khởi tạo carousel hiện tại nếu đã được khởi tạo
+            if ($carousel.hasClass('slick-initialized')) {
+                $carousel.slick('unslick');
+            }
+
+            $('#roomModalName').text(room.name);
+            $('#roomModalPrice').text(room.price + ' VNĐ');
+
+            @* // Cập nhật nút đặt ngay trong chi tiết phòng
+            const bookBtn = document.getElementById('roomModalBookBtn');
+            if (bookBtn) {
+                const checkin = document.getElementById('checkInOut').value.split(' → ')[0];
+                const checkout = document.getElementById('checkInOut').value.split(' → ')[1];
+                const guests = document.getElementById('roomGuestSummary').textContent.split(' ')[0];
+                const roomSlug = room.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+                bookBtn.href = `/KhachSan/Datphong?area=&nameroom=${roomSlug}&Idp=${room.id}&ci=${checkin}&co=${checkout}&gue=${guests}`;
+            } *@
+
+
+            $('#roomTypeIcon').attr('class', room.typeRoomIcon + ' font-size-18 mr-2');
+            $('#roomTypeName').text(room.typeRoomName);
+
+            // Hiển thị hình ảnh trong carousel
+            const carousel = document.getElementById('roomModalCarousel');
+
+            const images = Array.isArray(room.listImg) && room.listImg.length
+              ? room.listImg
+              : ['/images/no-image.jpg'];
+
+            carousel.innerHTML = images
+              .map(img => `
+                <div class="js-slide">
+                  <div class="main-image-container">
+                    <img
+                      src="${img}"
+                      class="img-fluid border-radius-3 w-100"
+                      style="object-fit:cover;"
+                      alt="Room Image"
+                      onerror="this.onerror=null;this.src='/AppData/BaiViet/BaiVietMacDinh.jpg';"
+                    />
+                  </div>
+                </div>`)
+              .join('');
+
+            // Hiển thị danh sách tiện nghi
+            const amenitiesContainer = $('#roomModalAmenities');
+            amenitiesContainer.empty();
+
+            if (room.amenitiesList) {
+                const amenityData = @Html.Raw(Json.Serialize(ViewBag.HotelAmenities));
+                const amenitiesHtml = room.amenitiesList.split(',')
+                .map(amenityId => {
+                    const amenity = amenityData.find(a => a.id === parseInt(amenityId.trim()));
+                    return amenity ? `
+                    <div class="col-md-6 mb-0">
+                        <div class="d-flex align-items-center card-color__icon">
+                        <i class="${amenity.icon || 'fas fa-check-circle'} mr-3"></i>
+                        <span>${amenity.name}</span>
+                        </div>
+                    </div>
+                    ` : '';
+                })
+                .filter(html => html)
+                .join('');
+
+                amenitiesContainer.html(`<div class="row">${amenitiesHtml}</div>`);
+            }
+
+                // Thiết lập khởi tạo carousel sau khi modal hiển thị
+            $modal.off('shown.bs.modal').on('shown.bs.modal', function() {
+                try {
+                    if ($.HSCore?.components?.HSSlickCarousel) {
+                        $.HSCore.components.HSSlickCarousel.init('#roomModalCarousel');
+                    } else {
+                        $carousel.slick({
+                            dots: true,
+                            arrows: true,
+                            infinite: true,
+                            speed: 500,
+                            slidesToShow: 1,
+                            adaptiveHeight: false
+                        });
+                    }
+                } catch(err) {
+                    console.error('Carousel initialization error:', err);
+                }
+            });
+
+            $modal.modal('show');
+
+        } catch(err) {
+            console.error('Error showing room modal:', err);
+            alert('Có lỗi khi hiển thị thông tin phòng. Vui lòng thử lại sau.');
+        }
+    }
+</script>
+
+<!--Đánh giá-->
+<script>
+    // Hàm mở rộng/thu gọn Đánh giá người dùng
+    function toggleReviews() {
+        const hiddenReviews = document.getElementById('hiddenReviews');
+        const toggleBtn = document.getElementById('toggleReviewsBtn');
+        const showMore = toggleBtn.querySelector('.show-more');
+        const showLess = toggleBtn.querySelector('.show-less');
+
+        if (hiddenReviews.style.display === 'none') {
+            hiddenReviews.style.display = 'block';
+            showMore.style.display = 'none';
+            showLess.style.display = 'inline-block';
+            hiddenReviews.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            hiddenReviews.style.display = 'none';
+            showMore.style.display = 'inline-block';
+            showLess.style.display = 'none';
+            document.getElementById('reviewsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Hàm mở rộng/thu gọn nội dung trong đánh giá
+    function toggleComment(element) {
+        var container = element.closest('.review-comment-container');
+        var preview = container.querySelector('.comment-preview');
+        var full = container.querySelector('.comment-full');
+        var showMore = element.querySelector('.show-more');
+        var showLess = element.querySelector('.show-less');
+
+        if (full.style.display === 'none' || full.style.display === '') {
+            // Expand comment
+            preview.style.display = 'none';
+            full.style.display = 'block';
+            showMore.style.display = 'none';
+            showLess.style.display = 'inline-block';
+        } else {
+            // Collapse comment
+            preview.style.display = 'block';
+            full.style.display = 'none';
+            showMore.style.display = 'inline-block';
+            showLess.style.display = 'none';
+        }
+    }
+
+    // Khởi tạo hệ thống đánh giá sao
+    function initRatingSystem() {
+        document.querySelectorAll('.rating-container').forEach(function(container) {
+            const stars = container.querySelectorAll('.rating-star');
+            const input = container.querySelector('input');
+
+            // Add hover events for all stars
+            stars.forEach(function(star) {
+                star.addEventListener('mouseenter', function() {
+                    highlightStars(container, parseInt(this.dataset.value), 'active');
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    stars.forEach(s => s.classList.remove('active'));
+                    const selectedValue = parseInt(input.value) || 0;
+                    if (selectedValue > 0) {
+                        highlightStars(container, selectedValue, 'selected');
+                    }
+                });
+
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    stars.forEach(s => s.classList.remove('selected'));
+                    highlightStars(container, value, 'selected');
+                    input.value = value;
+                    console.log(`${container.dataset.category} rating: ${value}`);
+                });
+            });
+
+            // Initialize with saved value if exists
+            const savedValue = parseInt(input.value) || 0;
+            if (savedValue > 0) {
+                highlightStars(container, savedValue, 'selected');
+            }
+        });
+    }
+
+    // Hàm hỗ trợ tô sáng các sao
+    function highlightStars(container, value, className) {
+        const stars = container.querySelectorAll('.rating-star');
+        stars.forEach(function(star) {
+            if (parseInt(star.dataset.value) <= value) {
+                star.classList.add(className);
+            } else {
+                star.classList.remove(className);
+            }
+        });
+        }
+
+    // Khởi tạo xử lý gửi form đánh giá
+    function initReviewForm() {
+        const form = document.getElementById('reviewForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitReviewForm();
+            });
+        }
+    }
+
+    // Gửi form đánh giá sau khi đã kiểm tra hợp lệ
+    function submitReviewForm() {
+        // Lấy tất cả đánh giá và kiểm tra
+        const ratingCategories = ['cleanliness', 'facilities', 'value', 'service', 'location'];
+        const ratings = {};
+        let allRatingsProvided = true;
+
+        ratingCategories.forEach(category => {
+            const value = parseInt(document.querySelector(`[name="${category}_rating"]`).value);
+            ratings[category] = value;
+            if (value === 0) allRatingsProvided = false;
+        });
+
+        if (!allRatingsProvided) {
+            showMessage('Vui lòng đánh giá đầy đủ các tiêu chí', 'danger');
+            return;
+        }
+
+        // Lấy dữ liệu form
+        const form = document.getElementById('reviewForm');
+        const formData = {
+            hotelId: document.querySelector('[name="hotelId"]').value,
+            name: document.querySelector('[name="name"]').value,
+            email: document.querySelector('[name="email"]').value,
+            comment: document.querySelector('[name="comment"]').value,
+            cleanliness: ratings.cleanliness,
+            facilities: ratings.facilities,
+            valueForMoney: ratings.value,
+            service: ratings.service,
+            location: ratings.location
+        };
+
+        // Kiểm tra các trường bắt buộc
+        if (!formData.name || !formData.email) {
+            showMessage('Vui lòng điền đầy đủ tên và email', 'danger');
+            return;
+        }
+
+        // Gửi đánh giá qua AJAX
+        $.ajax({
+            url: '/KhachSan/SubmitReview',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    showMessage(response.message, 'success');
+                    resetForm(form);
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    showMessage(response.message, 'danger');
+                }
+            },
+            error: function(xhr, status, error) {
+                showMessage('Đã xảy ra lỗi khi gửi đánh giá. Vui lòng thử lại sau.', 'danger');
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    // Reset form và đánh giá sau khi gửi thành công
+    function resetForm(form) {
+        form.reset();
+        document.querySelectorAll('.rating-container').forEach(container => {
+            container.querySelectorAll('.rating-star').forEach(star => {
+                star.classList.remove('selected', 'active');
+            });
+            container.querySelector('input').value = 0;
+        });
+    }
+
+    // Hiển thị thông báo cho người dùng
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('review-message');
+        messageDiv.className = 'alert alert-' + type + ' mt-3';
+        messageDiv.textContent = message;
+        messageDiv.style.display = 'block';
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+</script>
+
+<!--mở modal bản đồ-->
+<script>
+    function openMapModal() {
+            $('#mapModal').modal('show');
+        }
+</script>
+
+<!-- Script cho copy đường dẫn trong chia sẻ -->
+<script>
+    function copyCurrentUrl() {
+        var currentUrl = window.location.href;
+        var tempInput = document.createElement('input');
+        tempInput.value = currentUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        // Optional: Show a temporary tooltip or message
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success position-fixed';
+        alertDiv.style.bottom = '20px';
+        alertDiv.style.right = '20px';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.padding = '10px 15px';
+        alertDiv.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        alertDiv.textContent = 'Đã sao chép đường dẫn!';
+        document.body.appendChild(alertDiv);
+
+        setTimeout(function() {
+            alertDiv.style.opacity = '0';
+            alertDiv.style.transition = 'opacity 0.5s';
+            setTimeout(function() {
+                document.body.removeChild(alertDiv);
+            }, 500);
+        }, 2000);
+    }
+</script>
+
+<!--đặt phòng-->
+@* <script>
+    function bookRoom(roomId, slug) {
+        var dateInput = document.getElementById('checkInOut');
+        var ci = '', co = '';
+        if (dateInput && dateInput.value) {
+            var parts = dateInput.value.split(' → ');
+            if (parts.length === 2) {
+                ci = parts[0].trim();
+                co = parts[1].trim();
+            }
+        }
+        var adults = parseInt(document.getElementById('adultCount').value) || 0;
+        var children = parseInt(document.getElementById('childCount').value) || 0;
+        var guests = adults + children;
+        var url = '@Url.Action("Datphong", "KhachSan")';
+        var params = '?nameroom=' + encodeURIComponent(slug)
+                   + '&idp=' + roomId
+                   + '&gue=' + guests;
+        if (ci) params += '&ci=' + encodeURIComponent(ci);
+        if (co) params += '&co=' + encodeURIComponent(co);
+        window.location.href = url + params;
+    }
+</script> *@
+
+<!--Form Tìm kiếm phòng-->
+<script>
+    // khởi tạo chọn ngày
+    function initDateRangePicker() {
+        var checkInOut = document.getElementById('checkInOut');
+        if (checkInOut) {
+            flatpickr(checkInOut, {
+                mode: "range",
+                dateFormat: "d/m/Y",
+                minDate: "today",
+                locale: {
+                    rangeSeparator: " → "
+                },
+                onChange: function(selectedDates, dateStr) {
+                    if (selectedDates.length === 2) {
+                        const start = selectedDates[0];
+                        const end = selectedDates[1];
+
+                        // Calculate time difference in days
+                        const diffInMs = end - start;
+                        const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+                        if (diffInDays < 1) {
+                            alert("Ngày đi phải cách ngày đến ít nhất 1 ngày!");
+
+                            // Automatically set checkout date to checkin + 1 day
+                            const newEnd = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+
+                            // Update the date range
+                            this.setDate([start, newEnd], true);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // Xử lý tìm kiếm phòng
+    document.getElementById('searchRoomsBtn').addEventListener('click', function() {
+        var checkInOut = document.getElementById('checkInOut').value;
+        if (!checkInOut) {
+            showDateRequiredToast();
+            return;
+        }
+
+        var dates = checkInOut.split(' → ');
+        if (dates.length !== 2) {
+            showDateRequiredToast();
+            return;
+        }
+
+        var checkIn = dates[0].trim();
+        var checkOut = dates[1].trim();
+        var adults = parseInt(document.getElementById('adultCount').value) || 0;
+        var children = parseInt(document.getElementById('childCount').value) || 0;
+        var hotelId = @Model.Id;
+
+        // Send AJAX request
+        $.ajax({
+            url: '/KhachSan/SearchAvailableRooms',
+            type: 'POST',
+            data: {
+                hotelId: hotelId,
+                checkIn: checkIn,
+                checkOut: checkOut,
+                adults: adults,
+                children: children
+            },
+            success: function(response) {
+                roomListResults.innerHTML = response;
+            },
+            error: function(xhr, status, error) {
+                roomListResults.innerHTML = '<div class="alert alert-danger">Có lỗi xảy ra khi tìm kiếm phòng. Vui lòng thử lại sau.</div>';
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    // Update guest counter
+    function updateCounter(element, increment, inputId) {
+        var counter = document.getElementById(inputId);
+        var currentValue = parseInt(counter.value);
+        var newValue = increment ? currentValue + 1 : currentValue - 1;
+
+        // Set minimum value to 0
+        newValue = Math.max(0, newValue);
+
+        // For adults, set minimum to 1
+        if (inputId === 'adultCount') {
+            newValue = Math.max(1, newValue);
+        }
+
+        counter.value = newValue;
+
+        // Update summary text with separate counts
+        updateGuestSummary();
+    }
+
+    // Initialize components when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        initDateRangePicker();
+    });
+</script>
+
+<!--Hàm Log liên hệ -->
+<script>
+    function ghiloglienhe(id){
+        var dichvu =  @Model.IdCategory;
+        var khachsan = @Model.Id;
+        var phone = false;
+        var zalo = false;
+
+        if(id == 1){
+            phone = true;
+        }
+        else{
+            zalo = true;
+        }
+        $.ajax
+        ({
+            url: '/KhachSan/LogCall',
+            type: 'POST',
+            data:{ dichvu : dichvu,
+                    khachsan: khachsan,
+                    phone: phone,
+                    zalo: zalo
+            },
+            success: function(response){
+                console.log(response);
+            },
+            error: function(xhr, status, error){
+                console.log(error);
+            }
+        })
+    }
+</script>
+
+<!--Hàm Thu gọn và mở rộng tiện nghi -->
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll('[data-toggle-key]').forEach(function(link){
+            link.addEventListener('click', function(){
+                var key = this.getAttribute('data-toggle-key');
+                var preview = document.querySelector('.' + key + '-preview');
+                var full = document.querySelector('.' + key + '-full');
+                var more = this.querySelector('.show-more');
+                var less = this.querySelector('.show-less');
+                if (!preview || !full) return;
+                preview.classList.toggle('d-none');
+                full.classList.toggle('d-none');
+                more.classList.toggle('d-none');
+                less.classList.toggle('d-none');
+            });
+        });
+    });
+</script>
+
+<!--Thu gọn và mở rộng text -->
+<script>
+    let isExpanded = false;
+
+    function toggleText() {
+        const textContent = document.getElementById('textContent');
+        const btn = document.getElementById('toggleBtn');
+    
+        if (isExpanded) {
+            textContent.classList.add('collapsed');
+            btn.textContent = 'Xem thêm';
+        } else {
+            textContent.classList.remove('collapsed');
+            btn.textContent = 'Thu gọn';
+        }
+    
+        isExpanded = !isExpanded;
+    }
+
+    // Kiểm tra nếu nội dung ngắn thì ẩn nút
+    window.onload = function() {
+        const textContent = document.getElementById('textContent');
+        const btn = document.getElementById('toggleBtn');
+    
+        textContent.classList.remove('collapsed');
+        const fullHeight = textContent.scrollHeight;
+        textContent.classList.add('collapsed');
+    
+        if (fullHeight <= 120) {
+            btn.style.display = 'none';
+            textContent.classList.remove('collapsed');
+        }
+    };
+</script>

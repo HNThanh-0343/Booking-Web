@@ -1,0 +1,94 @@
+﻿
+<div class="modal-header bg-primary text-white d-flex justify-content-center position-relative">
+	<h5 class="modal-title fw-bold mb-0" id="exampleModalLabel">Đổi mật khẩu</h5>
+	<button type="button" class="close position-absolute" style="right: 20px; top: 45px; transform: translateY(-50%);" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true" class="text-white">&times;</span>
+	</button>
+</div>
+<div class="modal-body p-4">
+	<form asp-action="DoiMatKhau" asp-controller="TrangChu" asp-area="" method="post">
+		<div class="mb-4">
+			<label for="Password" class="form-label">Nhập mật khẩu:</label>
+
+			<div class="input-group custom-password-group">
+				<input type="password" id="Password" name="Password" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+				<div class="input-group-append">
+					<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password1">
+						<i class="mdi mdi-eye-off" id="password-icon"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="mb-4">
+			<label for="Password" class="form-label">Nhập mật khẩu mới:</label>
+
+			<div class="input-group custom-password-group">
+				<input type="password" id="NewPassword" name="NewPassword" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+				<div class="input-group-append">
+					<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password2">
+						<i class="mdi mdi-eye-off" id="password-icon"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+		<!-- Mật khẩu -->
+		<div class="mb-4">
+			<label for="Password" class="form-label">Nhập lại mật khẩu mới:</label>
+
+			<div class="input-group custom-password-group">
+				<input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control custom-password-input" placeholder="Nhập mật khẩu" required>
+				<div class="input-group-append">
+					<span class="input-group-text bg-white border-left-0 cursor-pointer" id="toggle-password3">
+						<i class="mdi mdi-eye-off" id="password-icon"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- <div class="mb-3 mb-0 text-center">
+			<button class="btn btn-primary" type="submit"> Đăng nhập </button>
+		</div> -->
+		<div class="text-center">
+			<a type="button" data-toggle='modal' data-sizeModal='modal-lg' href="@Url.Action("ThongTin","TrangChu",new {area=""})" class="btn btn-secondary me-2">
+				<i class="fas fa-times me-1"></i> Quay lại
+			</a>
+
+			<button type="submit" class="btn btn-success">
+				<i class="fas fa-save me-1"></i> Lưu
+			</button>
+		</div>
+
+	</form>
+</div>
+<script>
+		$(document).ready(function () {
+		// Toggle mật khẩu
+		$('#toggle-password1').on('click', function () {
+			const passwordInput = $('#Password');
+			const icon = $('#password-icon');
+			const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+
+			passwordInput.attr('type', type);
+			icon.toggleClass('mdi-eye mdi-eye-off');
+		});
+		$('#toggle-password2').on('click', function () {
+			const passwordInput = $('#NewPassword');
+			const icon = $('#password-icon');
+			const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+
+			passwordInput.attr('type', type);
+			icon.toggleClass('mdi-eye mdi-eye-off');
+		});
+		$('#toggle-password3').on('click', function () {
+			const passwordInput = $('#ConfirmPassword');
+			const icon = $('#password-icon');
+			const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+
+			passwordInput.attr('type', type);
+			icon.toggleClass('mdi-eye mdi-eye-off');
+		});
+	});
+
+
+</script>

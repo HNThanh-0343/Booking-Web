@@ -1,0 +1,69 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysHotel>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+<div class="table-responsive">
+    <table class="table table-sm table-centered w-100 dt-responsive nowrap">
+        <thead class="table-light">
+            <tr>
+                <th>Phòng</th>
+                <th>Địa chỉ</th>
+                <th>Người tạo</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Trạng thái</th>
+                @{
+                    if (ruleAction != null && (ruleAction.IsEdit == true || ruleAction.IsDelete == true))
+                    {
+                        <th class="text-center" width="120px">Hàng động</th>
+                    }
+                }
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var getUser = listUser.FirstOrDefault(h => h.Id == item.IdUser);
+                <tr>
+                    <td>
+                        <a class="text-dark" href="@Url.Action("chiTietKhachSan", new {id = item.Id})" data-toggle='modal' data-sizeModal="">@item.Name</a>
+                    </td>
+                    <td>@item.Local</td>
+                    <td>@getUser?.Name</td>
+                    <td>@getUser?.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@(item.Status == true ? "Kích hoạt" : "Chưa kích hoạt")</td>
+                    <td class="text-center">
+                        <div class="table-action">
+                            @{
+                                if (ruleAction != null && ruleAction.IsEdit == true)
+                                {
+                                    <a href="@Url.Action("chinhSuaKhachSan", "QuanLyKhachSan", new {id = item.Id})" class="btn btn-warning btn-sm" title="Chỉnh sửa" data-toggle='modal' data-sizeModal="modal-full-width">
+                                        <i class="mdi mdi-square-edit-outline"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsDelete == true)
+                                {
+                                    <a href="@Url.Action("chiTietKhachSan", "QuanLyKhachSan", new {id = item.Id})" class="btn btn-danger btn-sm" title="Xóa" data-toggle='modal' data-sizeModal="">
+                                        <i class="mdi mdi-delete"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex align-items-center justify-content-end py-1">
+        @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page }),
+                 PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+    </div>
+</div>

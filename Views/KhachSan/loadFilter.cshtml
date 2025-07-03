@@ -1,0 +1,512 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.ModelHotel>
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+    var likedHotelIds = ViewBag.LikedHotelIds as List<int> ?? new List<int>();
+    var HotelSugges = ViewBag.SuggestedHotels as List<WEBSITE_TRAVELBOOKING.Models.ModelHotel>;
+    int countSugges = HotelSugges != null ? HotelSugges.Count : 0;
+    var User = ViewBag.User;
+
+    var TextResult = "Tất cả";
+    //  hiệu chỉnh
+
+    var GetAminitise = ViewBag.GetAminitise as List<CatAminitieseRoom>;// toàn bộ tiện ích
+    var countketqua = ViewBag.HotelsCount;
+    var selectedSort = ViewBag.sort as string ?? "";
+    var selectOptionSortPrice = new[] {
+        new { Text = "Mặc định", Value = "" },
+        new { Text = "Giá tăng dần", Value = "tangdan" },
+        new { Text = "Giá giảm dần", Value = "giamdan" }
+    };
+}
+
+<style>
+    a.NameHotel {
+        font-family: "Roboto Flex", sans-serif;
+    }
+
+    .NameHotel {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .CountResult {
+        font-size: 20px;
+        font-weight: 600;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif
+    }
+
+    .totalCountResult {
+        color: #297cbb;
+    }
+
+    .sortValue span {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .sortValue select {
+        border: unset;
+        color: #67747c;
+    }
+
+    .badge{
+        padding: 0.4em 0.4em;
+    }
+</style>
+
+<div class="tab-pane fade show active" id="pills-one-example1" role="tabpanel" aria-labelledby="pills-one-example1-tab" data-target-group="groups">
+    <div class="CountResult mb-2">
+        @TextResult <span class="totalCountResult mb-3">@countketqua</span> kết quả
+    </div>
+    @if (Model == null || !Model.Any())
+    {
+
+        <div class="text-center">
+            <img src="https://ohdidi.vn/frontend/home/images/no_result_img.png" alt="Không có kết quả" class="img-fluid mb-3" style="max-width: 300px;">
+            <div class="alert alert-warning text-center center-alert mb-0" role="alert">
+                Không có khách sạn bạn muốn tìm, vui lòng tìm kiếm lại.
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center w-100 mt-3">
+            <a href="@Url.Action("Index","KhachSan")" class="btn btn-primary btn-sm ">
+                Quay lại
+            </a>
+        </div>
+    }
+    else
+    {
+
+        <div class="sortValue mb-2 d-flex justify-content-between">
+            <div>
+                <span> Sắp xếp theo</span>
+                @Html.DropDownList("sort", ViewBag.SortOptions as SelectList, new { @class = "", id = "ChangeSortKS" })
+            </div>
+            <button class="btn btn-primary btn-sm px-2 py-1 d-lg-none" onclick="searchMobile.toggle()" type="button">
+                <i class="fa fa-sliders"></i> Lọc
+            </button>
+        </div>
+        <div class="row">
+            @foreach (var hotel in Model)
+            {
+                decimal? discountPrice = hotel.PriceMin ?? 0;
+                var liked = likedHotelIds.Contains(hotel.IdHotel) ? true : false;
+                <div class="col-6 col-md-6 col-lg-6 col-xl-3 mb-3 hotel-item" data-rating="@hotel.NumStar" data-cityid="@hotel.IdContry" onchange="console.log('Checked country id:', this.data-cityid)">
+                    <div class="card shadow-hover-2 tab-card h-100">
+                        <div class="position-relative mb-1">
+                            <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="d-block">
+                                <img class="min-height-230 bg-img-hero card-img-top" src="@hotel.IMG" alt="img" style="max-height: 230px;" onerror="replaceWithPlaceholder(this, 'hotel')">
+                            </a>
+
+                            @if (User != null)
+                            {
+                                <div class="position-absolute top-0 right-0 pt-3 pr-3">
+                                    <button type="button"
+                                            id="btnLike-@hotel.IdHotel"
+                                            class="btn btn-sm btn-icon rounded-circle btn-like"
+                                            style="background-color: white; "
+                                            data-hotel-id="@hotel.IdHotel"
+                                            data-liked="@(liked ? "true" : "false")"
+                                            title="Yêu thích">
+                                        @if (liked)
+                                        {
+                                            <span class="fa-solid fa-heart text-danger"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fa-regular fa-heart text-dark"></span>
+                                        }
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body pl-2 pr-2 py-0">
+                            <div class="starts">
+                                <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                    <div class="green-lighter mr-2">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (i < @hotel.NumStar)
+                                            {
+                                                <small class="fas fa-star"></small>
+                                            }
+                                            else
+                                            {
+                                                <small class="far fa-star"></small>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @{
+                                if (hotel.Name.Length > 30)
+                                {
+                                    <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus" data-tooltip="@hotel.Name">
+                                        <div class="NameCustom text-one_line">
+                                            @hotel.Name
+                                        </div>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="card-title NameHotel text-dark fw-bold text-one_line  mb-0 titleCard_cus">
+                                        @hotel.Name
+                                    </a>
+                                }
+                            }
+
+                            <div class="d-flex justify-content-around amenities-container">
+                                @{
+                                    var getIdAmini = hotel.Amenities?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(id => int.Parse(id)).ToList() ?? new List<int>();
+
+                                    var matchedAminities = GetAminitise.Where(a => getIdAmini.Contains(a.Id)).ToList();
+                                    var TienIchMore = 0;
+                                    if (matchedAminities.Count > 6)
+                                    {
+                                        TienIchMore = matchedAminities.Count - 8;
+                                    }
+                                    foreach (var item in matchedAminities.Take(6))
+                                    {
+                                        <span class="custom-tooltip" data-tooltip="@item.Name">
+                                            <i class="@item.Icon card-color__icon"></i>
+                                        </span>
+                                    }
+                                    if (TienIchMore > 0)
+                                    {
+                                        <span class="AminiMore">
+                                            +@TienIchMore
+                                        </span>
+                                    }
+
+                                }
+
+                            </div>
+                            <div class="priceCard">
+                                @if (hotel.IdPromotion != null)
+                                {
+                                    @if (hotel.IdPromotionNavigation?.Type == true)
+                                    {
+                                        discountPrice = hotel.PriceMin + (hotel.PriceMin * (hotel.IdPromotionNavigation?.SaleOff) / 100);
+                                    }
+                                    else
+                                    {
+                                        discountPrice = hotel.PriceMin + hotel.IdPromotionNavigation.SaleOff;
+                                    }
+
+                                }
+
+                                <small class="color_card__Price">Từ:</small>
+                                <span class="column">
+                                    @if (discountPrice != hotel.PriceMin && discountPrice != null)
+                                    {
+                                        <small class="giagiam" style="text-decoration: line-through; color: gray;">
+                                            @discountPrice.Value.ToString("N0")
+                                        </small>
+                                    }
+                                    <span class="ViewPrice">
+                                        @(hotel.PriceMin?.ToString("N0")) VNĐ
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="d-flex bd-highlight font-size-14 text-gray-1">
+                                <div class="bd-highlight">
+                                    <i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+                                </div>
+
+                                @{
+                                    if (hotel.Local.Length > 40)
+                                    {
+                                        <div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@hotel.Local">
+                                            <div class="localCustom text-one_line">
+                                                @hotel.Local
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="localCustom text-one_line">
+                                            @hotel.Local
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <!-- Container position-absolute dùng để định vị badge -->
+                            <div class="position-absolute top-0 left-0 p-3 d-flex gap-2 z-1">
+
+                                @if (hotel.Featured == true)
+                                {
+
+                                    <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })">
+                                        <span class="badge bg-warning text-dark khuyenmai pr-3" style="padding: 0.5rem 1rem;">
+                                            Nổi bật
+                                        </span>
+                                    </a>
+
+                                    
+                                    <span>&nbsp;</span>
+                                }
+                                @if (hotel.IdPromotion != null)
+                                {
+                                    <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })">
+                                        @if (hotel.IdPromotionNavigation.Type == true)
+                                        {
+                                            <span class="badge khuyenmai pr-3" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                                Giảm @hotel.IdPromotionNavigation.SaleOff %
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge khuyenmai pr-3" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white;  padding: 0.5rem 1rem;">
+                                                Giảm @hotel.IdPromotionNavigation.SaleOff?.ToString("N0") VNĐ
+                                            </span>
+                                        }
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <nav aria-label="Page navigation">
+            @Html.PagedListPager(Model, page => Url.Action("loadFilter", new { area = (string)null, page, ksdc = ViewBag.ksdc, ngayden = ViewBag.ngayden, ngaydi = ViewBag.ngaydi, phong = ViewBag.phong, nguoilon = ViewBag.nguoilon, connit = ViewBag.connit, sao = ViewBag.sao, thanhpho = ViewBag.thanhpho, sort = ViewBag.sort, giatu = ViewBag.giatu, giaden = ViewBag.giaden }),
+                     new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = CommonMode.Never,
+            DisplayLinkToLastPage = CommonMode.Never,
+            DisplayLinkToPreviousPage = CommonMode.Always,
+            DisplayLinkToNextPage = CommonMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            UlElementClasses = new[] { "pagination", "mb-0" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            ActiveLiElementClass = "active",
+            LinkToPreviousPageFormat = "Trước đó",
+            LinkToNextPageFormat = "Tiếp theo"
+        }
+                     )
+        </nav>
+
+    }
+    @if (countketqua < 12)
+    {
+        @if (countSugges != 0)
+        {
+            <hr />
+            <div class="container">
+                <h2 class="section-title text-center mb-2 mt-3">Một số gợi ý cho bạn</h2>
+                <div class="js-slick-carousel u-slick u-slick--gutters-3 text-left ml-0" data-slides-show="3" data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-classic--v2 u-slick__arrow-centered--y rounded-circle" data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-xl-n8" data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-xl-n8"
+                     data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4" data-responsive='[ { "breakpoint": 1025, "settings": { "slidesToShow": 3 } }, { "breakpoint": 992, "settings": { "slidesToShow": 2 } }, { "breakpoint": 768, "settings": { "slidesToShow": 1 } }, { "breakpoint": 554, "settings": { "slidesToShow": 1 } } ]'>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var hotel in HotelSugges.Take(8))
+                {
+                    decimal? discountPrice = hotel.PriceMin ?? 0;
+                    var liked = likedHotelIds.Contains(hotel.IdHotel) ? true : false;
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-3 mb-3 hotel-item" data-rating="@hotel.NumStar" data-cityid="@hotel.IdContry" onchange="console.log('Checked country id:', this.data-cityid)">
+                        <div class="card shadow-hover-2 tab-card h-100">
+                            <div class="position-relative mb-1">
+                                <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="d-block">
+                                    <img class="min-height-230 bg-img-hero card-img-top" src="@hotel.IMG" alt="img" style="max-height: 230px;" onerror="replaceWithPlaceholder(this, 'hotel')">
+                                </a>
+
+                                @if (User != null)
+                                {
+                                    <div class="position-absolute top-0 right-0 pt-3 pr-3">
+                                        <button type="button"
+                                                id="btnLike-@hotel.IdHotel"
+                                                class="btn btn-sm btn-icon rounded-circle btn-like"
+                                                style="background-color: white; "
+                                                data-hotel-id="@hotel.IdHotel"
+                                                data-liked="@(liked ? "true" : "false")"
+                                                title="Yêu thích">
+                                            @if (liked)
+                                            {
+                                                <span class="fa-solid fa-heart text-danger"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa-regular fa-heart text-dark"></span>
+                                            }
+                                        </button>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="card-body pl-2 pr-2 py-0">
+                                <div class="">
+                                    <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                        <div class="green-lighter mr-2">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (i < @hotel.NumStar)
+                                                {
+                                                    <small class="fas fa-star"></small>
+                                                }
+                                                else
+                                                {
+                                                    <small class="far fa-star"></small>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                @{
+                                    if (hotel.Name.Length > 40)
+                                    {
+                                        <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus" data-tooltip="@hotel.Name">
+                                            <div class="NameCustom text-one_line">
+                                                @hotel.Name
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = @Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })" class="card-title NameHotel text-dark fw-bold text-one_line mb-0 titleCard_cus">
+                                            @hotel.Name
+                                        </a>
+                                    }
+                                }
+
+                                <div class="d-flex justify-content-around amenities-container ">
+                                    @{
+                                        var getIdAmini = hotel.Amenities?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(id => int.Parse(id)).ToList() ?? new List<int>();
+
+                                        var matchedAminities = GetAminitise.Where(a => getIdAmini.Contains(a.Id)).ToList();
+                                        var TienIchMore = 0;
+                                        if (matchedAminities.Count > 6)
+                                        {
+                                            TienIchMore = matchedAminities.Count - 6;
+                                        }
+                                        foreach (var item in matchedAminities.Take(6))
+                                        {
+                                            <span class="custom-tooltip" data-tooltip="@item.Name">
+                                                <i class="@item.Icon card-color__icon"></i>
+                                            </span>
+                                        }
+                                        if (TienIchMore > 0)
+                                        {
+
+                                            <span class="AminiMore">
+                                                +@TienIchMore
+                                            </span>
+                                        }
+
+                                    }
+                                </div>
+                                <div class="priceCard">
+                                    @if (hotel.IdPromotion != null)
+                                    {
+                                        @if (hotel.IdPromotionNavigation?.Type == true)
+                                        {
+                                            discountPrice = hotel.PriceMin + (hotel.PriceMin * (hotel.IdPromotionNavigation?.SaleOff) / 100);
+                                        }
+                                        else
+                                        {
+                                            discountPrice = hotel.PriceMin + hotel.IdPromotionNavigation.SaleOff;
+                                        }
+
+                                    }
+
+                                    <small class="color_card__Price">Từ:</small>
+                                    <span class="column">
+                                        @if (discountPrice != hotel.PriceMin && discountPrice != null)
+                                        {
+                                            <small class="giagiam" style="text-decoration: line-through; color: gray;">
+                                                @discountPrice.Value.ToString("N0") VNĐ
+                                            </small>
+                                        }
+                                        <span class="ViewPrice">
+                                            @(hotel.PriceMin?.ToString("N0")) VNĐ
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="d-flex bd-highlight font-size-14 text-gray-1">
+                                    <div class="bd-highlight">
+                                        <i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+                                    </div>
+
+                                    @{
+                                        if (hotel.Local.Length > 30)
+                                        {
+                                            <div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@hotel.Local">
+                                                <div class="localCustom text-one_line">
+                                                    @hotel.Local
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="localCustom text-one_line">
+                                                @hotel.Local
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                                <!-- Container position-absolute dùng để định vị badge -->
+                                <div class="position-absolute top-0 left-0 p-3 d-flex gap-2 z-1">
+
+                                    @if (hotel.Featured == true)
+                                    {
+
+                                        <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })">
+                                            <span class="badge bg-warning text-dark khuyenmai pr-3" style="padding: 0.5rem 1rem;">
+                                                Nổi bật
+                                            </span>
+                                        </a>
+                                        <span>&nbsp;</span>
+                                    }
+                                    @if (hotel.IdPromotion != null)
+                                    {
+                                        <a href="@Url.Action("ChiTietKS", "KhachSan", new { area = "", namehotel = Common.GenerateSlug(hotel.Name), ks = hotel.IdHotel })">
+                                            @if (hotel.IdPromotionNavigation.Type == true)
+                                            {
+                                                <span class="badge" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                                    Giảm @hotel.IdPromotionNavigation.SaleOff %
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 0.5rem 1rem;">
+                                                    Giảm @hotel.IdPromotionNavigation.SaleOff?.ToString("N0") VNĐ
+                                                </span>
+                                            }
+                                        </a>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        }
+
+    }
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+    $(".btn-like").click(function () {
+        var btn = $(this);
+        var hotelId = btn.data("hotel-id");
+
+        handleLikeButtonClick("/KhachSan/UpdateLike", hotelId, btn)
+        });
+    $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+    });
+
+</script>
+

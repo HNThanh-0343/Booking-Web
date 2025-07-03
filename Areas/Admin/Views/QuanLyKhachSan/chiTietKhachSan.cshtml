@@ -1,0 +1,173 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysHotel;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@{
+    ViewData["TitleAdmin"] = "Chi tiết khách sạn";
+    var getUser = ViewBag.getUser as WEBSITE_TRAVELBOOKING.Models.SysUser;
+    var getContry = ViewBag.getContry as WEBSITE_TRAVELBOOKING.Models.CatContry;
+    var TienNghi = ViewBag.TienNghi as List<CatAminitieseRoom>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+<style>
+    .imgKS{
+        max-height: 158px;
+        min-height: 158px;
+    }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <div class="form-body">
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <div class="mainslider w-10">
+                    <div class="sliderKS">
+                        @{
+                            var listHinhAnh = "";
+                            if (string.IsNullOrEmpty(Model.ListImg))
+                            {
+                                listHinhAnh = "/AppData/no-image.png";
+                                <div>
+                                    <img src="@listHinhAnh" alt="image" class="img-thumbnail imgKS" width="300"/>
+                                </div>
+                            }
+                            else
+                            {
+                                var listIMG = Model.ListImg.Split(',');
+                                foreach (var item in listIMG)
+                                {
+                                    listHinhAnh = Common.GetImagePath(item);
+                                    if (listIMG.Length > 5)
+                                    {
+                                        if (listHinhAnh != "/AppData/no-image.png")
+                                        {
+                                            <div>
+                                                <img src="@listHinhAnh" class="img-thumbnail imgKS" alt="image" width="300" />
+                                            </div>
+                                        }
+                                    } else
+                                    {
+                                        <div>
+                                            <img src="@listHinhAnh" class="img-thumbnail imgKS" alt="image" width="300" />
+                                        </div>
+                                    }
+
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <h4 class="mt-2 mb-2">@Model.Name</h4>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Chũ sở hữu:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getUser?.Name</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Giá chỉ từ:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.PriceMin VND</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Số điện thoại:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.Phone</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Địa chỉ khách sạn:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.Local</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Tỉnh thành:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@getContry?.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Nội dung</h4>
+            <div class="mb-3">
+                <div class="p-2" style="text-align:justify">@Html.Raw(Model.Description)</div>
+            </div>
+            <h4 class="mt-2">Tiện nghi được ưa chuộng</h4>
+            <div class="mb-3">
+                <div class="p-2 row">
+                        @{
+                            var selectedAmenities = (Model.Amenities ?? "").Split(',').ToList();
+                            foreach (var item in TienNghi)
+                            {
+                                if (selectedAmenities.Contains(item.Id.ToString()))
+                                {
+                                    <div class="col-2 row mb-2">
+                                        <div class="col-3">
+                                            <span><i class="@item.Icon"></i></span>
+                                        </div>
+                                        <div class="col-9">
+                                            <span>@item.Name</span>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                </div>
+            </div>
+            <h4 class="mt-2">Vị trí bản đồ</h4>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="iframeInput" name="LocalIframe" value="@Model.Localiframe" placeholder="Dán đường dẫn iframe Google Maps vào đây" hidden />
+            </div>
+            <div class="mb-3">
+                <div id="iframePreviewContainer" class="border rounded" style="height: 300px; overflow: hidden; display: none;">
+                    <iframe id="iframePreview" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; border: 0;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true && ViewBag.hideBtn)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaKhachSan", new { id = Model.Id, area = "Admin" })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa
+        </button>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        // Hiện bản đồ lần đầu
+        var iframeSrc = $('#iframeInput').val();
+        iframeSrc = iframeSrc.match(/src\s*=\s*"(.*?)"/);
+        var firstSrc = iframeSrc ? iframeSrc[1] : iframeSrc;
+        $('#iframePreview').attr('src', firstSrc);
+        $('#iframePreviewContainer').show();
+    });
+
+    $('.sliderKS').slick({
+        dots: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        centerMode: true,
+        autoplay: true,        // tự động chuyển
+        autoplaySpeed: 2000,   // thời gian chuyển (ms)
+        arrows: false // 👈 Tắt cả hai nút
+    });
+
+</script>

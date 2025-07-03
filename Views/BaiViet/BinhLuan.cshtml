@@ -1,0 +1,130 @@
+﻿@model List<BinhLuanBaiViet>
+@using WEBSITE_TRAVELBOOKING.Helper
+<style>
+    .comment-content {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        position: relative;
+        line-height: 1.5em;
+        transition: max-height 0.5s ease; /* Thêm chuyển động mượt */
+    }
+
+    .fade-bottom {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2.5em;
+        background: linear-gradient(to bottom, rgba(255,255,255,0), white);
+        pointer-events: none;
+    }
+
+    .toggle-btn {
+        text-align: left;
+        margin-top: 6px;
+    }
+
+        .toggle-btn a {
+            cursor: pointer;
+            color: #007BFF;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <div class="border border-color-8 mb-4"></div>
+    <div class="mb-5">
+        <div class="mb-4 border-bottom pb-2 d-flex align-items-center">
+            <h5 class="text-dark m-0">Có tất cả @Model.Count() bình luận</h5>
+        </div>
+
+        <!-- VÙNG CUỘN -->
+        <div style="max-height: 400px; overflow-y: auto;">
+            @foreach (var binhluan in Model)
+            {
+                var anh = Common.GetImagePath(binhluan.Avatar) == "/AppData/no-image.png"
+                ? "/assets/img/user.png"
+                : binhluan.Avatar;
+
+                <div class="media mb-4 p-3 bg-white rounded shadow-sm border">
+                    <img src="@anh" alt="Avatar"
+                         class="mr-3 rounded-circle border"
+                         width="60" height="60" style="object-fit: cover;" />
+                    <div class="media-body">
+                        <h6 class="mt-0 font-weight-bold text-primary">@binhluan.Name</h6>
+                        <small class="text-muted d-block mb-2">@Common.GetDateTimeConvert(binhluan.DateTime) @binhluan.DateTime.ToString("HH") giờ @binhluan.DateTime.ToString("MM") phút </small>
+                        <div class="text-dark">
+                            <div class="comment-content">
+                                @Html.Raw(binhluan.Comment)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+        const maxLines = 3;
+
+        document.querySelectorAll('.comment-content').forEach(function (el) {
+            const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+            const clone = el.cloneNode(true);
+            clone.style.visibility = 'hidden';
+            clone.style.position = 'absolute';
+            clone.style.height = 'auto';
+            clone.style.maxHeight = 'none';
+            clone.style.overflow = 'visible';
+            clone.style.display = 'block';
+            clone.style.webkitLineClamp = 'unset';
+            clone.style.width = el.offsetWidth + 'px';
+            document.body.appendChild(clone);
+
+            const fullHeight = clone.offsetHeight;
+            const maxHeight = lineHeight * maxLines;
+            document.body.removeChild(clone);
+
+            if (fullHeight > maxHeight) {
+                el.style.maxHeight = `${maxHeight}px`;
+                el.classList.add("clamped");
+
+                const fade = document.createElement("div");
+                fade.classList.add("fade-bottom");
+                el.appendChild(fade);
+
+                const toggleBtn = document.createElement("div");
+                toggleBtn.classList.add("toggle-btn");
+                toggleBtn.innerHTML = `<a href="#">Xem thêm</a>`;
+                el.parentNode.appendChild(toggleBtn);
+
+                let isExpanded = false;
+
+                toggleBtn.querySelector("a").addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (!isExpanded) {
+                        el.style.maxHeight = fullHeight + "px";
+                        fade.style.display = "none";
+                        this.innerHTML = `Thu gọn`;
+                        isExpanded = true;
+                    } else {
+                        el.style.maxHeight = `${maxHeight}px`;
+                        fade.style.display = "block";
+                        this.innerHTML = `Xem thêm`;
+                        isExpanded = false;
+                    }
+                });
+            }
+        });
+    });
+
+    </script>
+
+
+

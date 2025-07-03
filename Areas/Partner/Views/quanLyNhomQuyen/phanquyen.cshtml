@@ -1,0 +1,197 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.ModelsAndRole>;
+@{
+    // Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Phân quyền nhóm quyền";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            @*  <div class="mb-3">
+                <label class="form-label" for="validationCustom01">Tên nhóm quyền<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="Name" placeholder="Tên nhóm quyền" required>
+                <div class="invalid-feedback"></div>
+                </div>     *@
+            <table class="table table-sm table-centered w-100 dt-responsive nowrap">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tên chức năng hệ thống</th>
+                        <th>Địa chỉ</th>
+                        <th class="text-center" width="100px">Xem</th>
+                        <th class="text-center" width="100px">Thêm</th>
+                        <th class="text-center" width="100px">Sửa</th>
+                        <th class="text-center" width="100px">Xóa</th>
+                        <th class="text-center" width="100px">Phân quyền</th>
+                        <th class="text-center" width="100px">Tất cả</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyRule">
+                    @{
+                        for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model[i].Name</td>
+                                <td>/@Model[i].NameController</td>
+                                <td class="text-center">
+                                    <input type="hidden" name="Rules[@i].Id" value="@Model[i].Id" />
+                                    <input type="hidden" name="Rules[@i].IdModule" value="@Model[i].IdModule" />
+                                    <input type="hidden" name="Rules[@i].IdRole" value="@Model[i].IdRole" />
+                                    <input type="hidden" name="Rules[@i].Name" value="@Model[i].Name" />
+                                    <input type="hidden" name="Rules[@i].NameController" value="@Model[i].NameController" />
+                                    <input type="checkbox" name="Rules[@i].IsView" value="true" @(Model[i].IsView == true ? "checked" : "") />
+
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="Rules[@i].IsCreate" value="true" @(Model[i].IsCreate == true ? "checked" : "") />
+
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="Rules[@i].IsEdit" value="true" @(Model[i].IsEdit == true ? "checked" : "") />
+
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="Rules[@i].IsDelete" value="true" @(Model[i].IsDelete == true ? "checked" : "") />
+
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="Rules[@i].IsPermission" value="true" @(Model[i].IsPermission == true ? "checked" : "") />
+
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        if (Model[i].IsView == true && Model[i].IsCreate == true && Model[i].IsEdit == true && Model[i].IsDelete == true)
+                                        {
+                                            <input type="checkbox" name="IsActive" checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="IsActive" />
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-url="@Url.Action("phanquyen")" class="btn bg-success-subtle editRule text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+
+<script>
+    $(document).on('change', 'tr input[type="checkbox"]', function () {
+        var $row = $(this).closest('tr');
+        var $checkboxes = $row.find('input[type="checkbox"]');
+        var $checkAll = $checkboxes.last(); // checkbox cuối cùng là "Tất cả"
+
+        if ($(this).is($checkAll)) {
+            // Nếu đang thay đổi checkbox "Tất cả"
+            $checkboxes.prop('checked', $(this).is(':checked'));
+        } else {
+            // Nếu thay đổi các checkbox khác (Xem, Thêm, Sửa, Xóa)
+            var allChecked = $checkboxes.not($checkAll).length === $checkboxes.not($checkAll).filter(':checked').length;
+            $checkAll.prop('checked', allChecked);
+        }
+    });
+
+    $(document).off("click", ".editRule").on("click", ".editRule", function (e) {
+        debugger;
+        var listValue = [];
+        var ColTR = $('#bodyRule tr').length;
+        for (var numID = 0; numID < ColTR; numID++) {
+            var values = {
+                'Id': parseInt($('input[name="Rules[' + numID + '].Id"]').val()),
+                'IdModule': parseInt($('input[name="Rules[' + numID + '].IdModule"]').val()),
+                'IdRole': parseInt($('input[name="Rules[' + numID + '].IdRole"]').val()),
+                'Name': $('input[name="Rules[' + numID + '].Name"]').val(),
+                'NameController': $('input[name="Rules[' + numID + '].NameController"]').val(),
+                'IsView': $('input[name="Rules[' + numID + '].IsView"]').prop("checked"),
+                'IsCreate': $('input[name="Rules[' + numID + '].IsCreate"]').prop("checked"),
+                'IsEdit': $('input[name="Rules[' + numID + '].IsEdit"]').prop("checked"),
+                'IsDelete': $('input[name="Rules[' + numID + '].IsDelete"]').prop("checked"),
+                'IsPermission': $('input[name="Rules[' + numID + '].IsPermission"]').prop("checked")
+            };
+            listValue.push(values);
+        }
+
+        var Noloadtable = $(".noloadTable");
+        $.ajax({
+            url: "/Admin/quanLyNhomQuyen/phanquyen",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(listValue),
+            success: function (result) {
+                //alert('Successfully received Data ');
+                if (result != 'false') {
+                    if (Noloadtable.length == 0) {
+                        loadData();
+                        MessAlert.AlertAction(true, "edit");
+                    }
+                    initFormModal.CloseModalDN('#myModal');
+                    //Toast.Nofication(true, "Cập nhật thành công");
+                } else {
+                    //Toast.Nofication(false, "Cập nhật thất bại");
+                }
+
+            },
+            error: function (errormessage) {
+                //Toast.Nofication(false, "Cập nhật thất bại");
+                //noficatioToast(false, errormessage.responseText)
+                //alert('Failed to receive the Data');
+                //console.log(errormessage.responseText)
+                MessAlert.AlertAction(false, "edit");
+            }
+        });
+    });
+
+    function sendOne() {
+        debugger;
+        //var parts = idcheck.split('-');
+
+        // var item = parts[0];
+        // var numID = parts[1];
+        // var view = parts[2];
+        var listValue = [];
+        var ColTR = document.getElementsByTagName('tr').length - 1;
+        for (var numID = 0; numID < ColTR; numID++) {
+            var values = {
+                'Id': '0',
+                'ModuleID': $('input[name="SysRule[' + numID + '].ModuleID"]').val(),
+                'NhomQuyenId': $('input[name="SysRule[' + numID + '].RoleID"]').val(),
+                'IsView': $('input[name="SysRule[' + numID + '].IsView"]').val(),
+                'IsAdd': $('input[name="SysRule[' + numID + '].IsAdd"]').val(),
+                'IsEdit': $('input[name="SysRule[' + numID + '].IsEdit"]').val(),
+                'IsDelete': $('input[name="SysRule[' + numID + '].IsDelete"]').val(),
+                'IsDetails': $('input[name="SysRule[' + numID + '].IsDetails"]').val(),
+                'IsDownload': $('input[name="SysRule[' + numID + '].IsDownload"]').val(),
+                'IsApprove': $('input[name="SysRule[' + numID + '].IsApprove"]').val(),
+                'IsExecutive': $('input[name="SysRule[' + numID + '].IsExecutive"]').val(),
+            };
+            listValue.push(values);
+        }
+
+
+        $.ajax({
+            url: "/QuanLyPhanQuyen/PhanQuyenNhomQuyen",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(listValue),
+            success: function (response) {
+                Toast.Nofication(true, 'Cập nhật phân quyền thành công')
+            },
+            error: function (response) {
+                Toast.Nofication(false, 'Cập nhật phân quyền thất bại')
+            }
+        });
+    }
+</script>

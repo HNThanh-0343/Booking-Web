@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Cập nhật tỉnh thành";
+    
+	Layout = "_Layout";
+
+	ViewData["Detail"] = true;
+
+}
+
+<h2>Cập nhật tỉnh thành</h2>
+
+@if (TempData["SyncError"] != null)
+{
+    <div class="alert alert-danger">@TempData["SyncError"]</div>
+}
+@if (TempData["SyncSuccess"] != null)
+{
+    <div class="alert alert-success">@TempData["SyncSuccess"]</div>
+}
+
+<form method="post" asp-controller="ThanhPho" asp-action="Sync" >
+    <button type="submit" class="btn btn-primary">Cập nhật tỉnh thành từ API</button>
+</form>
+

@@ -1,0 +1,85 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysHotel>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@using WEBSITE_TRAVELBOOKING.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+@{
+    var listUser = ViewBag.listUser as List<WEBSITE_TRAVELBOOKING.Models.SysUser>;
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+<div class="table-responsive">
+    <table class="table table-centered w-100 dt-responsive nowrap">
+        <thead class="table-light">
+            <tr>
+                <th>Tên khách sạn</th>
+                <th>Địa chỉ</th>
+                <th>Chủ sở hữu</th>
+                <th>Email</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                @{
+                    if (ruleAction != null && (ruleAction.IsEdit == true || ruleAction.IsDelete == true))
+                    {
+                        <th class="text-center" width="220px">Hành động</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var getUser = listUser.FirstOrDefault(h => h.Id == item.IdUser);
+                <tr>
+                    <td>
+                        <a class="text-dark" href="@Url.Action("chiTietKhachSan", new {id = item.Id, area = "Admin"})" data-toggle='modal' data-sizeModal="modal-xl">@item.Name</a>
+                    </td>
+                    <td>@item.Local</td>
+                    <td>@getUser?.Name</td>
+                    <td>@getUser?.Email</td>
+                    <td>@item.PriceMin?.ToString("N0") VNĐ</td>
+                    <td>@(item.Status == true ? "Kích hoạt" : "Chưa kích hoạt")</td>
+                    <td class="text-center">
+                        <div class="table-action">
+                            <a href="@Url.Action("Index", "QuanLyPhong", new {idHotel = item.Id, area = "Admin"})" class="btn btn-primary btn-sm" title="Quản lý phòng">
+                                <i class="mdi mdi-clipboard-list-outline"></i>
+                            </a>
+
+                            @{
+                                if (ruleAction != null && ruleAction.IsCreate == true)
+                                {
+                                    <a href="@Url.Action("themMoiPhong", "quanLyPhong", new {idHotel = item.Id, area = "Admin"})"
+                                       class="btn btn-success btn-sm" title="Thêm mới phòng" data-toggle='modal' data-sizeModal="modal-xl">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsEdit == true)
+                                {
+                                    <a href="@Url.Action("chinhSuaKhachSan", "QuanLyKhachSan", new {id = item.Id, area = "Admin"})"
+                                       class="btn btn-warning btn-sm" title="Chỉnh sửa" data-toggle='modal' data-sizeModal="modal-xl">
+                                        <i class="mdi mdi-square-edit-outline"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsDelete == true)
+                                {
+                                    <a href="@Url.Action("chiTietKhachSan", "QuanLyKhachSan", new {id = item.Id, area = "Admin"})"
+                                       class="btn btn-info btn-sm" title="Chi tiết" data-toggle='modal' data-sizeModal="modal-xl">
+                                        <i class="mdi mdi-eye"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Count > 0)
+    {
+
+        <div class="d-flex align-items-center justify-content-end py-1">
+            @Html.PagedListPager(Model, page => Url.Action("childIndex", new { page, area = "Admin" }),
+                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+        </div>
+    }
+</div>

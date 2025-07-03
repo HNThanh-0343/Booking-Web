@@ -1,0 +1,180 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysUser;
+@{
+    // Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Chỉnh sửa đối tác";
+    var listRole = ViewBag.NhomQuyen as List<WEBSITE_TRAVELBOOKING.Models.SysRole>;
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="dataForm" method="post" action="chinhSuaTaiKhoan" novalidate>
+        <input type="number" name="Id" value="@Model.Id" hidden />
+        <input type="number" name="PartnerId" value="@Model.PartnerId" hidden />
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên đối tác <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="Tên đối tác" value="@Model.Name" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom02">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" name="Email" placeholder="Email đối tác" value="@Model.Email" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom05">Địa chỉ <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Local" placeholder="Địa chỉ đối tác" value="@Model.Local" required>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Mật khẩu <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" name="Password" placeholder="Mật khẩu" value="@Model.Password" required>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom04">Nhóm quyền <span class="text-danger">*</span></label>
+                    @Html.DropDownListFor(model => model.IdRole, new SelectList(ViewBag.NhomQuyen, "Id", "Name", Model.IdRole), "Chọn nhóm quyền", new { @class = "form-select m-input" })
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                    <select class="form-select" name="Status">
+                        @{
+                            foreach (var itemTrangThai in ViewBag.DSTrangThai as List<SelectListItem>)
+                            {
+                                var check = itemTrangThai.Value.ToLower() == "1" ? "true" : "false";
+                                var selecteds = "";
+                                if (check.ToLower() == Model.Status.ToString().ToLower())
+                                {
+                                    selecteds = "selected";
+                                }
+                                <option value="@itemTrangThai.Value" @selecteds>@itemTrangThai.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaTaiKhoan")" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>
+
+@* <div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewData["TitleAdmin"]</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" action="chinhSuaTaiKhoan" novalidate>
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible text-bg-danger border-0 fade show" role="alert">
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <strong>@TempData["ErrorMessage"] </strong>
+                            </div>
+                        }
+                        <input type="number" name="Id" value="@Model.Id" hidden/>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="example-fileinput" class="form-label">Ảnh đại diện</label>
+                                    <input type="file" name="postedFile" class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustom01">Tên người dùng <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="Name" placeholder="Tên người dùng" value="@Model.Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustom02">Email <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" name="Email" placeholder="Email người dùng" value="@Model.Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustom05">Địa chỉ <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="Local" placeholder="Địa chỉ người dùng" value="@Model.Local" required>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustom03">Tài khoản người dùng <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="Username" placeholder="Tài khoản người dùng" value="@Model.Username" required>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustom04">Mật khẩu <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" name="Password" placeholder="Mật khẩu" value="@Model.Password" required>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Nhóm quyền <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="IdRole" required>
+                                        <option>Chọn nhóm quyền</option>
+                                        @foreach (var item in listRole)
+                                        {
+                                            if (item.Id == Model.IdRole)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            } else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="Status">
+                                        @{
+                                            foreach (var itemTrangThai in ViewBag.DSTrangThai as List<SelectListItem>)
+                                            {
+                                                if (itemTrangThai.Value.ToLower() == Model.Status.ToString().ToLower())
+                                                {
+                                                    <option value="@itemTrangThai.Value" selected>@itemTrangThai.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemTrangThai.Value">@itemTrangThai.Text</option>
+                                                }
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Cập nhật</button>
+                        <a href="@Url.Action("Index", "quanlyTaiKhoan")" class="btn btn-outline-secondary" type="submit">Quay lại</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@

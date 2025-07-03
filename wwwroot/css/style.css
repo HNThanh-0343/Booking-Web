@@ -1,0 +1,213 @@
+﻿:root {
+    --tripfery-primary-color-rgb: 0, 0, 0;
+    --tripfery-secondary-color-rgb: 0, 0, 0;
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px !important;
+    }
+}
+
+#preloader {
+    background-color: #ffffff;
+}
+
+body {
+    font-family: "Inter", sans-serif !important;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 44px;
+    line-height: 54px;
+    font-style: normal;
+}
+
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+    font-style: normal;
+}
+
+h3 {
+    font-size: 28px;
+    line-height: 36px;
+    font-style: normal;
+}
+
+h4 {
+    font-size: 22px;
+    line-height: 28px;
+    font-style: normal;
+}
+
+h5 {
+    font-size: 18px;
+    line-height: 24px;
+    font-style: normal;
+}
+
+h6 {
+    font-size: 14px;
+    line-height: 18px;
+    font-style: normal;
+}
+
+.site-header .main-navigation nav ul li a,
+.additional-menu-area .sidenav ul li a,
+.rt-slide-nav .offscreen-navigation ul li > a {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.site-header .main-navigation ul li ul li a,
+.additional-menu-area .sidenav ul li ul li a {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.rt-slide-nav .offscreen-navigation ul .sub-menu li > a {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.entry-banner.opacity-on:after {
+    background-color: rgba(28, 28, 120, 0.74);
+}
+
+.entry-banner .entry-banner-content {
+    padding-top: 160px;
+    padding-bottom: 160px;
+}
+
+.single .tripfery-progress-bar {
+    height: 5px;
+}
+
+.e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload),
+.e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+    background-image: none !important;
+}
+
+@media screen and (max-height: 1024px) {
+    .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload),
+    .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload) * {
+        background-image: none !important;
+    }
+}
+
+@media screen and (max-height: 640px) {
+    .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload),
+    .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload) * {
+        background-image: none !important;
+    }
+}
+
+.order_item_row_price .order_item_discount_note {
+    background-color: #384bff;
+}
+
+table td.order_items_row_total_amount.order_items_row_due,
+.table_order_item_total_price td.order_item_total_price,
+table.table_order_item_total_price td.order_item_total_price {
+    color: #384bff;
+}
+
+#booking_form_total .currency_amount {
+    font-weight: 600;
+    color: #232323;
+}
+
+body #search_form .input-group .fa-minus,
+body #search_form .input-group .fa-plus {
+    font-size: 12px;
+}
+
+.hero-arrow .hero-svg {
+    width: 120px;
+    height: 120px;
+}
+
+#checkout_form_block .checkout_form_terms_check {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+    #checkout_form_block .checkout_form_terms_check input {
+        position: relative;
+        top: 7px;
+    }
+
+.rt-search-filter .star-3,
+.rt-search-filter .star-5 {
+    margin-left: -4px;
+}
+
+.rt-booking-single .details-content {
+    flex-direction: unset !important;
+}
+
+@media (max-width: 576px) {
+    .rt-swiper-slider .swiper-slide {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 767px) {
+    #checkout_form_block {
+        display: block;
+        justify-content: space-between;
+    }
+
+        #checkout_form_block .rt-checkout-content,
+        #checkout_form_block .rt-checkout-form {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+}
+
+@media (max-width: 1024px) {
+    .input_select_field .input_select_title {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 767px) {
+    .rt-fillter-inner .view-switch-right,
+    .rt-fillter-inner .view-switch-bar {
+        display: block !important;
+    }
+
+    .rt-fillter-inner .babe_search_results_filters {
+        margin: 15px 0 !important;
+        text-align: left;
+    }
+
+    .rt-fillter-inner .view-switch-right {
+        justify-content: space-between;
+    }
+}

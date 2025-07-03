@@ -1,0 +1,127 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysPromotion>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using CommonMode = X.PagedList.Web.Common.PagedListDisplayMode
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+	#region style
+}
+<style>
+	.truncate-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
+	display: block;
+	}
+
+	.promo-btn-container {
+	overflow: hidden;
+	position: relative;
+	height: 38px;
+	}
+
+	.promo-replace-text {
+	transition: all 0.3s ease-in-out;
+	opacity: 0;
+	transform: translateY(-10px);
+	display: none;
+	color: #007bff;
+	justify-content: center;
+	align-items: center;
+	}
+
+
+	.card {
+	transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+	border: 1.5px solid transparent;
+	border-radius: 0.5rem;
+	}
+
+	.card:hover {
+	border-color: #0d6efd;
+	box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+	transform: translateY(-6px);
+	cursor: pointer;
+	z-index: 10;
+	}
+
+</style>
+@{
+	#endregion
+}
+<div class="container py-5">
+	<div class="row">
+		<div class="col-lg-12">
+
+			<div class="tab-content" id="pills-tabContent">
+				<!-- GRID view -->
+				<div class="tab-pane fade show active" id="pills-grid" role="tabpanel">
+					<div class="row">
+						@foreach (var tour in Model)
+						{
+							var imgSrc = Common.GetImagePath(tour.Image) == "/AppData/no-image.png" ? "/AppData/KhuyenMaiMacDinh.png" : tour.Image;
+							<div class="col-sm-6 col-md-4 mb-4">
+								<div class="card shadow-sm h-100 border-0">
+									<div class="position-relative overflow-hidden rounded-top">
+										<img class="img-fluid w-100" style="height: 200px; object-fit: cover;border-radius: 1rem;"
+										src="@imgSrc" alt="Ảnh khuyến mãi @tour.Name" />
+									</div>
+									<div class="card-body d-flex flex-column">
+										<div class="mb-2">
+											@if(tour.Type == true)
+											{
+												<span class="badge bg-warning text-dark">Giảm @tour.SaleOff%</span>
+											}
+											else
+											{
+												<span class="badge bg-warning text-dark">Giảm @tour.SaleOff?.ToString("N0") VNĐ</span>
+											}
+
+										</div>
+										<p class="card-text ellipsis truncate-text" style="color: black;">@tour.Name - @tour.Describe</p>
+										<p class="card-text truncate-text ellipsis">@tour.Condition</p>
+										<div class="promo-btn-container">
+											<button id="btn_Grid_@tour.Id" title="Click để hiện mã khuyến mãi"
+													class="btn btn-sm btn-outline-primary w-100 h-100"
+													onclick="showPromoName('Grid', @tour.Id)"
+													aria-label="Nhận mã giảm giá cho @tour.Name">
+												Nhận mã giảm giá
+											</button>
+											<h5 id="name_Grid_@tour.Id"
+												class="promo-replace-text"
+												style="display:none;font-weight:bold">
+												@tour.Code
+											</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+
+			<!-- Pagination -->
+			<nav aria-label="Pagination">
+				@Html.PagedListPager(Model, page => Url.Action("loadKhuyenMai", new { page, area = "" }),
+									new PagedListRenderOptions
+				{
+					DisplayLinkToFirstPage = CommonMode.Never,
+					DisplayLinkToLastPage = CommonMode.Never,
+					DisplayLinkToPreviousPage = CommonMode.Always,
+					DisplayLinkToNextPage = CommonMode.Always,
+					DisplayLinkToIndividualPages = true,
+					MaximumPageNumbersToDisplay = 5,
+					UlElementClasses = new[] { "pagination", "justify-content-center", "my-4" },
+					LiElementClasses = new[] { "page-item" },
+					PageClasses = new[] { "page-link" },
+					ActiveLiElementClass = "active",
+					LinkToPreviousPageFormat = "Trước đó",
+					LinkToNextPageFormat = "Tiếp theo",
+				})
+			</nav>
+
+		</div>
+	</div>
+</div>

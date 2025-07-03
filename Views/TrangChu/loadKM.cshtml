@@ -1,0 +1,222 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models;
+@model List<WEBSITE_TRAVELBOOKING.Models.PostViewHome>
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+    #region style
+}
+<style>
+    .js-slideKM img {
+    transition: transform 0.3s ease;
+    }
+
+    .js-slideKM:hover img {
+    transform: scale(1.01);
+    }
+
+    .title-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    }
+
+    .btn-view-all {
+    font-weight: normal;
+    font-size: 14px;
+    }
+
+    /* Popup overlay */
+    .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    }
+
+    .popup-content {
+    background: #fff;
+    padding: 30px 30px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-content img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    }
+
+    .popup-content .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 13px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+    }
+
+    .popup-content .coupon-code {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #e74c3c;
+    }
+
+    .popup-content .btn-copy {
+    padding: 6px 15px;
+    font-size: 14px;
+    border: none;
+    background: #198754;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+    /* Toast */
+    #copy-toast {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #198754;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    }
+</style>
+@{
+    #endregion
+}
+@if(!Model.Any() || Model == null){
+
+}
+else
+{
+    <div class="container space-1">
+        <div class="position-relative mb-4 mt-3">
+            <h2 class="section-title text-center mb-0" style="font-weight: bold">Chương trình khuyến mại</h2>
+            <a href="@Url.Action("Index", "KhuyenMai", new { area = "" })" class="xemtatcakm" style="position: absolute; top: 55px; right: 0px;">
+                Xem tất cả
+            </a>
+        </div>
+        <div class="js-slick-carouselKM text-center u-slick u-slick--gutters-3"
+             data-slides-show="3"
+             data-slides-scroll="3"
+             data-infinite="true"
+             data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-classic--v2 u-slick__arrow-centered--y rounded-circle"
+             data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-xl-n8"
+             data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-xl-n8"
+             data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
+             data-responsive='[
+             { "breakpoint": 1200, "settings": { "slidesToShow": 3, "slidesToScroll": 3 } },
+             { "breakpoint": 992, "settings": { "slidesToShow": 2, "slidesToScroll": 2 } },
+             { "breakpoint": 768, "settings": { "slidesToShow": 1, "slidesToScroll": 1 } },
+             { "breakpoint": 554, "settings": { "slidesToShow": 1, "slidesToScroll": 1 } }
+         ]'>
+            @foreach (var itemPost in Model)
+            {
+                var imageBlog = (Common.GetImagePath(itemPost.Image) == "/AppData/no-image.png") ? "/AppData/KhuyenMaiMacDinh.png" : itemPost.Image;
+                <div class="js-slideKM mb-4">
+                    <button type="button"
+                            onmousedown="onMouseDown(event)"
+                            onmousemove="onMouseMove(event)"
+                            onmouseup="onMouseUp(event, '@imageBlog', '@itemPost.Content')"
+                            style="padding: 0; border: none; background: none; cursor: pointer;">
+                        <img style="height: 180px; width: 100%; object-fit: cover; border-radius: 10px;" src="@imageBlog" alt="Image-Description">
+                    </button>
+                </div>
+
+            }
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">×</span>
+            <img id="popup-img" src="" alt="Khuyến mãi" />
+            <div class="coupon-code" id="popup-code"></div>
+            <button class="btn-copy" onclick="copyCode()">Sao chép mã</button>
+        </div>
+    </div>
+    <!--Thông báo-->
+    <div id="copy-toast">Đã sao chép mã khuyến mãi!</div>
+}
+
+
+    <script>
+        $.HSCore.components.HSSlickCarousel.init('.js-slick-carouselKM');
+        // dùng cho sự kiện kéo thả và click vào mã khuyến mãi
+        var currentCode = "";
+        var startX = 0;
+        var startY = 0;
+        var isDragging = false;
+
+        function onMouseDown(e) {
+            startX = e.clientX;
+            startY = e.clientY;
+            isDragging = false;
+        }
+
+        function onMouseMove(e) {
+            var dx = Math.abs(e.clientX - startX);
+            var dy = Math.abs(e.clientY - startY);
+            if (dx > 5 || dy > 5) {
+                isDragging = true;
+            }
+        }
+
+        function onMouseUp(e, imageUrl, content) {
+            if (!isDragging) {
+                showPopup(imageUrl, content); // thực hiện click
+            }
+        }
+
+        function showPopup(image, code) {
+            document.getElementById("popup-img").src = image;
+            document.getElementById("popup-code").innerText = code;
+            currentCode = code;
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        // end -- dùng cho sự kiện kéo thả và click vào mã khuyến mãi
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+            function copyCode() {
+            var tempInput = document.createElement("input");
+            tempInput.value = currentCode;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); //mobile
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast();
+        }
+
+        function showToast() {
+            var toast = document.getElementById("copy-toast");
+            toast.style.display = "block";
+            setTimeout(() => toast.style.opacity = 1, 10);
+            setTimeout(() => {
+                toast.style.opacity = 0;
+                setTimeout(() => toast.style.display = "none", 300);
+            }, 2000);
+        }
+    </script>

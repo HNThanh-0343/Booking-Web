@@ -1,0 +1,59 @@
+﻿@model List<WEBSITE_TRAVELBOOKING.Models.MenuItem>
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    var getAcount = Account.GetAccount();
+}
+<li class="side-nav-item">
+    <a href="@Url.Action("Index", "trangChu", new { area = "partner" })" class="side-nav-link">
+        <i class="uil-home-alt"></i>
+        <span> Trang chủ </span>
+    </a>
+</li>
+
+@{
+    foreach (var item in Model)
+    {
+        if (item.Children.Count == 0)
+        {
+            <li class="side-nav-item">
+                <a href="@Url.Action("Index", @item.NameController, new { area = "partner"})" class="side-nav-link">
+                    <i class="@item.Icon"></i>
+                    <span> @item.Name </span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebar_@item.Id" aria-expanded="false"
+                   aria-controls="sidebar_@item.Id" class="side-nav-link">
+                    <i class="@item.Icon"></i>
+                    <span> @item.Name </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                @{
+                    <div class="collapse" id="sidebar_@item.Id">
+                        <ul class="side-nav-second-level">
+                            @foreach (var itemChildren in item.Children)
+                            {
+                                var parts = itemChildren.NameController.Split('/');
+                                var controller = parts[0];
+                                var action = parts.Length > 1 ? parts[1] : "Index"; // fallback nếu thiếu
+                                <li>
+                                    <a href="@Url.Action(action,controller, new { area = "partner" })">@itemChildren.Name</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+
+                }
+            </li>
+        }
+
+
+
+    }
+}
+
+

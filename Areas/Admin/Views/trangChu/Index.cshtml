@@ -1,0 +1,314 @@
+﻿@using WEBSITE_TRAVELBOOKING.Models;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Trang chủ quản lý";
+    var listHotel = ViewBag.listHotel as List<SysHotel>;
+    var listRoom = ViewBag.listRoom as List<SysRoom>;
+    var contry = ViewBag.Contry as List<CatContry>;
+    var listHomeStay = ViewBag.listHomeStay as List<SysVilla>;
+    var listGuest = ViewBag.listGuest as List<SysGuest>;
+}
+<style>
+    .img-thumbnail {
+        max-height: 312px;
+        min-height: 312px;
+    }
+
+    .imgHotel {
+        /*  width: 300px;
+            min-width: 300px; */
+        /* max-width: 300px; */
+        height: 220px;
+        min-height: 220px;
+        max-height: 220px;
+    }
+
+    .green-lighter {
+        color: #ffb700;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                </div>
+                <h4 class="page-title">Trang chủ</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-stretch">
+        <div class="col-xl-5 col-lg-6">
+            <div class="mainslider w-10">
+                <div class="slider">
+                    @if (listHotel.Count > 0)
+                    {
+                        foreach (var item in listHotel.Take(5))
+                        {
+                            var listHinhAnh = "";
+                            if (string.IsNullOrEmpty(item.ListImg))
+                            {
+                                listHinhAnh = "/AppData/no-image.png";
+                                <div>
+                                    <img src="@listHinhAnh" alt="image" class="img-thumbnail" width="600" />
+                                </div>
+                            }
+                            else
+                            {
+                                var listIMG = item.ListImg.Split(',');
+                                foreach (var items in listIMG)
+                                {
+                                    listHinhAnh = Common.GetImagePath(items);
+                                    if (listHinhAnh != "/AppData/no-image.png")
+                                    {
+                                        <div>
+                                            <img src="@listHinhAnh" class="img-thumbnail" alt="image" width="600" />
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div> <!-- end col -->
+
+        <div class="col-xl-7 col-lg-6">
+            <div class="card card-h-100">
+                <div class="d-flex card-header justify-content-between align-items-center py-3">
+                    <h4 class="header-title">Điểm đến phổ biến</h4>
+                    <div></div>
+                </div>
+                <div class="card-body py-0">
+                    <div dir="ltr">
+                        <div class="row justify-content-center g-1">
+                            <!-- Số lượng khách sạn-->
+                            <div class="col-12 col-xl-2 col-lg-4 col-md-3 mb-2">
+                                <div class="location-card h-100">
+                                    <div class="location-icon">
+                                        <i class="uil-building"></i>
+                                    </div>
+                                    <h3>
+                                        <span>@listHotel.Count</span>
+                                    </h3>
+                                    <div class="text-muted font-15 mb-0">Khách sạn</div>
+                                </div>
+                            </div>
+                            <!-- Phòng khách sạn-->
+                            <div class="col-12 col-xl-2 col-lg-4 col-md-3 mb-2">
+                                <div class="location-card h-100">
+                                    <div class="location-icon">
+                                        <i class="uil-location-point"></i>
+                                    </div>
+                                    <h3>
+                                        <span>@listRoom.Count</span>
+                                    </h3>
+                                    <div class="text-muted font-15 mb-0">Số phòng</div>
+                                </div>
+                            </div>
+                            <!-- Số lượng homestay-->
+                            <div class="col-12 col-xl-2 col-lg-4 col-md-3 mb-2">
+                                <div class="location-card h-100">
+                                    <div class="location-icon">
+                                        <i class="uil-home-alt"></i>
+                                    </div>
+                                    <h3>
+                                        <span>@listHomeStay.Count</span>
+                                    </h3>
+                                    <div class="text-muted font-15 mb-0">Homestay</div>
+                                </div>
+                            </div>
+                            <!-- Số lượng người dùng-->
+                            <div class="col-12 col-xl-2 col-lg-4 col-md-3 mb-2">
+                                <div class="location-card h-100">
+                                    <div class="location-icon">
+                                        <i class="uil-user"></i>
+                                    </div>
+                                    <h3>
+                                        <span>@listGuest.Count</span>
+                                    </h3>
+                                    <div class="text-muted font-15 mb-0">Người dùng</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Khách sạn nổi bật</h4>
+                    <div></div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="chart-content-bg">
+                        <div class="row text-center"></div>
+                    </div>
+                    <div dir="ltr">
+                        <div class="row g-1">
+                            @if (listHotel.Count > 0)
+                            {
+                                var count = listHotel.Count > 8 ? 8 : listHotel.Count;
+                                foreach (var itemPost in listHotel.Take(count))
+                                {
+                                    var listHinhAnh = "";
+                                    if (string.IsNullOrEmpty(itemPost.ListImg))
+                                    {
+                                        listHinhAnh = "/AppData/no-image.png";
+                                    }
+                                    else
+                                    {
+                                        var listIMG = itemPost.ListImg.Split(',');
+                                        listHinhAnh = Common.GetImagePath(listIMG[0]);
+                                        listHinhAnh = listHinhAnh == "/AppData/no-image.png" ? "/AppData/BaiVietMacDinh.jpg" : listHinhAnh;
+                                    }
+                                    <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-2 pb-1">
+                                        <div class="card mb-1 transition-3d-hover shadow-hover-2 tab-card h-100">
+                                            <div class="position-relative mb-1">
+                                                <a data-toggle='modal' data-sizeModal="modal-xl" href="@Url.Action("chiTietKhachSan","QuanLyKhachSan", new {id = itemPost.Id, hideBtn = false, area = "Admin"})" class="d-block">
+                                                    <img class="card-img-top imgHotel" src="@listHinhAnh" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="card-body pl-2 pr-2 py-0">
+                                                <div class="">
+                                                    <div class="d-inline-flex align-items-center font-size-17 text-lh-1 text-primary letter-spacing-3">
+                                                        <div class="green-lighter mr-2">
+                                                            @for (int i = 0; i < 5; i++)
+                                                            {
+                                                                if (i < itemPost.NumStar)
+                                                                {
+                                                                    <small class="fas fa-star"></small>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <small class="far fa-star"></small>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @{
+                                                    if (itemPost.Name.Length > 40)
+                                                    {
+                                                        <a data-toggle='modal' data-sizeModal="modal-xl" href="@Url.Action("chiTietKhachSan","QuanLyKhachSan", new {id = itemPost.Id, hideBtn = false, area = "Admin"})" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus text-one_line" data-tooltip="@itemPost.Name">
+                                                            <div class="NameCustom">
+                                                                @itemPost.Name
+                                                            </div>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a data-toggle='modal' data-sizeModal="modal-xl" href="@Url.Action("chiTietKhachSan","QuanLyKhachSan", new {id = itemPost.Id, hideBtn = false, area = "Admin"})" class="card-title NameHotel text-dark fw-bold titleCard_cus text-one_line  mb-0">
+                                                            @itemPost.Name
+                                                        </a>
+                                                    }
+                                                }
+                                                <div class="priceCard">
+                                                    <small class="color_card__Price">  Chỉ từ:</small>
+                                                    <span>
+                                                        @itemPost.PriceMin?.ToString("N0") VNĐ
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex bd-highlight font-size-14 text-gray-1 color_card__Price">
+                                                    <div class="bd-highlight">
+                                                        <i class="icon flaticon-pin-1 font-size-15 mr-1"></i>
+                                                    </div>
+
+                                                    @{
+                                                        if (itemPost.Local.Length > 40)
+                                                        {
+                                                            <div class="flex-grow-1 bd-highlight tooltip-container" data-tooltip="@itemPost.Local">
+                                                                <div class="localCustom text-one_line">
+                                                                    @itemPost.Local
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="localCustom text-one_line">
+                                                                @itemPost.Local
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Phòng đặt biệt</h4>
+                    <div></div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="chart-content-bg">
+                        <div class="row text-center"></div>
+                    </div>
+                    <div dir="ltr">
+                        <div class="row g-1">
+                            @if (listRoom.Count > 0)
+                            {
+                                var count = listRoom.Count > 8 ? 8 : listRoom.Count;
+                                foreach (var item in listRoom.Take(count))
+                                {
+                                    var listHinhAnh = "";
+                                    if (string.IsNullOrEmpty(item.ListImg))
+                                    {
+                                        listHinhAnh = "/AppData/no-image.png";
+                                    }
+                                    else
+                                    {
+                                        var listIMG = item.ListImg.Split(',');
+                                        listHinhAnh = Common.GetImagePath(listIMG[0]);
+                                    }
+                                    <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-2">
+                                        <div class="card shadow-sm h-100 border-1">
+                                            <a data-toggle='modal' data-sizeModal="modal-xl" href="@Url.Action("chiTietPhong","quanLyPhong", new {id = item.Id, hideBtn = false, area = "Admin"})" class="d-block">
+                                                <img src="@listHinhAnh" alt="image" class="bd-placeholder-img card-img-top" width="100%" height="225" />
+                                            </a>
+
+
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <div>
+                                                        <a data-toggle='modal' data-sizeModal="modal-xl" href="@Url.Action("chiTietPhong","quanLyPhong", new {id = item.Id, hideBtn = false, area = "Admin"})" class="card-title NameHotel text-dark fw-bold tooltip-container mb-0 titleCard_cus text-one_line" data-tooltip="@item.Name">
+                                                            <div class="NameCustom">
+                                                                <i class="mdi mdi-bed-queen-outline mdi-24px align-middle"></i> @item.Name
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div><i class="mdi mdi-bed-outline mdi-24px align-middle"></i> @item.TypeRoomNavigation?.Name</div>
+                                                    <div class="mt-1">Giá chỉ từ: <strong>@item.Price VND</strong></div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div>
+    <!-- end row -->
+</div>

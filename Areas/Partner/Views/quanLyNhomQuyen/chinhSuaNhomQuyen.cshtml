@@ -1,0 +1,31 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysRole;
+@{
+    // Layout = "_AdminLayout";
+    ViewData["TitleAdmin"] = "Chỉnh sửa nhóm quyền";
+}
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="dataForm" method="post" action="chinhSuaNhomQuyen" novalidate>
+        <input type="number" name="Id" value="@Model.Id" hidden />
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="validationCustom01">Tên nhóm quyền<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="Name" placeholder="Tên đối tác" value="@Model.Name" required>
+                    <div class="invalid-feedback"></div>
+                </div>               
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("chinhSuaNhomQuyen")" class="btn bg-success-subtle edit text-success waves-effect text-start">
+        Cập nhật
+    </button>
+</div>

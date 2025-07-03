@@ -1,0 +1,76 @@
+﻿@model X.PagedList.IPagedList<WEBSITE_TRAVELBOOKING.Models.SysUser>
+@using WEBSITE_TRAVELBOOKING.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common
+@using X.PagedList.Web.Common;
+
+@{
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="table-responsive">
+    <table id="datatable-buttons" class="table table-sm table-centered w-100 dt-responsive nowrap">
+        <thead class="table-light">
+            <tr>
+                @* <th>Avatar</th> *@
+                <th>Tên người dùng</th>
+                <th>Email</th>
+                <th>Địa chỉ</th>
+                <th>Nhóm quyền</th>
+                <th>Trạng thái</th>
+                @if (ruleAction != null && (ruleAction.IsEdit == true || ruleAction.IsDelete == true))
+                {
+                    <th class="text-center" width="170px">Hàng động</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a data-toggle='modal' class="text-dark" href="@Url.Action("chiTietTaiKhoan", new {id = item.Id, area = "Admin"})">@item.Name</a></td>
+                    <td>@item.Email</td>
+                    <td>@item.Local</td>
+                    <td>@item.IdRoleNavigation?.Name</td>
+                    <td>@(item.Status == true ? "Kích hoạt" : "Chưa kích hoạt")</td>
+                    <td class="text-center">
+                        <div class="table-action">
+                            @{
+                                if (ruleAction != null && ruleAction.IsCreate == true)
+                                {
+                                    <a data-toggle='modal' data-sizeModal="modal-xl" class="btn btn-success btn-sm"
+                                       href="@Url.Action("themMoiKhachSan", "QuanLyKhachSan", new {idUser = item.Id, area = "Admin"})" title="Chỉnh sửa">
+                                        <i class="mdi mdi-plus-circle"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsEdit == true)
+                                {
+                                    <a data-toggle='modal' data-sizeModal="" class="btn btn-warning btn-sm"
+                                       href="@Url.Action("chinhSuaTaiKhoan", new {id = item.Id, area = "Admin"})" title="Chỉnh sửa">
+                                        <i class="mdi mdi-square-edit-outline"></i>
+                                    </a>
+                                }
+                                if (ruleAction != null && ruleAction.IsDelete == true)
+                                {
+                                    <a data-toggle='modal' data-sizeModal="" class="btn btn-danger btn-sm"
+                                       href="@Url.Action("chiTietTaiKhoan", new {id = item.Id, area = "Admin"})" title="Xóa">
+                                        <i class="mdi mdi-delete"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{
+        if (Model.Count > 0)
+        {
+            <div class="d-flex align-items-center justify-content-end py-1">
+                @Html.PagedListPager(Model, page => Url.Action("childIndexPartner", new { page, searchValue = ViewBag.searchValue, area = "Admin" }),
+                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DataTable" }))
+            </div>
+        }
+    }
+</div>

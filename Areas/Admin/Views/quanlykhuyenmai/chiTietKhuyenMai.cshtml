@@ -1,0 +1,67 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysPromotion;
+@using WEBSITE_TRAVELBOOKING.Models;
+@using WEBSITE_TRAVELBOOKING.Helper;
+@{
+    ViewData["TitleAdmin"] = "Chỉnh sửa khuyến mãi";
+    var listUser = ViewBag.listUser as List<SysUser>;
+    var getAccount = Account.GetAccount();
+    var ruleAction = ViewData["RuleAll"] as ModelsAndRole;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="scrollableModalTitle">@ViewData["TitleAdmin"]</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+</div>
+<div class="modal-body">
+    <form class="needs-validation" id="dataForm" method="post" enctype="multipart/form-data" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="pt-2 px-3 mb-3">
+                    <img src="@Model.Image" class="card-img-top" alt="...">
+                </div>
+            </div>
+            <h4 class="mt-2 mb-2">@Model.Name</h4>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Ngày bắt đầu:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.StartDate?.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Ngày kết thúc:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.EndDate?.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Giảm giá:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.SaleOff @(Model.Type == true ? "%" : "VNĐ")</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Nội dung</h4>
+            <div class="mb-3">
+                <div class="p-2" style="text-align:justify">@Model.Describe</div>
+            </div>
+            <h4 class="mt-2">Tình trạng</h4>
+            <div class="mb-3">
+                <div class="p-2" style="text-align:justify">@Model.Condition</div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    @if (ruleAction != null && ruleAction.IsDelete == true)
+    {
+        <button type="button" data-toggle="ajax-modal" data-url="@Url.Action("xoaKhuyenMai", new { id = Model.Id, area = "Admin" })" class="btn bg-danger-subtle delete text-danger waves-effect text-start">
+            Xóa
+        </button>
+    }
+</div>

@@ -1,0 +1,537 @@
+﻿@model WEBSITE_TRAVELBOOKING.Models.SysUser
+@using WEBSITE_TRAVELBOOKING.Helper
+@{
+	Layout = "_layout";
+	ViewData["Title"] = "Đặt phòng";
+	ViewData["Detail"] = true;
+	int maxGuests = ViewBag.MaxGuests ?? 1;
+}
+<style>
+	.indam {
+	font-weight: bold;
+	}
+	.no-copy{
+	cursor: pointer;
+	user-select: none;
+	}
+
+</style>
+<main id="content" class="bg-gray space-2">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7 col-xl-8">
+				<div class="mb-5 shadow-soft bg-white rounded-sm">
+					<div class="py-3 px-4 px-xl-12 border-bottom">
+						<ul class="list-group flex-nowrap overflow-auto overflow-md-visble list-group-horizontal list-group-borderless flex-center-between pt-1">
+							<li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
+								<div class="flex-content-center mb-3 width-40 height-40 bg-primary border-width-2 border border-primary text-white mx-auto rounded-circle">
+									1
+								</div>
+								<div class="text-primary">Thông tin khách hàng</div>
+							</li>
+							<li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
+								<div class="flex-content-center mb-3 width-40 height-40 border border-width-2 border-gray mx-auto rounded-circle">
+									2
+								</div>
+								<div class="text-gray-1">Thông tin thanh toán</div>
+							</li>
+							<li class="list-group-item text-center flex-shrink-0 flex-md-shrink-1">
+								<div class="flex-content-center mb-3 width-40 height-40 border border-width-2 border-gray mx-auto rounded-circle">
+									3
+								</div>
+								<div class="text-gray-1">Đã xác nhận đặt chỗ!</div>
+							</li>
+						</ul>
+					</div>
+					<div class="pt-4 pb-5 px-5 bg-white shadow-sm rounded-lg">
+						<h5 id="scroll-description" class="font-size-21 indam text-dark mb-4 d-flex align-items-center">
+							<i class="fas fa-user mr-2 text-primary "></i> Hãy cho chúng tôi biết bạn muốn ở lại bao lâu?
+						</h5>
+
+						<!-- Contacts Form -->
+						<form class="js-validate" id="infoForm" asp-action="ThanhToan" asp-controller="KhachSan" asp-area="" method="post">
+							<div class="row">
+								<!-- Ảnh đại diện -->
+								<div class="col-md-6 mb-4 d-flex justify-content-center align-items-center">
+									<img class="rounded img-fluid" style="max-height: 300px; max-width: 300px;" src="@Model.Avatar" alt="Avatar" />
+								</div>
+
+								<!-- Thông tin người dùng -->
+								<div class="col-md-6 mb-4 no-copy">
+									<div class="mb-3">
+										<label class="form-label indam">Họ tên</label>
+										<input class="form-control no-copy" id="fullName" name="firstName" value="@Model.Name" readonly />
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label indam">Email</label>
+										<input class="form-control no-copy" id="email" name="email" value="@Model.Email" readonly />
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label indam">Điện thoại</label>
+										<input class="form-control no-copy" id="phone" name="phone" value="@Model.Phone" readonly />
+									</div>
+								</div>
+
+								<!-- Các input ẩn -->
+								<input type="hidden" name="userId" value="@Model.Id" />
+								<input type="hidden" id="hiddenCheckin" name="checkin" />
+								<input type="hidden" id="hiddenCheckout" name="checkout" />
+								<input type="hidden" id="hiddenSoNguoi" name="soNguoi" />
+								<input type="hidden" id="hiddenIdPhong" name="idPhong" value="@ViewBag.ThongtinRoom.Id" />
+								<input type="hidden" id="hiddenKhuyenMai" name="idKhuyenMai" />
+								<input type="hidden" id="hiddenGiaKhuyenMai" name="giaTienKM" />
+								<input type="hidden" id="hiddenTongTien" name="tongTien" />
+								<input type="hidden" id="hiddenThanhTien" name="thanhTien" />
+
+								<!-- Nút Submit -->
+								<div class="col-12 text-right">
+									<button type="submit"
+									id="nextBtn"
+									class="btn btn-primary btn-wide px-5 py-3 rounded-sm font-weight-bold">
+										TIẾP THEO <i class="fas fa-arrow-right ml-2"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+						<!-- End Contacts Form -->
+					</div>
+
+
+				</div>
+			</div>
+			<div class="col-lg-5 col-xl-4">
+				<div class="shadow-soft bg-white rounded-sm">
+					<div class="p-4 border-bottom bg-white">
+						<a href="#" class="d-block mb-3">
+							@{
+								string defaultImg = "/AppData/AnhMacDinh.jpg";
+								string[] anhMang = !string.IsNullOrEmpty(ViewBag.ThongtinRoom.ListImg)
+								? ViewBag.ThongtinRoom.ListImg.Split(',')
+								: new string[0];
+
+								string anhDau = anhMang.Length > 0 ? anhMang[0] : "";
+								string anhroom = Common.GetImagePath(anhDau) == "/AppData/no-image.png" ? defaultImg : anhDau;
+							}
+							<img class="img-fluid rounded shadow-sm"
+							src="@anhroom"
+							alt="Image-Description"
+							style="max-height: 220px; object-fit: cover; width: 100%;">
+						</a>
+
+						<a href="#" class="d-block text-dark font-weight-bold h5 mb-2">
+							<i class="fas fa-bed mr-2 text-primary"></i> @ViewBag.ThongtinRoom.Name
+						</a>
+
+						<div class="d-flex align-items-center text-muted small mb-2">
+							<i class="fas fa-map-marker-alt mr-2 text-danger"></i>
+							<span>@ViewBag.localHotel.Local</span>
+						</div>
+
+						<!-- Hiển thị giá -->
+						<div class="text-success font-weight-bold h5 mb-0">
+							<i class="fas fa-money-bill-wave mr-2 text-success"></i>
+							@String.Format("{0:#,##0} VNĐ / Đêm", ViewBag.ThongtinRoom.Price)
+						</div>
+					</div>
+
+
+
+					<!-- Basics Accordion -->
+					<div id="basicsAccordion">
+						<!-- Card -->
+						<div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+							<div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingOne">
+								<h5 class="mb-0">
+									<button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark" data-toggle="collapse" data-target="#basicsCollapseOne" aria-expanded="true" aria-controls="basicsCollapseOne">
+										Chi tiết đặt chỗ
+
+										<span class="card-btn-arrow font-size-14 text-dark">
+											<i class="fas fa-chevron-down"></i>
+										</span>
+									</button>
+								</h5>
+							</div>
+							<div id="basicsCollapseOne" class="collapse show" aria-labelledby="basicsHeadingOne" data-parent="#basicsAccordion">
+								<div class="card-body px-4 pt-0">
+									<!-- Fact List -->
+									<ul class="list-unstyled font-size-1 mb-0 font-size-16">
+										<li class="justify-content-between align-items-center border-bottom py-3">
+											<div>
+												<i class="fas fa-calendar-alt mr-2 text-primary"></i>
+												<label class="form-label" for="validationCustom01">Hãy chọn ngày nhận phòng<span class="text-danger">*</span></label>
+												<input id="dpcheckin" name="StartDate" class="form-control mb-2" placeholder="Nhận phòng" value="@ViewBag.CI" required>
+												<input type="hidden" name="StartDate_ISO" id="StartDate_ISO" />
+												<div class="invalid-feedback"></div>
+											</div>
+
+										</li>
+										<li class="justify-content-between align-items-center border-bottom py-3">
+											<div>
+												<i class="fas fa-calendar-alt mr-2 text-primary"></i>
+												<label class="form-label" for="validationCustom01">Hãy chọn ngày trả phòng<span class="text-danger">*</span></label>
+												<input id="dpcheckout" name="EndDate" class="form-control" placeholder="Trả phòng" value="@ViewBag.CO" required>
+												<input type="hidden" name="EndDate_ISO" id="EndDate_ISO" />
+												<div class="invalid-feedback"></div>
+											</div>
+
+										</li>
+										<li class="d-flex justify-content-between align-items-center border-bottom py-3">
+											<span class="font-weight-bold">
+												<i class="fas fa-moon mr-2 text-info"></i> Ở lại
+											</span>
+											<span class="text-secondary" id="soDemText" data-price="@ViewBag.ThongtinRoom.Price">Đêm</span>
+										</li>
+										<li class="d-flex justify-content-between align-items-center border-bottom py-3">
+											<span class="font-weight-bold">
+												<i class="fas fa-door-open mr-2 text-success"></i> Phòng
+											</span>
+											<span class="text-secondary">@ViewBag.ThongtinRoom.Name</span>
+										</li>
+										<li class="d-flex justify-content-between align-items-center py-3">
+											<span class="font-weight-bold">
+												<i class="fas fa-users mr-2 text-warning"></i> Số người
+											</span>
+											@* <span class="text-secondary" id="soNguoiText">Người</span> *@
+											<div class="d-flex">
+												<a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle">
+													<small class="fas fa-minus btn-icon__inner"></small>
+												</a>
+												<input name="rooms" class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center" type="text" value="@ViewBag.GUE">
+												<a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle">
+													<small class="fas fa-plus btn-icon__inner"></small>
+												</a>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!-- End Card -->
+							<!-- Card -->
+							<div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+								<div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingThree">
+									<h5 class="mb-0">
+										<button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark" data-toggle="collapse" data-target="#basicsCollapseThree" aria-expanded="false" aria-controls="basicsCollapseThree">
+											Mã phiếu giảm giá
+
+											<span class="card-btn-arrow font-size-14 text-dark">
+												<i class="fas fa-chevron-down"></i>
+											</span>
+										</button>
+									</h5>
+								</div>
+								<div id="basicsCollapseThree" class="collapse show" aria-labelledby="basicsHeadingThree" data-parent="#basicsAccordion">
+									<div class="card-body px-4 pt-0 pb-4">
+										@if (ViewBag.PromotionCode != null)
+										{
+											if (ViewBag.Type == true)
+											{
+												<div class="alert alert-success">
+													<strong>Khuyến mãi:</strong> Mã <b>@ViewBag.PromotionCode</b> - Giảm <b>@ViewBag.SaleOff%</b><br />
+													<small>@ViewBag.Condition</small>
+												</div>
+											}
+											else
+											{
+												<div class="alert alert-success">
+													<strong>Khuyến mãi:</strong> Mã <b>@ViewBag.PromotionCode</b> - Giảm <b>@ViewBag.SaleOff.ToString("N0") VNĐ</b><br />
+													<small>@ViewBag.Condition</small>
+												</div>
+											}
+										}
+										else
+										{
+											<form id="couponForm" class="js-focus-state" onsubmit="return false;">
+												<br />
+												<label class="sr-only" for="CouponCodeInput">Mã phiếu giảm giá</label>
+												<div class="input-group custom__input-group">
+													<input type="text" class="form-control" name="couponCode" id="CouponCodeInput" placeholder="Nhập mã khuyến mãi" required />
+													<div class="input-group-append ml-3">
+														<button class="btn btn-primary py-2" type="button" id="applyCouponBtn">Áp dụng</button>
+													</div>
+												</div>
+												<div id="promotionResult" class="mt-2 text-success font-weight-bold"></div>
+											</form>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- Kết thúc thẻ -->
+							<!-- Thẻ -->
+							<div class="card rounded-0 border-top-0 border-left-0 border-right-0">
+								<div class="card-header card-collapse bg-transparent border-0" id="basicsHeadingFour">
+									<h5 class="mb-0">
+										<button type="button" class="btn btn-link border-0 btn-block d-flex justify-content-between card-btn py-3 px-4 font-size-17 font-weight-bold text-dark" data-toggle="collapse" data-target="#basicsCollapseFour" aria-expanded="false" aria-controls="basicsCollapseFour">
+											Thanh toán
+
+											<span class="card-btn-arrow font-size-14 text-dark">
+												<i class="fas fa-chevron-down"></i>
+											</span>
+										</button>
+									</h5>
+								</div>
+								<div id="basicsCollapseFour" class="collapse show" aria-labelledby="basicsHeadingFour" data-parent="#basicsAccordion">
+									<div class="card-body px-4 pt-0">
+										<!-- Fact List -->
+										<ul class="list-unstyled font-size-1 mb-0 font-size-16">
+											<li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+												<span class="font-weight-medium text-dark">Tổng cộng</span>
+												<span class="text-primary font-weight-bold" id="tongTien">0 ₫</span>
+											</li>
+
+											<li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+												<span class="font-weight-medium text-dark">Khuyến mãi</span>
+												<span class="text-success font-weight-bold" id="maKM"></span>
+											</li>
+
+											<li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+												<span class="font-weight-medium text-dark">Giá giảm khuyến mãi</span>
+												<span class="text-warning font-weight-bold" id="giamGiaKM">0 ₫</span>
+											</li>
+
+
+											<li class="d-flex justify-content-between align-items-center py-3 font-size-18 font-weight-bold bg-light rounded mt-3">
+												<span class="font-weight-bold text-dark">Số tiền thanh toán</span>
+												<span class="text-danger font-weight-bold" id="thanhTien">0 ₫</span>
+											</li>
+										</ul>
+										<!-- End Fact List -->
+									</div>
+								</div>
+							</div>
+							<!-- End Card -->
+						</div>
+						<!-- End Basics Accordion -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<script>
+	var checkInDate = null;
+	var checkOutDate = null;
+	var promo = @ViewBag.SaleOff;
+	var pricePerNight = @ViewBag.ThongtinRoom.Price; // giá 1 đêm
+	var  dpcheckin = flatpickr("#dpcheckin", {
+		enableTime: true,
+		time_24hr: true,
+		dateFormat: "d/m/Y H:i",
+		minDate: "today",
+		locale: "vn",
+		onChange: function(selectedDates) {
+			if (selectedDates.length > 0) {
+				checkInDate = selectedDates[0];
+				const minCheckoutDate = new Date(checkInDate.getTime() + 24 * 60 * 60 * 1000);
+				dpcheckout.set('minDate', minCheckoutDate);
+				calculateNightsAndPrice();
+			}
+			
+		}
+	});
+
+	var dpcheckout = flatpickr("#dpcheckout", {
+			enableTime: true,
+			time_24hr: true,
+			dateFormat: "d/m/Y H:i",
+			minDate: "today",
+			locale: "vn",
+			onChange: function(selectedDates) {
+			if (selectedDates.length > 0) {
+				checkOutDate = selectedDates[0];
+				if (checkInDate && checkOutDate) {
+				checkBookingAvailability(); // gọi kiểm tra ngày
+				calculateNightsAndPrice();
+			}
+			}
+		}
+	});
+
+		window.addEventListener('load', function () {
+			// Nếu người dùng đã chọn sẵn ngày thì tính luôn
+			if (document.getElementById("dpcheckin").value && document.getElementById("dpcheckout").value) {
+				checkInDate = dpcheckin.selectedDates[0];
+				checkOutDate = dpcheckout.selectedDates[0];
+				calculateNightsAndPrice();
+			}
+		});
+
+		function formatCurrency(number) {
+			return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+		}
+		function calculateNightsAndPrice() {
+		if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+			// lấy phần ngày (bỏ giờ) để tính đúng số đêm theo nghiệp vụ khách sạn
+			const ci = new Date(checkInDate.getFullYear(), checkInDate.getMonth(), checkInDate.getDate());
+			const co = new Date(checkOutDate.getFullYear(), checkOutDate.getMonth(), checkOutDate.getDate());
+
+			const msPerDay = 1000 * 60 * 60 * 24;
+			const nights = Math.round((co - ci) / msPerDay); // làm tròn cho chắc
+
+			const total = nights * pricePerNight;
+
+			document.getElementById('hiddenCheckin').value = flatpickr.formatDate(checkInDate, "Y-m-d\\TH:i");
+	 		document.getElementById('hiddenCheckout').value = flatpickr.formatDate(checkOutDate, "Y-m-d\\TH:i");
+
+			document.getElementById("soDemText").textContent = `${nights} Đêm`;
+			document.getElementById("tongTien").textContent = `${formatCurrency(total)}`;
+
+			document.getElementById('hiddenSoNguoi').value = parseInt(document.querySelector('.js-result').value) || 1; //chọn ngày xong là cố định giá trị 1 người
+			// if(promo != 0){
+			// 	if(@ViewBag.Type == true){
+			// 		const thanhtien = (total * @ViewBag.SaleOff)/100;
+			// 		document.getElementById("thanhTien").textContent = `${formatCurrency(thanhtien)}`;
+			// 		document.getElementById('hiddenThanhTien').value = `${thanhtien}`;
+			// 	}
+			// 	else{
+			// 		const thanhtien = total - @ViewBag.SaleOff;
+			// 		document.getElementById("thanhTien").textContent = `${formatCurrency(thanhtien)}`;
+			// 		document.getElementById('hiddenThanhTien').value = `${thanhtien}`;
+			// 	}
+				
+			// }else{
+			document.getElementById("thanhTien").textContent = `${formatCurrency(total)}`;
+			document.getElementById('hiddenTongTien').value = `${total}`;
+			document.getElementById('hiddenThanhTien').value = `${total}`;
+			
+
+		} else {
+			document.getElementById("soDemText").textContent = "";
+			document.getElementById("tongTien").textContent = "";
+		}
+	}
+		// kiểm tra khoảng ngày có ai đặt chưa
+		function checkBookingAvailability() {
+		if (!checkInDate || !checkOutDate || checkOutDate <= checkInDate) return;
+
+		const roomId = @ViewBag.ThongtinRoom.Id;
+		const ci = flatpickr.formatDate(checkInDate, "Y-m-d\\TH:i");
+		const co = flatpickr.formatDate(checkOutDate, "Y-m-d\\TH:i");
+
+			$.ajax({
+		url: '@Url.Action("KiemTraNgay", "KhachSan", new { area = "" })',
+		type: 'POST',
+		data: {
+			checkIn: ci,
+			checkOut: co,
+			roomId: roomId
+		},
+		success: function (res) {
+			if (res.conflict && res.conflict.length > 0) {
+				alert("Khoảng thời gian này đã có người đặt phòng. Vui lòng chọn ngày khác.");
+			} else {
+				
+				calculateNightsAndPrice();
+			}
+		},
+		error: function () {
+			alert("Lỗi khi kiểm tra lịch đặt phòng.");
+		}
+	});
+
+	}
+
+			// chọn số lượng người
+			document.addEventListener('DOMContentLoaded', function () {
+			const minusBtn = document.querySelector('.js-minus');
+			const plusBtn = document.querySelector('.js-plus');
+			const input = document.querySelector('input[name="rooms"]');
+			const maxGuests = @maxGuests;
+
+			minusBtn.addEventListener('click', function () {
+				let value = parseInt(input.value, 10);
+				if (value > 1) {
+					input.value = value - 1;
+					document.getElementById('hiddenSoNguoi').value = input.value;
+				}
+			});
+
+			plusBtn.addEventListener('click', function () {
+				let value = parseInt(input.value, 10);
+				if (value < maxGuests) {
+					input.value = value + 1;
+					document.getElementById('hiddenSoNguoi').value = input.value;
+				}
+			});
+			
+			// ngăn nhập tay vượt giới hạn
+			input.addEventListener('input', function () {
+				let value = parseInt(input.value, 10);
+				if (isNaN(value) || value < 1) {
+					input.value = 1;
+				} else if (value > maxGuests) {
+					input.value = maxGuests;
+				}
+			});
+		});
+		// kiểm trả khuyến mãi
+		$('#applyCouponBtn').click(function () {
+		var code = $('#CouponCodeInput').val().trim();
+		// var hotelId = '@ViewBag.localHotel.Id'; // Đảm bảo ViewBag.localHotel được truyền vào View
+		var tongTienText = $('#tongTien').text().replace(/[₫,.]/g, '').trim(); // loại bỏ ₫ và dấu phân cách
+		var tongTienn = parseInt(tongTienText);
+		if (code === '') {
+			$('#promotionResult').html('<span class="text-danger">Vui lòng nhập mã khuyến mãi.</span>');
+			$('#maKM').text('');
+			$('#giamGiaKM').text(formatCurrency(0));
+			$('#thanhTien').text(formatCurrency(tongTienn));
+			document.getElementById('hiddenThanhTien').value = `${tongTienn}` ;
+			document.getElementById('hiddenGiaKhuyenMai').value = `${0}`;
+			document.getElementById('hiddenKhuyenMai').value = `${""}`;
+			return;
+		}
+
+		$.ajax({
+			url: '@Url.Action("KiemTraMaKhuyenMai", "KhachSan", new { area = "" })', // Gọi controller "KhuyenMai"
+			type: 'POST',
+			data: {
+				code: code,
+				tongTien: tongTienn
+			},
+			success: function (response) {
+				if (response.success && response.type == 1) {
+					$('#promotionResult').html(
+						'Mã <b>' + response.code + '</b> được áp dụng - Giảm <b>' + response.saleOff + '%</b>'
+					);
+					// Cập nhật giá trị thành tiền
+					$('#maKM').text(formatCurrency(response.hinhThucGiam));
+					$('#giamGiaKM').text("-"+formatCurrency(response.giamGia));
+					$('#thanhTien').text(formatCurrency(response.thanhTien));
+				} else if(response.success && response.type == 0){
+					$('#promotionResult').html(
+						'Mã <b>' + response.code + '</b> được áp dụng - Giảm <b>' + formatCurrency(response.saleOff) + '</b>'
+					);
+					// Cập nhật giá trị thành tiền
+					$('#maKM').text(formatCurrency(response.hinhThucGiam));
+					$('#giamGiaKM').text("-"+formatCurrency(response.giamGia));
+					$('#thanhTien').text(formatCurrency(response.thanhTien));
+				}
+				else {
+					$('#promotionResult').html('<span class="text-danger">' + response.message + '</span>');
+					document.getElementById('hiddenThanhTien').value = `${response.thanhTien}` ;
+					document.getElementById('hiddenGiaKhuyenMai').value = `${response.giamGia}`;
+					document.getElementById('hiddenKhuyenMai').value = `${response.idKM}`;
+				}
+				document.getElementById('hiddenThanhTien').value = `${response.thanhTien}`;
+				if(response.giamGia == 0){
+					document.getElementById('hiddenGiaKhuyenMai').value = `${response.giamGia}`;
+				}else{
+					document.getElementById('hiddenGiaKhuyenMai').value = `${"-"+response.giamGia}`;
+				}
+				document.getElementById('hiddenKhuyenMai').value = `${response.idKM}`;
+			},
+			error: function () {
+				$('#promotionResult').html('<span class="text-danger">Đã xảy ra lỗi. Vui lòng thử lại.</span>');
+			}
+		});
+	});
+
+</script>
+<script>
+	document.querySelectorAll('.no-copy').forEach(el => {
+		el.addEventListener('copy', e => e.preventDefault());
+		el.addEventListener('contextmenu', e => e.preventDefault());
+	});
+</script>
