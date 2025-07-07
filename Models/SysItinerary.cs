@@ -14,6 +14,4 @@ public partial class SysItinerary
     public string? Description { get; set; }
 
     public bool? Status { get; set; }
-
-    public virtual ICollection<SysTour> SysTours { get; set; } = new List<SysTour>();
 }

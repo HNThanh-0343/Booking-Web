@@ -370,30 +370,8 @@ namespace WEBSITE_TRAVELBOOKING.Controllers
                     //        Price = (float)activity.Price
                     //    }).Take(8).ToList();
                     //    break;
-                    case 3://Tour
-                        var allTour = _unitOfWork.Repository<SysTour>().GetAll(filter: (m => m.Status == true && m.Featured == true && m.IdCategory == IdPost));
-                        getHotel = allTour.Select(tour =>
-                        {
-                            var promo = tour.IdPromotion.HasValue && promotionDict.ContainsKey(tour.IdPromotion.Value)
-                                        ? promotionDict[tour.IdPromotion.Value]
-                                        : null;
-                            return new HotelViewHome
-                            {
-                                Id = tour.Id,
-                                Image = tour.ListImg.Split(",").FirstOrDefault(),
-                                Local = tour.LocalText,
-                                Name = tour.Name,
-                                NumberStar = (int)tour.NumStar,
-                                Discount = (int)tour.Reviews,
-                                Url = $"/du-lich/{Common.GenerateSlug(tour.Name)}?t={tour.Id}",
-                                Price = (decimal)(tour.Price ?? 0),
-                                Sale = promo?.Sale ?? 0,
-                                type = promo?.Type ?? null
-                            };
-                        }).Take(8).ToList();
-                        break;
 
-                    //case 4://Rental
+                    //case 3://Rental
                     //    var allVilla = _unitOfWork.Repository<SysVilla>().GetAll(filter: (m => m.Status == true && m.Featured == true && m.IdCategory == IdPost));
                     //    getHotel = allVilla.Select(villa => new HotelViewHome
                     //    {
@@ -407,31 +385,8 @@ namespace WEBSITE_TRAVELBOOKING.Controllers
                     //        Price = (float)villa.Price
                     //    }).Take(8).ToList();
                     //    break;
-                    case 5://Car
-                        var allCar = _unitOfWork.Repository<SysCar>().GetAll(filter: (m => m.Status == true && m.Featured == true && m.IdCategory == IdPost));
 
-                        getHotel = allCar.Select(car =>
-                        {
-                            var promo = car.IdPromotion.HasValue && promotionDict.ContainsKey(car.IdPromotion.Value)
-                                            ? promotionDict[car.IdPromotion.Value]
-                                            : null;
-                            return new HotelViewHome
-                            {
-                                Id = car.Id,
-                                Image = car.ListImg.Split(",").FirstOrDefault(),
-                                Local = car.LocalText,
-                                Name = car.Name,
-                                NumberStar = (int)car.NumStar,
-                                Discount = (int)car.Reviews,
-                                Url = $"/xe/{Common.GenerateSlug(car.Name)}?x={car.Id}",
-                                Price = (decimal)(car.Price??0),
-                                Sale = promo?.Sale ?? 0,
-                                type = promo?.Type ?? null
-                            };
-                        }).Take(8).ToList();
-                        break;
-
-                    //case 6://Restaurants
+                    //case 4://Restaurants
                     //    var allRestaurant = _unitOfWork.Repository<SysRestaurant>().GetAll(filter: (m => m.Status == true && m.Featured == true && m.IdCategory == IdPost));
 
                     //    getHotel = allRestaurant.Select(restaurant => new HotelViewHome

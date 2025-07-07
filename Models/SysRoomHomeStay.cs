@@ -15,8 +15,6 @@ public partial class SysRoomHomeStay
 
     public string? IdTypeBed { get; set; }
 
-    public string? ContentBed { get; set; }
-
     public string? Description { get; set; }
 
     public int? AdultsMax { get; set; }

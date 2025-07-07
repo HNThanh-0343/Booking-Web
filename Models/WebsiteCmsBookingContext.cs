@@ -21,10 +21,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<CatBedRoom> CatBedRooms { get; set; }
 
-    public virtual DbSet<CatCar> CatCars { get; set; }
-
-    public virtual DbSet<CatCarFeature> CatCarFeatures { get; set; }
-
     public virtual DbSet<CatCategory> CatCategories { get; set; }
 
     public virtual DbSet<CatContry> CatContries { get; set; }
@@ -33,21 +29,15 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<CatGuest> CatGuests { get; set; }
 
-    public virtual DbSet<CatItinerary> CatItineraries { get; set; }
-
     public virtual DbSet<CatPromotionGuest> CatPromotionGuests { get; set; }
 
     public virtual DbSet<CatRoomService> CatRoomServices { get; set; }
-
-    public virtual DbSet<CatTypeActivity> CatTypeActivities { get; set; }
 
     public virtual DbSet<CatTypeBlog> CatTypeBlogs { get; set; }
 
     public virtual DbSet<CatTypeRoom> CatTypeRooms { get; set; }
 
     public virtual DbSet<CatWhyBookWithU> CatWhyBookWithUs { get; set; }
-
-    public virtual DbSet<SysActivity> SysActivities { get; set; }
 
     public virtual DbSet<SysAdvetise> SysAdvetises { get; set; }
 
@@ -56,8 +46,6 @@ public partial class WebsiteCmsBookingContext : DbContext
     public virtual DbSet<SysBooking> SysBookings { get; set; }
 
     public virtual DbSet<SysCallLog> SysCallLogs { get; set; }
-
-    public virtual DbSet<SysCar> SysCars { get; set; }
 
     public virtual DbSet<SysClientTestimonial> SysClientTestimonials { get; set; }
 
@@ -99,8 +87,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<SysPromotion> SysPromotions { get; set; }
 
-    public virtual DbSet<SysRestaurant> SysRestaurants { get; set; }
-
     public virtual DbSet<SysRole> SysRoles { get; set; }
 
     public virtual DbSet<SysRoom> SysRooms { get; set; }
@@ -112,8 +98,6 @@ public partial class WebsiteCmsBookingContext : DbContext
     public virtual DbSet<SysSettingMenu> SysSettingMenus { get; set; }
 
     public virtual DbSet<SysSocial> SysSocials { get; set; }
-
-    public virtual DbSet<SysTour> SysTours { get; set; }
 
     public virtual DbSet<SysUser> SysUsers { get; set; }
 
@@ -157,21 +141,6 @@ public partial class WebsiteCmsBookingContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<CatCar>(entity =>
-        {
-            entity.ToTable("Cat_Car");
-
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<CatCarFeature>(entity =>
-        {
-            entity.ToTable("Cat_CarFeatures");
-
-            entity.Property(e => e.Icon).HasMaxLength(255);
-            entity.Property(e => e.Name).HasMaxLength(500);
-        });
-
         modelBuilder.Entity<CatCategory>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_sys_Categories");
@@ -203,13 +172,6 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.Property(e => e.Title).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<CatItinerary>(entity =>
-        {
-            entity.ToTable("Cat_Itinerary");
-
-            entity.Property(e => e.Title).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<CatPromotionGuest>(entity =>
         {
             entity.ToTable("Cat_Promotion_Guest");
@@ -223,13 +185,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-        });
-
-        modelBuilder.Entity<CatTypeActivity>(entity =>
-        {
-            entity.ToTable("Cat_TypeActivity");
-
-            entity.Property(e => e.Name).HasMaxLength(255);
         });
 
         modelBuilder.Entity<CatTypeBlog>(entity =>
@@ -252,34 +207,6 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.ToTable("Cat_WhyBookWithUs");
 
             entity.Property(e => e.Icon).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<SysActivity>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Activities");
-
-            entity.ToTable("sys_Activity");
-
-            entity.Property(e => e.Duration).HasMaxLength(255);
-            entity.Property(e => e.IdPromotion).HasColumnName("idPromotion");
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.TickerCollection).HasMaxLength(255);
-            entity.Property(e => e.TickerType).HasMaxLength(255);
-            entity.Property(e => e.Time).HasColumnType("datetime");
-            entity.Property(e => e.Voucher).HasMaxLength(255);
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.SysActivities)
-                .HasForeignKey(d => d.IdCategory)
-                .HasConstraintName("FK_sys_Activities_sys_Categories");
-
-            entity.HasOne(d => d.IdPromotionNavigation).WithMany(p => p.SysActivities)
-                .HasForeignKey(d => d.IdPromotion)
-                .HasConstraintName("FK_sys_Activity_sys_Promotion");
-
-            entity.HasOne(d => d.IdTypeNavigation).WithMany(p => p.SysActivities)
-                .HasForeignKey(d => d.IdType)
-                .HasConstraintName("FK_sys_Activity_Cat_TypeActivity");
         });
 
         modelBuilder.Entity<SysAdvetise>(entity =>
@@ -312,6 +239,7 @@ public partial class WebsiteCmsBookingContext : DbContext
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.SysBlogs)
                 .HasForeignKey(d => d.IdUser)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_sys_Blog_sys_User");
         });
 
@@ -352,34 +280,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
             entity.Property(e => e.Ip).HasColumnName("IP");
             entity.Property(e => e.Time).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<SysCar>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_RentalCar");
-
-            entity.ToTable("sys_Car");
-
-            entity.Property(e => e.IdPromotion).HasColumnName("idPromotion");
-            entity.Property(e => e.Life).HasMaxLength(50);
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.Mile).HasMaxLength(50);
-            entity.Property(e => e.Oil).HasMaxLength(50);
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.Regime).HasMaxLength(50);
-            entity.Property(e => e.Time).HasColumnType("datetime");
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.SysCars)
-                .HasForeignKey(d => d.IdCategory)
-                .HasConstraintName("FK_sys_RentalCar_sys_Categories");
-
-            entity.HasOne(d => d.IdPromotionNavigation).WithMany(p => p.SysCars)
-                .HasForeignKey(d => d.IdPromotion)
-                .HasConstraintName("FK_sys_Car_sys_Promotion");
-
-            entity.HasOne(d => d.IdTypeNavigation).WithMany(p => p.SysCars)
-                .HasForeignKey(d => d.IdType)
-                .HasConstraintName("FK_sys_Car_Cat_Car");
         });
 
         modelBuilder.Entity<SysClientTestimonial>(entity =>
@@ -530,7 +430,7 @@ public partial class WebsiteCmsBookingContext : DbContext
 
         modelBuilder.Entity<SysLike>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__sys_Like__3214EC071B59C117");
+            entity.HasKey(e => e.Id).HasName("PK__sys_Like__3214EC07ED3D069A");
 
             entity.ToTable("sys_Like");
 
@@ -629,26 +529,6 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.Property(e => e.StartDate).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<SysRestaurant>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Restaurant");
-
-            entity.ToTable("sys_Restaurant");
-
-            entity.Property(e => e.IdPromotion).HasColumnName("idPromotion");
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.Time).HasColumnType("datetime");
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.SysRestaurants)
-                .HasForeignKey(d => d.IdCategory)
-                .HasConstraintName("FK_sys_Restaurant_sys_Categories");
-
-            entity.HasOne(d => d.IdPromotionNavigation).WithMany(p => p.SysRestaurants)
-                .HasForeignKey(d => d.IdPromotion)
-                .HasConstraintName("FK_sys_Restaurant_sys_Promotion");
-        });
-
         modelBuilder.Entity<SysRole>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Role");
@@ -720,43 +600,6 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.Property(e => e.UrlSocial).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<SysTour>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Tour");
-
-            entity.ToTable("sys_Tour");
-
-            entity.Property(e => e.DateLine).HasMaxLength(50);
-            entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.IdPromotion).HasColumnName("idPromotion");
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.MaxPeople).HasMaxLength(50);
-            entity.Property(e => e.MinAge).HasMaxLength(50);
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.Pickup).HasMaxLength(255);
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
-            entity.Property(e => e.Time).HasColumnType("datetime");
-            entity.Property(e => e.TimeLine).HasMaxLength(50);
-            entity.Property(e => e.Wifi).HasMaxLength(50);
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.SysTours)
-                .HasForeignKey(d => d.IdCategory)
-                .HasConstraintName("FK_sys_Tour_sys_Categories");
-
-            entity.HasOne(d => d.IdItineraryNavigation).WithMany(p => p.SysTours)
-                .HasForeignKey(d => d.IdItinerary)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_sys_Tour_Sys_Itinerary");
-
-            entity.HasOne(d => d.IdPromotionNavigation).WithMany(p => p.SysTours)
-                .HasForeignKey(d => d.IdPromotion)
-                .HasConstraintName("FK_sys_Tour_sys_Promotion");
-
-            entity.HasOne(d => d.IdTypeNavigation).WithMany(p => p.SysTours)
-                .HasForeignKey(d => d.IdType)
-                .HasConstraintName("FK_sys_Tour_Cat_TypeActivity");
-        });
-
         modelBuilder.Entity<SysUser>(entity =>
         {
             entity.ToTable("sys_User");
@@ -778,6 +621,7 @@ public partial class WebsiteCmsBookingContext : DbContext
 
             entity.HasOne(d => d.CardNameNavigation).WithMany(p => p.SysUsers)
                 .HasForeignKey(d => d.CardName)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_sys_User_Cat_Bank");
 
             entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.SysUsers)
