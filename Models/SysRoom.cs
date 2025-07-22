@@ -39,6 +39,8 @@ public partial class SysRoom
 
     public double? Price { get; set; }
 
+    public string? RoomFeature { get; set; }
+
     public bool? Feature { get; set; }
 
     public bool? Status { get; set; }

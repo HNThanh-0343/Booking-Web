@@ -46,345 +46,203 @@
 }
 
 <style>
-/* Gom nhóm modal carousel và main-image-container */
-    .modal-carousel,
+    /* Gom nhóm modal carousel và main-image-container */
     .main-image-container {
-        height: 70vh; /* Changed from 500px to 70% of viewport height */
-        width: 100%;
-        position: relative;
-        overflow: hidden;
+    height: 70vh; /* Changed from 500px to 70% of viewport height */
+    width: 100%;
+    position: relative;
+    overflow: hidden;
     }
 
-        .modal-carousel .js-slide img,
-        .main-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-    /* Room details container */
-    .room-details-container {
-        display: flex;
-        flex-direction: column;
-        height: 70vh; /* Changed from 500px to 70% of viewport height */
+    .main-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     }
 
-    .room-details-header {
-        background-color: #fff;
-        z-index: 10;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    .gallery-thumb {
+    height: 60px;
     }
 
-    .room-details-scroll {
-        flex: 1;
-        overflow-y: auto;
-        max-height: 50vh; /* Changed from 300px to 50% of viewport height */
-        padding-right: 10px;
-        scrollbar-width: thin;
+    #sliderSyncingThumb .slick-track {
+    display: flex;
+    align-items: center;
     }
 
-        .room-details-scroll::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .room-details-scroll::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .room-details-scroll::-webkit-scrollbar-track {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-    /* Modal size and position */
-    #roomDetailModal .modal-dialog {
-        
-        max-width: 90vw;
-        overflow: visible;
+    #sliderSyncingThumb .js-slide {
+    padding: 4px;
     }
 
-    #roomDetailModal .modal-content {
-        border-radius: 0;
-        border: none;
-        overflow: visible;
+    #sliderSyncingThumb {
+    padding: 5px 0;
     }
-
-    #roomDetailModal .modal-header {
-        padding: 0;
-        border-bottom: none;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 1050;
-        background: transparent;
-    }
-
-    #roomDetailModal .modal-content .close {
-        position: absolute;
-        top: 0;
-        right: 0;
-        transform: translate(50%, -50%);
-        z-index: 1051;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        opacity: 1 !important;
-        background-color: #297cbb;
-        border: none;
-        border-radius: 50%;
-        font-size: 1.25rem;
-        line-height: 1;
-        color: #fff;
-        box-shadow: 0 2px 4px #000;
-        transition: background-color .2s;
-    }
-
-        #roomDetailModal .modal-content .close:hover,
-        #roomDetailModal .modal-content .close:focus {
-            background-color: #1f5d8a;
-            color: #fff;
-            outline: none;
-        }
-
-    /* Responsive behavior */
-    @@media (max-width: 767px) {
-        .modal-carousel,
-        .modal-carousel .js-slide img,
-        .main-image-container,
-        .main-image-container img {
-            height: 40vh; /* Changed from 300px to 40% of viewport height */
-        }
-
-        .room-details-container {
-            height: auto;
-            max-height: 40vh; /* Changed from 300px to 40% of viewport height */
-        }
-
-        .room-details-scroll {
-            max-height: 30vh; /* Changed from 220px to 30% of viewport height */
-        }
-
-        .gallery-thumb {
-            height: 60px;
-        }
-
-        #sliderSyncingThumb .slick-track {
-            display: flex;
-            align-items: center;
-        }
-
-        #sliderSyncingThumb .js-slide {
-            padding: 4px;
-        }
-
-        #sliderSyncingThumb {
-            padding: 5px 0;
-        }
     }
 
     /* Related hotels responsive styles */
     @@media (max-width: 768px) {
-        .product-card-v3 .js-slide {
-            padding-left: 15px;
-            padding-right: 15px;
-        }
+    .product-card-v3 .js-slide {
+    padding-left: 15px;
+    padding-right: 15px;
+    }
 
-        .product-card-v3 .card {
-            max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .product-card-v3 .card {
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    }
 
-        .product-card-v3 .card-img-top {
-            height: 220px;
-            object-fit: cover;
-        }
-        /* Fix for featured badge on mobile */
-        .border-primary.bg-primary.rounded-xs {
-            display: inline-flex !important;
-            width: auto !important;
-            max-width: 100%;
-        }
+    .product-card-v3 .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    }
+    /* Fix for featured badge on mobile */
+    .border-primary.bg-primary.rounded-xs {
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: 100%;
+    }
     }
 
     /* Gallery styles */
     .gallery-thumb {
-        height: 80px;
-        width: 100%;
-        object-fit: cover;
+    height: 80px;
+    width: 100%;
+    object-fit: cover;
     }
 
     .u-slick--gutters-4 {
-        margin-left: -0.25rem;
-        margin-right: -0.25rem;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
     }
 
-        .u-slick--gutters-4 .js-slide {
-            padding-left: 0.25rem;
-            padding-right: 0.25rem;
-        }
+    .u-slick--gutters-4 .js-slide {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    }
 
     #sliderSyncingThumb .slick-current .gallery-thumb {
-        border: 2px solid #297cbb;
-        opacity: 1;
+    border: 2px solid #297cbb;
+    opacity: 1;
     }
     /* Touch-friendly padding */
     #sliderSyncingThumb .js-slide {
-        padding: 4px;
+    padding: 4px;
     }
 
     /* Rating star styles */
     .rating-star {
-        cursor: pointer;
-        transition: all 0.2s ease;
-        opacity: 0.5;
-        margin-right: 5px;
-        font-size: 20px;
-        letter-spacing: 3px;
-        color: #297cbb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.5;
+    margin-right: 5px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: #297cbb;
     }
 
-        .rating-star.active,
-        .rating-star.selected {
-            opacity: 1;
-            transform: scale(1.1);
-            font-weight: 900;
-        }
+    .rating-star.active,
+    .rating-star.selected {
+    opacity: 1;
+    transform: scale(1.1);
+    font-weight: 900;
+    }
 
     .rating-container {
-        display: inline-block;
-        color: #297cbb;
+    display: inline-block;
+    color: #297cbb;
     }
 
     /* Collapse Link Styles */
     .link-collapse .link-collapse__active,
     .link-collapse-custom .link-collapse__active {
-        display: none;
+    display: none;
     }
 
     .link-collapse.active .link-collapse__default,
     .link-collapse-custom.active .link-collapse__default {
-        display: none;
+    display: none;
     }
 
     .link-collapse.active .link-collapse__active,
     .link-collapse-custom.active .link-collapse__active {
-        display: inline-block;
+    display: inline-block;
     }
 
     /* Additional styling for text justification */
     .text-justify {
-        text-align: justify;
-        text-justify: inter-word;
+    text-align: justify;
+    text-justify: inter-word;
     }
-        /* Make sure list items in justified text maintain proper spacing */
-        .text-justify li div.d-flex div:last-child {
-            text-align: justify;
-            flex: 1;
-        }
+    /* Make sure list items in justified text maintain proper spacing */
+    .text-justify li div.d-flex div:last-child {
+    text-align: justify;
+    flex: 1;
+    }
     /* Ensure proper spacing in justified paragraphs */
     .description-preview p, .description-full p {
-        text-align: justify;
+    text-align: justify;
     }
-
-    /* Room modal amenities styles */
-    #roomModalAmenities .row {
-        margin: 0 -10px;
-    }
-
-    #roomModalAmenities .col-md-6 {
-        padding: 0 10px;
-    }
-
-    #roomModalAmenities .d-flex {
-        padding: 8px 0;
-    }
-
-    #roomModalAmenities,
-    #hotelsAmenities i {
-        font-size: 20px;
-        min-width: 24px;
-    }
-
-        #roomModalAmenities span {
-            font-size: 14px;
-        }
-
-        .amenities-preview .card-color__icon,
-        .amenities-full .card-color__icon,
-        #roomModalAmenities .card-color__icon {
-            color: #939bad !important;
-            transition: color 0.2s;
-        }
-
-            .amenities-preview .card-color__icon:hover,
-            .amenities-full .card-color__icon:hover,
-            #roomModalAmenities .card-color__icon:hover {
-                color: #006ce4 !important;
-            }
 
     /* Reviews styles */
     #reviewsContainer {
-        max-height: none;
-        overflow: visible;
+    max-height: none;
+    overflow: visible;
     }
 
     #hiddenReviews {
-        transition: all 0.3s ease;
+    transition: all 0.3s ease;
     }
 
     #toggleReviewsBtn {
-        padding: 10px 20px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
     }
 
-        #toggleReviewsBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+    #toggleReviewsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
     /* Fix share dropdown hover text color */
     .custom-social-share .dropdown-menu .dropdown-item:hover {
-        color: #fff;
+    color: #fff;
     }
 
-        .custom-social-share .dropdown-menu .dropdown-item:hover i {
-            color: #fff;
-        }
+    .custom-social-share .dropdown-menu .dropdown-item:hover i {
+    color: #fff;
+    }
 
     .cssShareMobile span {
-        border: 1px solid rgb(130, 127, 127) !important
+    border: 1px solid rgb(130, 127, 127) !important
     }
 
-        .cssShareMobile span:hover {
-            background: #006ce4;
-            border: 1px solid #006ce4 !important;
-        }
+    .cssShareMobile span:hover {
+    background: #006ce4;
+    border: 1px solid #006ce4 !important;
+    }
 
-            .cssShareMobile span:hover i {
-                color: white !important;
-            }
+    .cssShareMobile span:hover i {
+    color: white !important;
+    }
 
-        .cssShareMobile span a {
-            width: 15px;
-            height: 15px;
-        }
+    .cssShareMobile span a {
+    width: 15px;
+    height: 15px;
+    }
 
-        .cssShareMobile span i {
-            color: rgb(130, 127, 127) !important;
-        }
+    .cssShareMobile span i {
+    color: rgb(130, 127, 127) !important;
+    }
 
-.text-content.collapsed {
+    .text-content.collapsed {
     max-height: 120px;
     overflow: hidden;
     position: relative;
-}
+    }
 
-.text-content.collapsed::after {
+    .text-content.collapsed::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -392,9 +250,9 @@
     width: 100%;
     height: 30px;
     background: linear-gradient(transparent, white);
-}
+    }
 
-.toggle-btn {
+    .toggle-btn {
     color: #007bff;
     cursor: pointer;
     text-decoration: underline;
@@ -403,7 +261,7 @@
     padding: 0;
     margin-top: 5px;
     font-size: 14px;
-}
+    }
 </style>
 
 
@@ -496,11 +354,11 @@
                             {
                                 <span class="rounded-circle p-2 d-inline-block" style="">
                                     <a id="btnLike-@hotelid"
-                                       class="d-flex justify-content-center align-items-center text-white btn-like"
-                                       style="background-color: white; "
-                                       data-hotel-id="@hotelid"
-                                       data-liked="@(liked ? "true" : "false")"
-                                       title="Yêu thích">
+                                    class="d-flex justify-content-center align-items-center text-white btn-like"
+                                    style="background-color: white; "
+                                    data-hotel-id="@hotelid"
+                                    data-liked="@(liked ? "true" : "false")"
+                                    title="Yêu thích">
                                         @if (liked)
                                         {
                                             <span class="fa-solid fa-heart text-danger"></span>
@@ -538,11 +396,11 @@
 
                         <!-- Images Carousel -->
                         <div id="sliderSyncingNav" class="js-slick-carousel u-slick mb-2"
-                             data-infinite="true"
-                             data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-centered--y rounded-circle"
-                             data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-lg-2 ml-xl-4"
-                             data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-lg-2 mr-xl-4"
-                             data-nav-for="#sliderSyncingThumb">
+                        data-infinite="true"
+                        data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic u-slick__arrow-centered--y rounded-circle"
+                        data-arrow-left-classes="flaticon-back u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-lg-2 ml-xl-4"
+                        data-arrow-right-classes="flaticon-next u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-lg-2 mr-xl-4"
+                        data-nav-for="#sliderSyncingThumb">
 
                             @{
                                 var images = new List<string>();
@@ -570,9 +428,9 @@
                                     <div class="js-slide">
                                         <div class="main-image-container">
                                             <img class="img-fluid border-radius-3"
-                                                 src="@imgPath"
-                                                 alt="Hotel Image"
-                                                 onerror="replaceWithPlaceholder(this, 'images')" />
+                                            src="@imgPath"
+                                            alt="Hotel Image"
+                                            onerror="replaceWithPlaceholder(this, 'images')" />
                                         </div>
                                     </div>
 
@@ -591,9 +449,9 @@
                                     <div class="js-slide">
                                         <div class="main-image-container">
                                             <img class="img-fluid border-radius-3"
-                                                 src="@anh"
-                                                 alt="Hotel Image"
-                                                 onerror="replaceWithPlaceholder(this, 'images')" />
+                                            src="@anh"
+                                            alt="Hotel Image"
+                                            onerror="replaceWithPlaceholder(this, 'images')" />
                                         </div>
                                     </div>
 
@@ -608,17 +466,17 @@
                         </div>
 
                         <div id="sliderSyncingThumb" class="js-slick-carousel u-slick u-slick--gutters-4 u-slick--transform-off"
-                             data-infinite="false"
-                             data-slides-show="6"
-                             data-is-thumbs="true"
-                             data-focus-on-select="true"
-                             data-nav-for="#sliderSyncingNav"
-                             data-responsive='[
-                                                 { "breakpoint": 992,
-                                                 "settings": { "slidesToShow": 4 } },
-                                                 { "breakpoint": 576,
-                                                 "settings": { "slidesToShow": 3 } }
-                                             ]'>
+                        data-infinite="false"
+                        data-slides-show="6"
+                        data-is-thumbs="true"
+                        data-focus-on-select="true"
+                        data-nav-for="#sliderSyncingNav"
+                        data-responsive='[
+                        { "breakpoint": 992,
+                        "settings": { "slidesToShow": 4 } },
+                        { "breakpoint": 576,
+                        "settings": { "slidesToShow": 3 } }
+                        ]'>
 
                             @foreach (var img in images)
                             {
@@ -629,9 +487,9 @@
                                 {
                                     <div class="js-slide" style="cursor: pointer;">
                                         <img class="img-fluid border-radius-3 gallery-thumb"
-                                             src="@imgPath"
-                                             alt="Thumbnail"
-                                             onerror="this.onerror=null; this.src='/AppData/BaiViet/BaiVietMacDinh.jpg';" />
+                                        src="@imgPath"
+                                        alt="Thumbnail"
+                                        onerror="this.onerror=null; this.src='/AppData/BaiViet/BaiVietMacDinh.jpg';" />
                                     </div>
                                     index++;
                                 }
@@ -647,9 +505,9 @@
                                 {
                                     <div class="js-slide" style="cursor: pointer;">
                                         <img class="img-fluid border-radius-3 gallery-thumb"
-                                             src="@anh"
-                                             alt="Thumbnail"
-                                             onerror="replaceWithPlaceholder(this, 'images')" />
+                                        src="@anh"
+                                        alt="Thumbnail"
+                                        onerror="replaceWithPlaceholder(this, 'images')" />
                                     </div>
 
                                     index++;
@@ -669,7 +527,7 @@
                 {
                     <div class="border-bottom position-relative py-2">
                         <h5 id="scroll-description" class="font-size-21 font-weight-bold text-dark mb-2">Tổng quát</h5>
-                        
+
                         <div class="description-preview text-justify">
                             <div class="text-content collapsed" id="textContent">
                                 @Html.Raw(Model.Description)
@@ -761,10 +619,10 @@
                                             </span>
                                         </div>
                                         <input id="checkInOut"
-                                               class="js-range-datepicker font-size-lg-16 ml-1 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0"
-                                               type="text"
-                                               placeholder="Ngày đến - Ngày đi"
-                                               aria-label="Ngày đến - Ngày đi">
+                                        class="js-range-datepicker font-size-lg-16 ml-1 shadow-none font-weight-bold form-control hero-form bg-transparent border-0 flatpickr-input p-0"
+                                        type="text"
+                                        placeholder="Ngày đến - Ngày đi"
+                                        aria-label="Ngày đến - Ngày đi">
                                     </div>
                                 </div>
                             </div>
@@ -912,10 +770,10 @@
                                             }
                                             <a class="d-block" href="#">
                                                 <img class="img-fluid mb-3 mb-md-0 rounded-circle"
-                                                     src="@avatarSrc"
-                                                     alt="@review.Name"
-                                                     style="width: 75px; height: 75px; object-fit: cover;"
-                                                     onerror="this.onerror=null; this.src='/assets/img/user.png';" />
+                                                src="@avatarSrc"
+                                                alt="@review.Name"
+                                                style="width: 75px; height: 75px; object-fit: cover;"
+                                                onerror="this.onerror=null; this.src='/assets/img/user.png';" />
                                             </a>
                                         </div>
                                         <div class="media-body text-center text-md-left">
@@ -953,7 +811,7 @@
                                                             @review.Comment
                                                         </div>
                                                         <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
-                                                           onclick="toggleComment(this)">
+                                                        onclick="toggleComment(this)">
                                                             <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
                                                             <span class="show-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
                                                         </a>
@@ -981,10 +839,10 @@
                                                 }
                                                 <a class="d-block" href="#">
                                                     <img class="img-fluid mb-3 mb-md-0 rounded-circle"
-                                                         src="@avatarSrc"
-                                                         alt="@review.Name"
-                                                         style="width: 75px; height: 75px; object-fit: cover;"
-                                                         onerror="this.onerror=null; this.src='/assets/img/user.png';" />
+                                                    src="@avatarSrc"
+                                                    alt="@review.Name"
+                                                    style="width: 75px; height: 75px; object-fit: cover;"
+                                                    onerror="this.onerror=null; this.src='/assets/img/user.png';" />
                                                 </a>
                                             </div>
                                             <div class="media-body text-center text-md-left">
@@ -1022,7 +880,7 @@
                                                                 @review.Comment
                                                             </div>
                                                             <a href="javascript:void(0);" class="text-primary font-size-14 mt-2 d-inline-block"
-                                                               onclick="toggleComment(this)">
+                                                            onclick="toggleComment(this)">
                                                                 <span class="show-more">Xem thêm <i class="flaticon-down-chevron font-size-10 ml-1"></i></span>
                                                                 <span class="show-less" style="display: none;">Xem ít hơn <i class="flaticon-arrow font-size-10 ml-1"></i></span>
                                                             </a>
@@ -1122,12 +980,12 @@
                             {
                                 <a class="height-45 width-45 border rounded border-width-2 flex-content-center btnhold">
                                     <button type="button"
-                                            id="btnLike-@hotelid"
-                                            class="btn btn-sm btn-icon rounded-circle btn-like"
-                                            style="background-color: white; "
-                                            data-hotel-id="@hotelid"
-                                            data-liked="@(liked ? "true" : "false")"
-                                            title="Yêu thích">
+                                    id="btnLike-@hotelid"
+                                    class="btn btn-sm btn-icon rounded-circle btn-like"
+                                    style="background-color: white; "
+                                    data-hotel-id="@hotelid"
+                                    data-liked="@(liked ? "true" : "false")"
+                                    title="Yêu thích">
                                         @if (liked)
                                         {
                                             <span class="fa-solid fa-heart text-danger"></span>
@@ -1296,27 +1154,27 @@
                 </div>
 
                 <div class="js-slick-carousel u-slick u-slick--equal-height u-slick--gutters-3"
-                     data-slides-show="4" data-slides-scroll="1"
-                     data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic v1 u-slick__arrow-classic--v1 u-slick__arrow-centered--y rounded-circle"
-                     data-arrow-left-classes="fas fa-chevron-left u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left"
-                     data-arrow-right-classes="fas fa-chevron-right u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right"
-                     data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
-                     data-responsive='[{
-                                                                "breakpoint": 1200,
-                                                                "settings": {
-                                                                    "slidesToShow": 3
-                                                                }
-                                                            }, {
-                                                                "breakpoint": 992,
-                                                                "settings": {
-                                                                    "slidesToShow": 2
-                                                                }
-                                                            }, {
-                                                                "breakpoint": 768,
-                                                                "settings": {
-                                                                    "slidesToShow": 1
-                                                                }
-                                                            }]'>
+                data-slides-show="4" data-slides-scroll="1"
+                data-arrows-classes="d-none d-lg-inline-block u-slick__arrow-classic v1 u-slick__arrow-classic--v1 u-slick__arrow-centered--y rounded-circle"
+                data-arrow-left-classes="fas fa-chevron-left u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left"
+                data-arrow-right-classes="fas fa-chevron-right u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right"
+                data-pagi-classes="d-lg-none text-center u-slick__pagination mt-4"
+                data-responsive='[{
+                "breakpoint": 1200,
+                "settings": {
+                "slidesToShow": 3
+                }
+                }, {
+                "breakpoint": 992,
+                "settings": {
+                "slidesToShow": 2
+                }
+                }, {
+                "breakpoint": 768,
+                "settings": {
+                "slidesToShow": 1
+                }
+                }]'>
 
                     @if (listHotel != null && listHotel.Any())
                     {
@@ -1328,10 +1186,10 @@
                                     <div class="position-relative">
                                         <a href="@Url.Action("ChiTietKS", "KhachSan", new { nameblog = @Common.GenerateSlug(hotel.Name), ks = hotel.Id })" class="d-block">
                                             <img class="min-height-230 bg-img-hero card-img-top"
-                                                 src="@(!string.IsNullOrEmpty(hotel.ListImg) ? hotel.ListImg.Split(",")[0] : "/AppData/BaiViet/BaiVietMacDinh.jpg")"
-                                                 alt="@hotel.Name"
-                                                 style="max-height: 230px;"
-                                                 onerror="replaceWithPlaceholder(this, 'hotel')">
+                                            src="@(!string.IsNullOrEmpty(hotel.ListImg) ? hotel.ListImg.Split(",")[0] : "/AppData/BaiViet/BaiVietMacDinh.jpg")"
+                                            alt="@hotel.Name"
+                                            style="max-height: 230px;"
+                                            onerror="replaceWithPlaceholder(this, 'hotel')">
                                         </a>
                                     </div>
 
@@ -1460,7 +1318,7 @@
                                                     </span>
                                                 </a>
 
-                                    
+
                                                 <span>&nbsp;</span>
                                             }
                                             @if (hotel.IdPromotion != null)
@@ -1488,6 +1346,10 @@
                             </div>
                         }
                     }
+                    else
+                    {
+                        
+                    }
                 </div>
             </div>
         </div>
@@ -1495,68 +1357,7 @@
     </div>
 
     <!-- Modal Chi tiết phòng -->
-    <div class="modal fade" id="roomDetailModal" tabindex="-1" role="dialog" aria-labelledby="roomDetailModalContent" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="modal-body p-0">
-                    <div class="card border-0 rounded-0 mb-0">
-                        <div class="row no-gutters">
-                            <!-- Image carousel - stretched to fit modal -->
-                            <div class="col-md-8">
-                                <div id="roomModalCarousel" class="js-slick-carousel u-slick modal-carousel overflow-hidden h-100" data-slides-show="1" data-slides-scroll="1" data-pagi-classes="text-right justify-content-end position-absolute right-0 bottom-0 left-0 u-slick__pagination u-slick__pagination--white mb-3 mr-3" data-arrows-classes="u-slick__arrow-classic u-slick__arrow-centered--y" data-arrow-left-classes="fas fa-arrow-left font-size-18 bg-transparent text-white u-slick__arrow-classic-inner u-slick__arrow-classic-inner--left ml-2" data-arrow-right-classes="fas fa-arrow-right font-size-18 bg-transparent text-white u-slick__arrow-classic-inner u-slick__arrow-classic-inner--right mr-2">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="room-details-container">
-                                    <!-- Fixed header section -->
-                                    <div class="room-details-header">
-                                        <div class="d-flex justify-content-between align-items-center px-3 pt-3">
-                                            <div id="roomModalName" class="font-weight-bold font-size-19 mb-0 mr-3 flex-grow-1">Room Name</div>
-                                            @* @if (Context.Session.GetInt32("UserId") != null)
-                                            {
-                                                <a id="roomModalBookBtn" href="javascript:void(0);" class="btn btn-primary btn-sm px-3 py-2">Đặt ngay</a>
-
-                                            } *@
-
-                                            <div class="d-flex flex-shrink-0">
-                                                <a href="tele:@Model.Phone;" target="_blank" onclick="ghiloglienhe(1)" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center mr-1" style="width: 44px; height: 44px;"><i class="fas fa-phone"></i></a>                                                
-                                                <a href="https://zalo.me/@(ViewBag.hotelPhone)" onclick="ghiloglienhe(2)" class="btn btn-sm d-flex align-items-center justify-content-center p-0" style="height:44px;" target="_blank" type="submit" id="zalo">
-                                                    <img src='@Url.Content("~/assets/img/icons/zalo_icon.png")' style="height:44px; object-fit:contain;" alt="Zalo" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 price-info px-3">
-                                            <span class="mr-1 font-size-14 text-gray-1">Giá từ</span>
-                                            <span id="roomModalPrice" class="font-weight-bold font-size-22 text-primary">0 VNĐ</span>
-                                            <span class="font-size-14 text-gray-1"> / Đêm</span>
-                                        </div>
-                                        <div class="mb-3 room-type-info px-3">
-                                            <div class="d-flex align-items-center card-color__icon" id="RoomTypeIcon">
-                                                <i id="roomTypeIcon" class="mdi text-primary mr-2" style="font-size: 30px;"></i>
-                                                <span id="roomTypeName" class="font-size-14 text-gray-3">Loại phòng</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" px-3 pt-3 mt-2">
-                                        <div class="fw-bold mb-1"><b>Tiện nghi:</b></div>
-                                    </div>
-                                    <!-- Scrollable content section -->
-                                    <div class="room-details-scroll">
-                                        <div id="roomModalAmenities" class="px-3">
-                                            <!-- Amenities will be populated here -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("_RoomDetailModal", Model)
 
     <!-- Modal bản đồ -->
     <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
@@ -1607,246 +1408,6 @@ else
 {
 
 }
-
-
-<!-- script modal phòng-->
-<script>
-    // Lưu dữ liệu phòng để sử dụng khi cần
-    var roomsData = [
-    @foreach (var room in ViewBag.RoomsList)
-    {
-        var typeRoomName = room.TypeRoomNavigation != null ? room.TypeRoomNavigation.Name : "Phòng tiêu chuẩn";
-        var typeRoomIcon = room.TypeRoomNavigation != null ? room.TypeRoomNavigation.Icon : "mdi-bed-outline";
-
-        string listImgRaw = room.ListImg as string ?? string.Empty;
-
-        var imgList = listImgRaw
-            .Split(',', StringSplitOptions.RemoveEmptyEntries)   // skip empty pieces
-            .Select(i => i.Trim())                               // trim spaces
-            .Where(i => !string.IsNullOrWhiteSpace(i))           // extra safety
-            .Select(i => Common.GetImagePath(i))                 // map to public URL
-            .Where(p => !string.IsNullOrEmpty(p))
-            .ToList();
-
-        if (!imgList.Any())
-            imgList.Add("/AppData/BaiViet/BaiVietMacDinh.jpg");
-
-        var imgListJson = Json.Serialize(imgList);
-
-        @:{
-        @:  id: @room.Id,
-        @:  name: "@Html.Raw(room.Name.Replace("\"", "\\\""))",
-        @:  price: "@room.Price.ToString("N0")",
-        @:  typeRoomId: @(room.TypeRoom != null ? room.TypeRoom : 0),
-        @:  typeRoomName: @Html.Raw(Json.Serialize(typeRoomName)),
-        @:  typeRoomIcon: @Html.Raw(Json.Serialize(typeRoomIcon)),
-        @:  amenitiesList: @Html.Raw(Json.Serialize(room.ListAminities)),
-        @:  listImg: @Html.Raw(imgListJson)
-        @:},
-    }
-    ];
-
-    // Khởi tạo các thành phần sau khi trang đã tải xong
-    document.addEventListener('DOMContentLoaded', function() {
-        initRatingSystem();
-        initReviewForm();
-        setupGalleryInteraction();
-        setupRoomDetailsModal();
-        initDateRangePicker();
-        $(".btn-like").click(function () {
-        var btn = $(this);
-        var hotelId = btn.data("hotel-id");
-
-        handleLikeButtonClick("/KhachSan/UpdateLike", hotelId, btn)
-        });
-    });
-
-    // Khởi tạo chọn ngày đến/đi bằng flatpickr
-    function initDateRangePicker() {
-            flatpickr("#checkInOut", {
-            mode: "range",
-            enableTime: true,
-            time_24hr: true,
-            dateFormat: "d/m/Y H:i",
-            minDate: "today",
-            locale: {
-                rangeSeparator: " → "
-            },
-            onChange: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    const start = selectedDates[0];
-                    const end = selectedDates[1];
-
-                    // Calculate time difference in hours
-                    const diffInMs = end - start;
-                    const diffInHours = diffInMs / (1000 * 60 * 60);
-
-                    if (diffInHours < 24) {
-                        alert("Ngày đi phải cách ngày đến ít nhất 24 giờ!");
-
-                        // Automatically set checkout time to checkin + 24 hours
-                        const newEnd = new Date(start.getTime() + 24 * 60 * 60 * 1000);
-
-                        // Update the date range
-                        this.setDate([start, newEnd], true);
-                    }
-                }
-            }
-        });
-    }
-    // Cập nhật số lượng khách
-    function updateCounter(element, increment, inputId) {
-        var counter = document.getElementById(inputId);
-        var currentValue = parseInt(counter.value);
-        var newValue = increment ? currentValue + 1 : currentValue - 1;
-
-        // Set minimum value to 0
-        newValue = Math.max(0, newValue);
-
-        // For adults, set minimum to 1
-        if (inputId === 'adultCount') {
-            newValue = Math.max(1, newValue);
-        }
-
-        counter.value = newValue;
-
-        // Update summary text with separate counts
-        updateGuestSummary();
-    }
-
-    // Update guest summary with separate counts
-    function updateGuestSummary() {
-        const adults = parseInt(document.getElementById("adultCount").value, 10) || 0;
-        const children = parseInt(document.getElementById("childCount").value, 10) || 0;
-        const guests = adults + children;
-        const summary = document.getElementById("roomGuestSummary");
-        summary.textContent = `${adults} Người lớn, ${children} Trẻ em`;
-    }
-
-    // Optional: Nếu muốn khởi tạo hiển thị tổng khi trang load
-    document.addEventListener("DOMContentLoaded", function () {
-        updateGuestSummary();
-    });
-
-    // Thiết lập tương tác cho gallery ảnh (có thể mở rộng sau)
-    function setupGalleryInteraction() {
-    }
-
-    // Thiết lập modal chi tiết phòng
-    function setupRoomDetailsModal() {
-        console.log("Đã khởi tạo modal phòng, số lượng phòng:", roomsData?.length || 0);
-    }
-
-    // Hiển thị modal chi tiết phòng
-    function showRoomModal(roomId) {
-        try {
-        // Tìm dữ liệu phòng theo ID
-                        const room = roomsData.find(r => r.id === roomId);
-            if (!room) {
-                console.error("Room not found with ID:", roomId);
-                return;
-            }
-
-            const $modal = $('#roomDetailModal');
-            const $carousel = $('#roomModalCarousel');
-
-            // Hủy khởi tạo carousel hiện tại nếu đã được khởi tạo
-            if ($carousel.hasClass('slick-initialized')) {
-                $carousel.slick('unslick');
-            }
-
-            $('#roomModalName').text(room.name);
-            $('#roomModalPrice').text(room.price + ' VNĐ');
-
-            @* // Cập nhật nút đặt ngay trong chi tiết phòng
-            const bookBtn = document.getElementById('roomModalBookBtn');
-            if (bookBtn) {
-                const checkin = document.getElementById('checkInOut').value.split(' → ')[0];
-                const checkout = document.getElementById('checkInOut').value.split(' → ')[1];
-                const guests = document.getElementById('roomGuestSummary').textContent.split(' ')[0];
-                const roomSlug = room.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
-                bookBtn.href = `/KhachSan/Datphong?area=&nameroom=${roomSlug}&Idp=${room.id}&ci=${checkin}&co=${checkout}&gue=${guests}`;
-            } *@
-
-
-            $('#roomTypeIcon').attr('class', room.typeRoomIcon + ' font-size-18 mr-2');
-            $('#roomTypeName').text(room.typeRoomName);
-
-            // Hiển thị hình ảnh trong carousel
-            const carousel = document.getElementById('roomModalCarousel');
-
-            const images = Array.isArray(room.listImg) && room.listImg.length
-              ? room.listImg
-              : ['/images/no-image.jpg'];
-
-            carousel.innerHTML = images
-              .map(img => `
-                <div class="js-slide">
-                  <div class="main-image-container">
-                    <img
-                      src="${img}"
-                      class="img-fluid border-radius-3 w-100"
-                      style="object-fit:cover;"
-                      alt="Room Image"
-                      onerror="this.onerror=null;this.src='/AppData/BaiViet/BaiVietMacDinh.jpg';"
-                    />
-                  </div>
-                </div>`)
-              .join('');
-
-            // Hiển thị danh sách tiện nghi
-            const amenitiesContainer = $('#roomModalAmenities');
-            amenitiesContainer.empty();
-
-            if (room.amenitiesList) {
-                const amenityData = @Html.Raw(Json.Serialize(ViewBag.HotelAmenities));
-                const amenitiesHtml = room.amenitiesList.split(',')
-                .map(amenityId => {
-                    const amenity = amenityData.find(a => a.id === parseInt(amenityId.trim()));
-                    return amenity ? `
-                    <div class="col-md-6 mb-0">
-                        <div class="d-flex align-items-center card-color__icon">
-                        <i class="${amenity.icon || 'fas fa-check-circle'} mr-3"></i>
-                        <span>${amenity.name}</span>
-                        </div>
-                    </div>
-                    ` : '';
-                })
-                .filter(html => html)
-                .join('');
-
-                amenitiesContainer.html(`<div class="row">${amenitiesHtml}</div>`);
-            }
-
-                // Thiết lập khởi tạo carousel sau khi modal hiển thị
-            $modal.off('shown.bs.modal').on('shown.bs.modal', function() {
-                try {
-                    if ($.HSCore?.components?.HSSlickCarousel) {
-                        $.HSCore.components.HSSlickCarousel.init('#roomModalCarousel');
-                    } else {
-                        $carousel.slick({
-                            dots: true,
-                            arrows: true,
-                            infinite: true,
-                            speed: 500,
-                            slidesToShow: 1,
-                            adaptiveHeight: false
-                        });
-                    }
-                } catch(err) {
-                    console.error('Carousel initialization error:', err);
-                }
-            });
-
-            $modal.modal('show');
-
-        } catch(err) {
-            console.error('Error showing room modal:', err);
-            alert('Có lỗi khi hiển thị thông tin phòng. Vui lòng thử lại sau.');
-        }
-    }
-</script>
 
 <!--Đánh giá-->
 <script>

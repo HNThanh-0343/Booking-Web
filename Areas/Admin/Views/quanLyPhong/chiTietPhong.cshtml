@@ -1,4 +1,4 @@
-﻿@model WEBSITE_TRAVELBOOKING.Models.SysRoom;
+@model WEBSITE_TRAVELBOOKING.Models.SysRoom;
 @using WEBSITE_TRAVELBOOKING.Helper;
 @using WEBSITE_TRAVELBOOKING.Models;
 @{
@@ -127,6 +127,14 @@
                     <label class="form-label text-end col-md-4">Số lượng trẻ em:</label>
                     <div class="col-md-8">
                         <p class="form-control-static">@Model.ChildrenMax</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="form-label text-end col-md-4">Đặc điểm phòng:</label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">@Model.RoomFeature</p>
                     </div>
                 </div>
             </div>

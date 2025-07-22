@@ -67,8 +67,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<SysInvoiceRoom> SysInvoiceRooms { get; set; }
 
-    public virtual DbSet<SysItinerary> SysItineraries { get; set; }
-
     public virtual DbSet<SysLike> SysLikes { get; set; }
 
     public virtual DbSet<SysLog> SysLogs { get; set; }
@@ -91,8 +89,6 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<SysRoom> SysRooms { get; set; }
 
-    public virtual DbSet<SysRoomHomeStay> SysRoomHomeStays { get; set; }
-
     public virtual DbSet<SysRule> SysRules { get; set; }
 
     public virtual DbSet<SysSettingMenu> SysSettingMenus { get; set; }
@@ -101,11 +97,9 @@ public partial class WebsiteCmsBookingContext : DbContext
 
     public virtual DbSet<SysUser> SysUsers { get; set; }
 
-    public virtual DbSet<SysVilla> SysVillas { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=WEBSITE_CMS_BOOKING;User Id=sa;Password=123;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=WEBSITE_CMS_BOOKING;User Id=sa;Password=123;TrustServerCertificate=True;Pooling=true;Min Pool Size=5;Max Pool Size=50;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -420,17 +414,9 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.Property(e => e.TotalMoney).HasColumnType("decimal(18, 0)");
         });
 
-        modelBuilder.Entity<SysItinerary>(entity =>
-        {
-            entity.ToTable("Sys_Itinerary");
-
-            entity.Property(e => e.DayName).HasMaxLength(50);
-            entity.Property(e => e.LocalName).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<SysLike>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__sys_Like__3214EC07ED3D069A");
+            entity.HasKey(e => e.Id).HasName("PK__sys_Like__3214EC070B7553F9");
 
             entity.ToTable("sys_Like");
 
@@ -558,19 +544,6 @@ public partial class WebsiteCmsBookingContext : DbContext
                 .HasConstraintName("FK_sys_Room_Cat_TypeRoom");
         });
 
-        modelBuilder.Entity<SysRoomHomeStay>(entity =>
-        {
-            entity.ToTable("Sys_RoomHomeStay");
-
-            entity.Property(e => e.AdultsMax).HasColumnName("adultsMax");
-            entity.Property(e => e.ChildrenMax).HasColumnName("childrenMax");
-            entity.Property(e => e.IdTypeBed).HasMaxLength(50);
-            entity.Property(e => e.ListAminities).HasMaxLength(255);
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.Name).HasMaxLength(255);
-            entity.Property(e => e.TotalRoom).HasColumnName("totalRoom");
-        });
-
         modelBuilder.Entity<SysRule>(entity =>
         {
             entity.ToTable("sys_Rule");
@@ -627,26 +600,6 @@ public partial class WebsiteCmsBookingContext : DbContext
             entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.SysUsers)
                 .HasForeignKey(d => d.IdRole)
                 .HasConstraintName("FK_sys_User_sys_Role");
-        });
-
-        modelBuilder.Entity<SysVilla>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Villa");
-
-            entity.ToTable("sys_Villa");
-
-            entity.Property(e => e.IdPromotion).HasColumnName("idPromotion");
-            entity.Property(e => e.ListImg).HasColumnName("ListIMG");
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.TimeCreate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.SysVillas)
-                .HasForeignKey(d => d.IdCategory)
-                .HasConstraintName("FK_sys_Villa_sys_Categories");
-
-            entity.HasOne(d => d.IdPromotionNavigation).WithMany(p => p.SysVillas)
-                .HasForeignKey(d => d.IdPromotion)
-                .HasConstraintName("FK_sys_Villa_sys_Promotion");
         });
 
         OnModelCreatingPartial(modelBuilder);

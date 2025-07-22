@@ -94,7 +94,8 @@ namespace WEBSITE_TRAVELBOOKING.Areas.Admin.Controllers
                 ViewBag.TienNghi = _unitOfWork.Repository<CatAminitieseRoom>().GetAll(filter: h => h.Status == true).ToList();
                 ViewBag.CatTypeRoom = _unitOfWork.Repository<CatTypeRoom>().GetAll(filter: h => h.Status == true).ToList();
                 ViewBag.CatTypeBed = _unitOfWork.Repository<CatBedRoom>().GetAll(filter: h => h.Status == "1").ToList();
-                ViewBag.getHotel = _unitOfWork.Repository<SysHotel>().GetById((int)sysRoom.IdHotel);
+                ViewBag.getHotel = _unitOfWork.Repository<SysHotel>().GetById(sysRoom.IdHotel ?? throw new InvalidOperationException("IdHotel cannot be null."));
+
                 if (!ModelState.IsValid)
                 {
                     foreach (var modelStateKey in ModelState.Keys)
@@ -122,7 +123,7 @@ namespace WEBSITE_TRAVELBOOKING.Areas.Admin.Controllers
                     return BadRequest(ModelState);
                 }
                 // Cập nhật lại giá
-                if (Convert.ToDecimal(sysRoom.Price) < getHotel.PriceMin)
+                if (getHotel.PriceMin == null || Convert.ToDecimal(sysRoom.Price) < getHotel.PriceMin)
                 {
                     getHotel.PriceMin = Convert.ToDecimal(sysRoom.Price);
                     _unitOfWork.Repository<SysHotel>().Update(getHotel);
@@ -234,7 +235,7 @@ namespace WEBSITE_TRAVELBOOKING.Areas.Admin.Controllers
                     return BadRequest(ModelState);
                 }
                 // Cập nhật lại giá
-                if (Convert.ToDecimal(sysRoom.Price) < getHotel.PriceMin)
+                if (getHotel.PriceMin == null || Convert.ToDecimal(sysRoom.Price) < getHotel.PriceMin)
                 {
                     getHotel.PriceMin = Convert.ToDecimal(sysRoom.Price);
                     _unitOfWork.Repository<SysHotel>().Update(getHotel);
@@ -252,6 +253,7 @@ namespace WEBSITE_TRAVELBOOKING.Areas.Admin.Controllers
                 getRoom.Feature = sysRoom.Feature;
                 getRoom.Description = sysRoom.Description;
                 getRoom.ContentBed = sysRoom.ContentBed;
+                getRoom.RoomFeature = sysRoom.RoomFeature;
                 _unitOfWork.Repository<SysRoom>().Update(getRoom);
 
                 return PartialView(getRoom);

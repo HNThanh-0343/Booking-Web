@@ -34,6 +34,4 @@ public partial class SysPromotion
     public bool? Status { get; set; }
 
     public virtual ICollection<SysHotel> SysHotels { get; set; } = new List<SysHotel>();
-
-    public virtual ICollection<SysVilla> SysVillas { get; set; } = new List<SysVilla>();
 }

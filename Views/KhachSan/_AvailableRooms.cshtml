@@ -49,9 +49,12 @@
                                 </div>
                             }
 
+                            @if (rooms.RoomFeature != null)
+                            {
                             <div class="mb-3 tienich">
-                                <p class="text-muted font-size-14">Không có thông tin về tiện nghi phòng.</p>
+                                <p class="text-success fw-bold font-size-14">@rooms.RoomFeature</p>
                             </div>
+                            }
 
                             <div class="details pb-1">
                                 <!-- On Target Modal -->

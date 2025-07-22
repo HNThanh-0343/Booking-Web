@@ -18,6 +18,4 @@ public partial class CatCategory
     public virtual ICollection<SysBooking> SysBookings { get; set; } = new List<SysBooking>();
 
     public virtual ICollection<SysHotel> SysHotels { get; set; } = new List<SysHotel>();
-
-    public virtual ICollection<SysVilla> SysVillas { get; set; } = new List<SysVilla>();
 }

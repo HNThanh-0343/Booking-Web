@@ -6,7 +6,6 @@
     var listHotel = ViewBag.listHotel as List<SysHotel>;
     var listRoom = ViewBag.listRoom as List<SysRoom>;
     var contry = ViewBag.Contry as List<CatContry>;
-    var listHomeStay = ViewBag.listHomeStay as List<SysVilla>;
     var listGuest = ViewBag.listGuest as List<SysGuest>;
 }
 <style>
@@ -106,18 +105,6 @@
                                         <span>@listRoom.Count</span>
                                     </h3>
                                     <div class="text-muted font-15 mb-0">Số phòng</div>
-                                </div>
-                            </div>
-                            <!-- Số lượng homestay-->
-                            <div class="col-12 col-xl-2 col-lg-4 col-md-3 mb-2">
-                                <div class="location-card h-100">
-                                    <div class="location-icon">
-                                        <i class="uil-home-alt"></i>
-                                    </div>
-                                    <h3>
-                                        <span>@listHomeStay.Count</span>
-                                    </h3>
-                                    <div class="text-muted font-15 mb-0">Homestay</div>
                                 </div>
                             </div>
                             <!-- Số lượng người dùng-->

@@ -17,653 +17,597 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WEBSITE_TRAVELBOOKING
 build_property.RootNamespace = WEBSITE_TRAVELBOOKING
-build_property.ProjectDir = D:\Works\C#\WEBSITE_TRAVELBOOKING\1.Code\WEBSITE_TRAVELBOOKING\WEBSITE_TRAVELBOOKING\
+build_property.ProjectDir = d:\Works\C#\WEBSITE_TRAVELBOOKING\1.Code\WEBSITE_TRAVELBOOKING\WEBSITE_TRAVELBOOKING\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = D:\Works\C#\WEBSITE_TRAVELBOOKING\1.Code\WEBSITE_TRAVELBOOKING\WEBSITE_TRAVELBOOKING
+build_property.MSBuildProjectDirectory = d:\Works\C#\WEBSITE_TRAVELBOOKING\1.Code\WEBSITE_TRAVELBOOKING\WEBSITE_TRAVELBOOKING
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5YmFpdmlldFxjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/chinhSuaBlog.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/chinhSuaBlog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5YmFpdmlldFxjaGluaFN1YUJsb2cuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/chiTietBlog.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/chiTietBlog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5YmFpdmlldFxjaGlUaWV0QmxvZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5YmFpdmlldFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/themMoiBlog.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlybaiviet/themMoiBlog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5YmFpdmlldFx0aGVtTW9pQmxvZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexLoaiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexLoaiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlsZEluZGV4TG9haVBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexTienNghi.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexTienNghi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlsZEluZGV4VGllbk5naGkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexTinhThanh.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/childIndexTinhThanh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlsZEluZGV4VGluaFRoYW5oLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaDichVu.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaDichVu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGluaFN1YURpY2hWdS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaLoaiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaLoaiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGluaFN1YUxvYWlQaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaTienNghi.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaTienNghi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGluaFN1YVRpZW5OZ2hpLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaTinhThanh.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chinhSuaTinhThanh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGluaFN1YVRpbmhUaGFuaC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietDichVu.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietDichVu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlUaWV0RGljaFZ1LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietLoaiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietLoaiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlUaWV0TG9haVBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietTienNghi.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietTienNghi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlUaWV0VGllbk5naGkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietTinhThanh.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/chiTietTinhThanh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xjaGlUaWV0VGluaFRoYW5oLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexLoaiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexLoaiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xJbmRleExvYWlQaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexTienNghi.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexTienNghi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xJbmRleFRpZW5OZ2hpLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexTinhThanh.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/IndexTinhThanh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1xJbmRleFRpbmhUaGFuaC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiDichVu.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiDichVu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1x0aGVtTW9pRGljaFZ1LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiLoaiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiLoaiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1x0aGVtTW9pTG9haVBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiTienNghi.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiTienNghi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1x0aGVtTW9pVGllbk5naGkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiTinhThanh.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlydanhmuc/themMoiTinhThanh.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5ZGFuaG11Y1x0aGVtTW9pVGluaFRoYW5oLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/childIndex.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpbGRJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/childIndexRoom.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpbGRJbmRleFJvb20uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/chinhSuaHomeStay.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpbmhTdWFIb21lU3RheS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/chinhSuaPhong.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpbmhTdWFQaG9uZy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/chiTietHomeStay.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpVGlldEhvbWVTdGF5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/chiTietPhong.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcY2hpVGlldFBob25nLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/IndexRoom.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcSW5kZXhSb29tLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/themMoiHomeStay.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcdGhlbU1vaUhvbWVTdGF5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlyhomestay/themMoiPhong.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5aG9tZXN0YXlcdGhlbU1vaVBob25nLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpbGRJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/childIndexDatPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/childIndexDatPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpbGRJbmRleERhdFBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chinhSuaDatPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chinhSuaDatPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpbmhTdWFEYXRQaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chinhSuaKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chinhSuaKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpbmhTdWFLaGFjaFNhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chiTietDatPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chiTietDatPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpVGlldERhdFBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chiTietKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/chiTietKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cY2hpVGlldEtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/DatPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/DatPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cRGF0UGhvbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/themMoiKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/QuanLyKhachSan/themMoiKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUXVhbkx5S2hhY2hTYW5cdGhlbU1vaUtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5a2h1eWVubWFpXGNoaWxkSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/chinhSuaKhuyenMai.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/chinhSuaKhuyenMai.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5a2h1eWVubWFpXGNoaW5oU3VhS2h1eWVuTWFpLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/chiTietKhuyenMai.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/chiTietKhuyenMai.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5a2h1eWVubWFpXGNoaVRpZXRLaHV5ZW5NYWkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5a2h1eWVubWFpXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/themMoiKhuyenMai.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlykhuyenmai/themMoiKhuyenMai.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5a2h1eWVubWFpXHRoZW1Nb2lLaHV5ZW5NYWkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlylienhe/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlylienhe/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5bGllbmhlXGNoaWxkSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlylienhe/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanlylienhe/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbmx5bGllbmhlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXGNoaWxkSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/chinhSuaNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/chinhSuaNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXGNoaW5oU3VhTmhvbVF1eWVuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/chiTietNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/chiTietNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXGNoaVRpZXROaG9tUXV5ZW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/phanquyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/phanquyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXHBoYW5xdXllbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/themMoiNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyNhomQuyen/themMoiNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5TmhvbVF1eWVuXHRoZW1Nb2lOaG9tUXV5ZW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5UGhvbmdcY2hpbGRJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/chinhSuaPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/chinhSuaPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5UGhvbmdcY2hpbmhTdWFQaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/chiTietPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/chiTietPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5UGhvbmdcY2hpVGlldFBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5UGhvbmdcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/themMoiPhong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyPhong/themMoiPhong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5UGhvbmdcdGhlbU1vaVBob25nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpbGRJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndexGuest.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndexGuest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpbGRJbmRleEd1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndexPartner.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/childIndexPartner.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpbGRJbmRleFBhcnRuZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chinhSuaGuest.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chinhSuaGuest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpbmhTdWFHdWVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chinhSuaTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chinhSuaTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpbmhTdWFUYWlLaG9hbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chiTietGuest.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chiTietGuest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpVGlldEd1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chiTietTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/chiTietTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cY2hpVGlldFRhaUtob2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/IndexGuest.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/IndexGuest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cSW5kZXhHdWVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/IndexPartner.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/IndexPartner.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cSW5kZXhQYXJ0bmVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/themMoiTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/quanLyTaiKhoan/themMoiTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NccXVhbkx5VGFpS2hvYW5cdGhlbU1vaVRhaUtob2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/Components/Menu/NoPermission.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/Components/Menu/NoPermission.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXENvbXBvbmVudHNcTWVudVxOb1Blcm1pc3Npb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/Components/Menu/_Menu.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/Components/Menu/_Menu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXENvbXBvbmVudHNcTWVudVxfTWVudS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/trangChu/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Admin/Views/trangChu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcdHJhbmdDaHVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/chinhSuaKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/chinhSuaKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xjaGluaFN1YUtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/chitietphong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/chitietphong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xjaGl0aWV0cGhvbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/datphong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/datphong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xkYXRwaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/ShowBill.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/ShowBill.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1xTaG93QmlsbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/themMoiKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/datphong/themMoiKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkYXRwaG9uZ1x0aGVtTW9pS2hhY2hTYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkaWNodnVwaG9uZ1xjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/chinhSuaDichvuKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/chinhSuaDichvuKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkaWNodnVwaG9uZ1xjaGluaFN1YURpY2h2dUtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/giahanphong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/giahanphong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkaWNodnVwaG9uZ1xnaWFoYW5waG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/huyphong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/huyphong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkaWNodnVwaG9uZ1xodXlwaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/dichvuphong/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xkaWNodnVwaG9uZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Error/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Error/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xFcnJvclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xRdWFuTHlLaGFjaFNhblxjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/chinhSuaKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/chinhSuaKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xRdWFuTHlLaGFjaFNhblxjaGluaFN1YUtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/chiTietKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/chiTietKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xRdWFuTHlLaGFjaFNhblxjaGlUaWV0S2hhY2hTYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xRdWFuTHlLaGFjaFNhblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/themMoiKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/QuanLyKhachSan/themMoiKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xRdWFuTHlLaGFjaFNhblx0aGVtTW9pS2hhY2hTYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5cY2hpbGRJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/chinhSuaNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/chinhSuaNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5cY2hpbmhTdWFOaG9tUXV5ZW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/chiTietNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/chiTietNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5cY2hpVGlldE5ob21RdXllbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/phanquyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/phanquyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5ccGhhbnF1eWVuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/themMoiNhomQuyen.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyNhomQuyen/themMoiNhomQuyen.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlOaG9tUXV5ZW5cdGhlbU1vaU5ob21RdXllbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/childIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/childIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlUYWlLaG9hblxjaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/chinhSuaTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/chinhSuaTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlUYWlLaG9hblxjaGluaFN1YVRhaUtob2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/chiTietTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/chiTietTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlUYWlLaG9hblxjaGlUaWV0VGFpS2hvYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlUYWlLaG9hblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/themMoiTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/quanLyTaiKhoan/themMoiTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xxdWFuTHlUYWlLaG9hblx0aGVtTW9pVGFpS2hvYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/Components/MenuPartner/NoPermission.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/Components/MenuPartner/NoPermission.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xTaGFyZWRcQ29tcG9uZW50c1xNZW51UGFydG5lclxOb1Blcm1pc3Npb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/Components/MenuPartner/_MenuPartner.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/Components/MenuPartner/_MenuPartner.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xTaGFyZWRcQ29tcG9uZW50c1xNZW51UGFydG5lclxfTWVudVBhcnRuZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/_AdminLayout.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xTaGFyZWRcX0FkbWluTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/TrangChu/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/TrangChu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1xUcmFuZ0NodVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/ChildIndex.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/ChildIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1x0cmFwaG9uZ1xDaGlsZEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1x0cmFwaG9uZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/traphong.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Areas/Partner/Views/traphong/traphong.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGFydG5lclxWaWV3c1x0cmFwaG9uZ1x0cmFwaG9uZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/BinhLuan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/BinhLuan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFpVmlldFxCaW5oTHVhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/ChiTietBaiViet.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/ChiTietBaiViet.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFpVmlldFxDaGlUaWV0QmFpVmlldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFpVmlldFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/loadBaiViet.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BaiViet/loadBaiViet.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFpVmlldFxsb2FkQmFpVmlldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/BietThu/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlldFRodVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Hotel/Detail.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcRGV0YWlsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Hotel/Tour.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxcVG91ci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/ChiTietKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/ChiTietKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cQ2hpVGlldEtoYWNoU2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/CountHotel.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/CountHotel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cQ291bnRIb3RlbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/DatKhachSan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/DatKhachSan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cRGF0S2hhY2hTYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/loadFilter.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/loadFilter.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cbG9hZEZpbHRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/ThanhToan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/ThanhToan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cVGhhbmhUb2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/_AvailableRooms.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/_AvailableRooms.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cX0F2YWlsYWJsZVJvb21zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhuyenMai/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhachSan/_RoomDetailModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hTYW5cX1Jvb21EZXRhaWxNb2RhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhuyenMai/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2h1eWVuTWFpXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhuyenMai/loadKhuyenMai.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/KhuyenMai/loadKhuyenMai.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2h1eWVuTWFpXGxvYWRLaHV5ZW5NYWkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/LienHe/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/LienHe/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGllbkhlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/Error.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Contact.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Contact.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Db250YWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_FooterMenu.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_FooterMenu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXJNZW51LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Header.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Layout.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Nav.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_Nav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_RoleTreePartial.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_RoleTreePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Sb2xlVHJlZVBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_ValidationScriptsPartial.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/dangky.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/dangky.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFpS2hvYW5cZGFuZ2t5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/dangnhap.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/dangnhap.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFpS2hvYW5cZGFuZ25oYXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/quenmatkhau.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/quenmatkhau.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFpS2hvYW5ccXVlbm1hdGtoYXUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/_LayoutTaiKhoan.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TaiKhoan/_LayoutTaiKhoan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFpS2hvYW5cX0xheW91dFRhaUtob2FuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/ThanhPho/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/ThanhPho/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGhhbmhQaG9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/404.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/404.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcNDA0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/Index.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadBlog.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadBlog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcbG9hZEJsb2cuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadCategoryHead.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadCategoryHead.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcbG9hZENhdGVnb3J5SGVhZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadKM.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadKM.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcbG9hZEtNLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadPostIdCate.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadPostIdCate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcbG9hZFBvc3RJZENhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadTrending.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/loadTrending.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcbG9hZFRyZW5kaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_CapNhatThongTin.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_CapNhatThongTin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX0NhcE5oYXRUaG9uZ1Rpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DangKy.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DangKy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX0RhbmdLeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DangNhap.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DangNhap.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX0RhbmdOaGFwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DoiMatKhau.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_DoiMatKhau.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX0RvaU1hdEtoYXUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_QuenMatKhau.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_QuenMatKhau.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX1F1ZW5NYXRLaGF1LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_ThongTin.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/TrangChu/_ThongTin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbmdDaHVcX1Rob25nVGluLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/_ViewImports.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/_ViewStart.cshtml]
+[d:/Works/C\#/WEBSITE_TRAVELBOOKING/1.Code/WEBSITE_TRAVELBOOKING/WEBSITE_TRAVELBOOKING/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

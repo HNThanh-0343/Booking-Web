@@ -23,7 +23,6 @@ namespace WEBSITE_TRAVELBOOKING.Areas.Admin.Controllers
             ViewBag.Contry = _unitOfWork.Repository<CatContry>().GetAll(filter: h => h.Featured == true).ToList();
             ViewBag.listHotel = _unitOfWork.Repository<SysHotel>().GetAll(filter: h => h.Status == true).ToList();
             ViewBag.listRoom = _unitOfWork.Repository<SysRoom>().GetAll(includeProperties: "TypeRoomNavigation", filter: h => h.Status == true).ToList();
-            ViewBag.listHomeStay = _unitOfWork.Repository<SysVilla>().GetAll(filter: h => h.Status == true).ToList();
             ViewBag.listGuest = _unitOfWork.Repository<SysGuest>().GetAll(filter: h => h.Status == true).ToList();
             return View();
         }
